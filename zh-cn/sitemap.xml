@@ -2,65 +2,63 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://fupanc-w1n.github.io/</loc>
     <lastmod>2024-10-15T09:08:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/"
+                href="https://fupanc-w1n.github.io/en/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/"
+                href="https://fupanc-w1n.github.io/"
                 />
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://fupanc-w1n.github.io/categories/</loc>
     <lastmod>2024-10-15T09:08:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/categories/"
+                href="https://fupanc-w1n.github.io/en/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/categories/"
+                href="https://fupanc-w1n.github.io/categories/"
                 />
   </url><url>
-    <loc>http://localhost:1313/p/cc1/</loc>
+    <loc>https://fupanc-w1n.github.io/p/cc1/</loc>
     <lastmod>2024-10-15T09:08:41+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/java%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://fupanc-w1n.github.io/categories/java%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2024-10-15T09:08:41+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/post/</loc>
+    <loc>https://fupanc-w1n.github.io/post/</loc>
     <lastmod>2024-10-15T09:08:41+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/archives/</loc>
+    <loc>https://fupanc-w1n.github.io/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/page/</loc>
+    <loc>https://fupanc-w1n.github.io/page/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/links/</loc>
+    <loc>https://fupanc-w1n.github.io/categories/ctf/</loc>
   </url><url>
-    <loc>http://localhost:1313/search/</loc>
+    <loc>https://fupanc-w1n.github.io/search/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://fupanc-w1n.github.io/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/en/tags/"
+                href="https://fupanc-w1n.github.io/en/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/tags/"
+                href="https://fupanc-w1n.github.io/tags/"
                 />
   </url><url>
-    <loc>http://localhost:1313/categories/test/</loc>
-  </url><url>
-    <loc>http://localhost:1313/%E5%85%B3%E4%BA%8E/</loc>
+    <loc>https://fupanc-w1n.github.io/%E5%85%B3%E4%BA%8E/</loc>
   </url>
 </urlset>
