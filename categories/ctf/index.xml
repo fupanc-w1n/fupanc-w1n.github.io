@@ -861,7 +861,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;在运行，并且是root权限。基本你可以确定是打这个来提权了。&lt;/p&gt;
-&lt;p&gt;看到这里的``*&lt;code&gt;，很熟悉的通配符提权，并且涉及到了cp命令，primary目录可写文件。如果可以创建名为&lt;/code&gt;../../../../flag&lt;code&gt;的文件，那么很快就出了，但是在shell中，只会将&lt;/code&gt;/`视作目录，所以是打不了的。&lt;/p&gt;
+&lt;p&gt;看到这里的&lt;code&gt;*&lt;/code&gt;，很熟悉的通配符提权，并且涉及到了cp命令，primary目录可写文件。如果可以创建名为&lt;code&gt;../../../../flag&lt;/code&gt;的文件，那么很快就出了，但是在shell中，只会将&lt;code&gt;/&lt;/code&gt;视作目录，所以是打不了的。&lt;/p&gt;
 &lt;p&gt;后面找思路，想到了软链接，那么就是想着软链接链接到&lt;code&gt;/flag&lt;/code&gt;目录，然后sh脚本会将软链接带的内容一起给设置为可读权限，需要注意的是，这里使用了-P选项，这个在cp时不会带符号链接，所以需要绕一下。网上搜，说是&lt;code&gt;-a&lt;/code&gt;选项可以，打了一下没打出来，后面就没怎么打了。&lt;/p&gt;
 &lt;p&gt;赛后再搜了一下，-L选项是可以打的，也就是说&lt;code&gt;-L&lt;/code&gt;选项会让cp命令复制软链接指向的文件，而&lt;code&gt;-P&lt;/code&gt;选项，只会复制软链接本身，所以打不了。&lt;/p&gt;
 &lt;p&gt;参考文章：&lt;/p&gt;

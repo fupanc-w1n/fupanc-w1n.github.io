@@ -76,7 +76,7 @@
             
                 <li>
                     <a 
-                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        href='https://github.com/fupanc-w1n'
                         target="_blank"
                         title="GitHub"
                         rel="me"
@@ -86,26 +86,6 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
   <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
 </svg>
 
 
@@ -1209,7 +1189,7 @@
 	
 ></p>
 <p>在运行，并且是root权限。基本你可以确定是打这个来提权了。</p>
-<p>看到这里的``*<code>，很熟悉的通配符提权，并且涉及到了cp命令，primary目录可写文件。如果可以创建名为</code>../../../../flag<code>的文件，那么很快就出了，但是在shell中，只会将</code>/`视作目录，所以是打不了的。</p>
+<p>看到这里的<code>*</code>，很熟悉的通配符提权，并且涉及到了cp命令，primary目录可写文件。如果可以创建名为<code>../../../../flag</code>的文件，那么很快就出了，但是在shell中，只会将<code>/</code>视作目录，所以是打不了的。</p>
 <p>后面找思路，想到了软链接，那么就是想着软链接链接到<code>/flag</code>目录，然后sh脚本会将软链接带的内容一起给设置为可读权限，需要注意的是，这里使用了-P选项，这个在cp时不会带符号链接，所以需要绕一下。网上搜，说是<code>-a</code>选项可以，打了一下没打出来，后面就没怎么打了。</p>
 <p>赛后再搜了一下，-L选项是可以打的，也就是说<code>-L</code>选项会让cp命令复制软链接指向的文件，而<code>-P</code>选项，只会复制软链接本身，所以打不了。</p>
 <p>参考文章：</p>
