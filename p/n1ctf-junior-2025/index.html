@@ -1728,7 +1728,7 @@
 	
 	
 ></p>
-<p>但是并没有解析，这里<strong>主要的利用点在contentDisplay，通过将contentDisplay.innerHTML设置为一个正常的html标签，这样前端渲染时就会将其解析</strong>。（这段代码设计得秒呀）</p>
+<p>但是并没有解析，这是因为内容是动态放置在 <code>&lt;div&gt; </code>内的，并且由于使用了innerHTML，因此脚本没有执行。这里<strong>主要的利用点在contentDisplay，通过将contentDisplay.innerHTML设置为一个正常的html标签，然后插入到</strong>DOM树中。（这段代码设计得秒呀）</p>
 <p>都是没有解析。那么看此时的Hint：用iframe嵌入子页面可以重新唤起DOM解析器解析script标签。</p>
 <p>那么是限制了<code>&lt;script&gt;</code>标签的解析？</p>
 <p>尝试一下在404页面使用<code>&lt;iframe&gt;</code>标签嵌入前面的<code>/</code>路由：</p>
@@ -1855,6 +1855,7 @@
 	
 	
 ></p>
+<p>最后说明一个点：在其他题目中测试，同样的情况，<code>&lt;script&gt;</code>不解析，放在<code>&lt;div&gt;</code>标签中，应该同样是因为innerHTML，这个hint可以用来绕过这个点，并且其他题测试也是同样可以绕过的。</p>
 <p>————</p>
 <p>总结：很有意思的一道题，我还得练呀，还是应该想到还有<code>/</code>路由有前端渲染的操作，思维还得再开点。</p>
 <p>部分出题人的wp：</p>

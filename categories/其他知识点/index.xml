@@ -340,8 +340,8 @@
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：如果设置了多个条件，只需要满足其中一个条件就会允许匹配，两个条件是独立的。&lt;/p&gt;
 &lt;p&gt;这里的js代码也是比较也有点意思，是将留言的内容写入到DOM树的，通过Javascript来动态加载的，直接看ctrl+u是看不到的，可以去搭个前端了解一下。&lt;/p&gt;
 &lt;p&gt;看了上面的代码，会对CSP的限制会更加清楚，如下说明一下绕过方法。&lt;/p&gt;
-&lt;h4 id=&#34;绕过手段&#34;&gt;绕过手段
-&lt;/h4&gt;&lt;p&gt;这里就说说一下比较有意思的点。&lt;/p&gt;
+&lt;h3 id=&#34;绕过手段&#34;&gt;绕过手段
+&lt;/h3&gt;&lt;p&gt;这里就说说一下比较有意思的点。&lt;/p&gt;
 &lt;h5 id=&#34;可以动态执行任意js脚本&#34;&gt;可以动态执行任意js脚本
 &lt;/h5&gt;&lt;p&gt;当然是存在CSP限制啦，只不过设置的csp为&lt;code&gt;script-src &#39;unsafe-inline&#39;&lt;/code&gt;，也就是允许&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;标签的执行。&lt;/p&gt;
 &lt;p&gt;这个绕过方法个人感觉其实不常见，都能随便执行js脚本了。&lt;/p&gt;
@@ -360,7 +360,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h6 id=&#34;link标签的利用&#34;&gt;link标签的利用
-&lt;/h6&gt;&lt;p&gt;&lt;strong&gt;老版本的浏览器可用&lt;/strong&gt;，当时没有被约束，算是漏掉的，已经被修复了。&lt;/p&gt;
+&lt;/h6&gt;&lt;p&gt;&lt;strong&gt;老版本的浏览器可用&lt;/strong&gt;，当时没有被&lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt;标签约束，算是漏掉的，已经被修复了。&lt;/p&gt;
 &lt;p&gt;硬写如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -387,7 +387,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这样的js代码代码是成功带出来cookie的。&lt;/p&gt;
-&lt;p&gt;但是限制都比较大，需要可以执行任意JS脚本。sss&lt;/p&gt;
+&lt;p&gt;但是限制都比较大，需要可以执行任意JS脚本。&lt;/p&gt;
 &lt;h5 id=&#34;其他绕过方法&#34;&gt;其他绕过方法
 &lt;/h5&gt;&lt;h6 id=&#34;使用iframe标签绕过&#34;&gt;使用iframe标签绕过
 &lt;/h6&gt;&lt;p&gt;所有的主流浏览器都支持&lt;code&gt;&amp;lt;iframe&amp;gt;&lt;/code&gt;标签，这个标签的定义就是规定了一个内联框架，也就是它能够将另一个HTML页面嵌入到当前页面中。&lt;/p&gt;

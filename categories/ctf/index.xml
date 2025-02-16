@@ -1400,7 +1400,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;但是并没有解析，这里&lt;strong&gt;主要的利用点在contentDisplay，通过将contentDisplay.innerHTML设置为一个正常的html标签，这样前端渲染时就会将其解析&lt;/strong&gt;。（这段代码设计得秒呀）&lt;/p&gt;
+&lt;p&gt;但是并没有解析，这是因为内容是动态放置在 &lt;code&gt;&amp;lt;div&amp;gt; &lt;/code&gt;内的，并且由于使用了innerHTML，因此脚本没有执行。这里&lt;strong&gt;主要的利用点在contentDisplay，通过将contentDisplay.innerHTML设置为一个正常的html标签，然后插入到&lt;/strong&gt;DOM树中。（这段代码设计得秒呀）&lt;/p&gt;
 &lt;p&gt;都是没有解析。那么看此时的Hint：用iframe嵌入子页面可以重新唤起DOM解析器解析script标签。&lt;/p&gt;
 &lt;p&gt;那么是限制了&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;标签的解析？&lt;/p&gt;
 &lt;p&gt;尝试一下在404页面使用&lt;code&gt;&amp;lt;iframe&amp;gt;&lt;/code&gt;标签嵌入前面的&lt;code&gt;/&lt;/code&gt;路由：&lt;/p&gt;
@@ -1527,6 +1527,7 @@
 	
 	
 &gt;&lt;/p&gt;
+&lt;p&gt;最后说明一个点：在其他题目中测试，同样的情况，&lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;不解析，放在&lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt;标签中，应该同样是因为innerHTML，这个hint可以用来绕过这个点，并且其他题测试也是同样可以绕过的。&lt;/p&gt;
 &lt;p&gt;————&lt;/p&gt;
 &lt;p&gt;总结：很有意思的一道题，我还得练呀，还是应该想到还有&lt;code&gt;/&lt;/code&gt;路由有前端渲染的操作，思维还得再开点。&lt;/p&gt;
 &lt;p&gt;部分出题人的wp：&lt;/p&gt;
