@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="phpstorm + xdebug远程调试环境搭建">
+<title>phpstorm远程调试环境搭建</title>
+
+<link rel='canonical' href='https://fupanc-w1n.github.io/p/phpstorm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/'>
+
+<link rel="stylesheet" href="/scss/style.min.e1efb040517648e3208ef025cee1558f4e3e423656425dbd8e07546d18e42b3b.css"><meta property='og:title' content="phpstorm远程调试环境搭建">
+<meta property='og:description' content="phpstorm + xdebug远程调试环境搭建">
+<meta property='og:url' content='https://fupanc-w1n.github.io/p/phpstorm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/'>
+<meta property='og:site_name' content='fupanc'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-02T16:11:22&#43;08:00'/><meta property='article:modified_time' content='2025-03-02T16:11:22&#43;08:00'/>
+<meta name="twitter:title" content="phpstorm远程调试环境搭建">
+<meta name="twitter:description" content="phpstorm + xdebug远程调试环境搭建">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/123_hu4212831438090465177.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🔋</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">fupanc</a></h1>
+            <h2 class="site-description">闭关修行，不问归期</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/fupanc-w1n'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://fupanc-w1n.github.io/en/" >English</option>
+                                
+                                    <option value="https://fupanc-w1n.github.io/" selected>中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#过程说明">过程说明</a></li>
+        <li><a href="#易坑点">易坑点</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86%E7%82%B9/" style="background-color: #2a9d8f; color: #fff;">
+                其他知识点
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/phpstorm%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">phpstorm远程调试环境搭建</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            phpstorm &#43; xdebug远程调试环境搭建
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 02, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="phpstorm远程调试环境搭建">phpstorm远程调试环境搭建
+</h1><p>搭建工具需求：phpstorm+phpstudy</p>
+<h3 id="过程说明">过程说明
+</h3><p>首先是在phpstudy搭建一个网站，然后在扩展里选上xdebug：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011525073.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250301152550757"
+	
+	
+></p>
+<p>可以写一个phpinfo()回显页面，然后全部赋值粘贴拿到<strong>xdebug官方页面</strong>来寻求适配的xdebug版本：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011529463.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250301152948395"
+	
+	
+></p>
+<p>下载给的文件，然后将其改名为<code>php_xdebug.dll</code>并放在ext目录下。</p>
+<p>再然后修改一下php.ini内容，这里走了很多坑，如下即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[Xdebug]</span>
+</span></span><span class="line"><span class="cl"><span class="na">zend_extension</span><span class="o">=</span><span class="s">D:/phpstudy_pro/Extensions/php/php7.3.4nts/ext/php_xdebug.dll</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.log</span><span class="o">=</span><span class="s">D:/phpstudy_pro/xdebug.log</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.mode</span><span class="o">=</span><span class="s">debug;</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.remote_handler</span><span class="o">=</span><span class="s">&#34;dbgp&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.start_with_request</span> <span class="o">=</span> <span class="s">yes</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.discover_client_host</span> <span class="o">=</span> <span class="s">yes</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.client_host</span> <span class="o">=</span> <span class="s">localhost</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.client_port</span> <span class="o">=</span> <span class="s">62649</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.idekey</span><span class="o">=</span><span class="s">&#34;PHPSTORM&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.remote_autostart</span> <span class="o">=</span> <span class="s">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意一下xdebug2和xdebug3的区别，我这里是xdebug3。然后就是配置phpstorm了：</p>
+<p>在设置的debug部分：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011535496.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250301153502453"
+	
+	
+></p>
+<p>一定要开启侦听，然后这里的端口需要与前面配置文件中的client_port相同。</p>
+<p>然后配置DBGp代理：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011536552.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250301153638510"
+	
+	
+></p>
+<p>然后配置一个服务器：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011537302.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250301153728266"
+	
+	
+></p>
+<p>这里的主机可以随便填，但是端口就需要和phpstudy上的一样。然后编辑配置：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011538112.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250301153809082"
+	
+	
+></p>
+<p>加一个PHP网页：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011539659.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250301153923621"
+	
+	
+></p>
+<p>可以点击验证来验证一下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011553899.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250301155312836"
+	
+	
+></p>
+<p>然后打一个断点就可以开始调试了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011553289.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250301155353243"
+	
+	
+></p>
+<p><strong>调试超时解决方法：</strong></p>
+<p>1.php.ini需要设置xdebug和mac_execution_time等，来增加等待时间：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="c1"># 超时时间改大一点</span>
+</span></span><span class="line"><span class="cl"><span class="na">xdebug.remote_cookie_expire_time</span> <span class="o">=</span> <span class="s">7200</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_execution_time</span><span class="o">=</span><span class="s">7200</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_input_time</span><span class="o">=</span><span class="s">7200</span>
+</span></span><span class="line"><span class="cl"><span class="na">default_socket_timeout</span> <span class="o">=</span> <span class="s">7200</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>2.apache配置文件httpd.conf，增加程序执行等待时间：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 超时时间改大一点
+</span></span><span class="line"><span class="cl">Timeout 7200
+</span></span><span class="line"><span class="cl">FcgidIOTimeout 7200
+</span></span><span class="line"><span class="cl">FcgidIdleTimeout 7200
+</span></span><span class="line"><span class="cl">IPCConnectTimeout 7200
+</span></span><span class="line"><span class="cl">IPCCommTimeout 7200
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="易坑点">易坑点
+</h3><p>几个比较重要的点吧，也有些是这里想着重说明的：</p>
+<ul>
+<li>每次修改php.ini文件，都是需要重启一次服务的。直接在phpstudy上的apache哪里重启就行了。</li>
+<li>如果有几个环境，比如phpstudy上创建了几个网站，搞混了就比较麻烦，在验证这里我是卡了很久的。如果按照前面的操作，在最后验证的那一步出现了什么端口繁忙等等问题，关掉其他网站，然后重启电脑再次尝试。</li>
+</ul>
+<p>参考文章：</p>
+<p><a class="link" href="https://www.cnblogs.com/gaorenyusi/p/18213773"  target="_blank" rel="noopener"
+    >https://www.cnblogs.com/gaorenyusi/p/18213773</a></p>
+<p><a class="link" href="https://blog.csdn.net/kelleo/article/details/135215408"  target="_blank" rel="noopener"
+    >https://blog.csdn.net/kelleo/article/details/135215408</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E6%B5%85%E8%B0%88csp%E7%BB%95%E8%BF%87/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">浅谈CSP绕过</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
