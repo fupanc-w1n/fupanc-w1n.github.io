@@ -323,7 +323,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 1 分钟
+                    阅读时长: 2 分钟
                 </time>
             </div>
         
@@ -352,7 +352,8 @@
 	
 	
 ></p>
-<p>可以写一个phpinfo()回显页面，然后全部赋值粘贴拿到<strong>xdebug官方页面</strong>来寻求适配的xdebug版本：</p>
+<p>可以写一个phpinfo()回显页面，然后全部赋值粘贴拿到<a class="link" href="https://xdebug.org/wizard"  target="_blank" rel="noopener"
+    >xdebug官方页面</a>来寻求适配的xdebug版本：</p>
 <p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202503011529463.png"
 	
 	
@@ -377,7 +378,6 @@
 </span><span class="lnt"> 8
 </span><span class="lnt"> 9
 </span><span class="lnt">10
-</span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[Xdebug]</span>
@@ -390,7 +390,6 @@
 </span></span><span class="line"><span class="cl"><span class="na">xdebug.client_host</span> <span class="o">=</span> <span class="s">localhost</span>
 </span></span><span class="line"><span class="cl"><span class="na">xdebug.client_port</span> <span class="o">=</span> <span class="s">62649</span>
 </span></span><span class="line"><span class="cl"><span class="na">xdebug.idekey</span><span class="o">=</span><span class="s">&#34;PHPSTORM&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="na">xdebug.remote_autostart</span> <span class="o">=</span> <span class="s">1</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>注意一下xdebug2和xdebug3的区别，我这里是xdebug3。然后就是配置phpstorm了：</p>
@@ -490,7 +489,26 @@
 </span></span><span class="line"><span class="cl"><span class="na">default_socket_timeout</span> <span class="o">=</span> <span class="s">7200</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>2.apache配置文件httpd.conf，增加程序执行等待时间：</p>
+</div><p>2.修改apache的配置文件，这里就贴一下我加的一些配置：</p>
+<p>修改httpd.conf：将下面这行的前面的注释去掉：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Include conf/extra/httpd-default.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后添加如下一行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Include conf/extra/httpd-fcgid.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>并且在最后加上如下内容</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -509,7 +527,101 @@
 </span></span><span class="line"><span class="cl">IPCCommTimeout 7200
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="易坑点">易坑点
+</div><p>然后在conf\extra\httpd-default.conf里修改，修改文档内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl"># Timeout: The number of seconds before receives and sends time out.
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl">Timeout 7200
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl"># KeepAlive: Whether or not to allow persistent connections (more than
+</span></span><span class="line"><span class="cl"># one request per connection). Set to &#34;Off&#34; to deactivate.
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl">KeepAlive On
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl"># MaxKeepAliveRequests: The maximum number of requests to allow
+</span></span><span class="line"><span class="cl"># during a persistent connection. Set to 0 to allow an unlimited amount.
+</span></span><span class="line"><span class="cl"># We recommend you leave this number high, for maximum performance.
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl">MaxKeepAliveRequests 0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl"># KeepAliveTimeout: Number of seconds to wait for the next request from the
+</span></span><span class="line"><span class="cl"># same client on the same connection.
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl">KeepAliveTimeout 7200
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>最后在apache\conf\extra目录下新建一个httpd-fcgid.conf文件，加入如下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ProcessLifeTime 7200
+</span></span><span class="line"><span class="cl">FcgidIOTimeout 7200
+</span></span><span class="line"><span class="cl">FcgidConnectTimeout 7200
+</span></span><span class="line"><span class="cl">FcgidOutputBufferSize 128
+</span></span><span class="line"><span class="cl">FcgidMaxRequestsPerProcess 1000
+</span></span><span class="line"><span class="cl">FcgidMinProcessesPerClass 0 
+</span></span><span class="line"><span class="cl">FcgidMaxProcesses 16 
+</span></span><span class="line"><span class="cl">FcgidMaxRequestLen 268435456   
+</span></span><span class="line"><span class="cl">FcgidInitialEnv PHP_FCGI_MAX_REQUESTS 1000
+</span></span><span class="line"><span class="cl">IPCConnectTimeout 7200
+</span></span><span class="line"><span class="cl">IPCCommTimeout 7200
+</span></span><span class="line"><span class="cl">FcgidIdleTimeout 7200
+</span></span><span class="line"><span class="cl">FcgidBusyTimeout 60000
+</span></span><span class="line"><span class="cl">FcgidBusyScanInterval 120
+</span></span><span class="line"><span class="cl">FcgidInitialEnv PHPRC &#34;D:\phpstudy_pro\Extensions\php\php7.4.3nts&#34;
+</span></span><span class="line"><span class="cl">AddHandler fcgid-script .php
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>php路径自己修改，然后如果还想改时间更长的话就是改上面的7200这个数字。</p>
+<p>最后重启一下apache即可，应该就是可以了。</p>
+<h3 id="易坑点">易坑点
 </h3><p>几个比较重要的点吧，也有些是这里想着重说明的：</p>
 <ul>
 <li>每次修改php.ini文件，都是需要重启一次服务的。直接在phpstudy上的apache哪里重启就行了。</li>
@@ -520,6 +632,10 @@
     >https://www.cnblogs.com/gaorenyusi/p/18213773</a></p>
 <p><a class="link" href="https://blog.csdn.net/kelleo/article/details/135215408"  target="_blank" rel="noopener"
     >https://blog.csdn.net/kelleo/article/details/135215408</a></p>
+<p><a class="link" href="https://blog.csdn.net/weixin_43888304/article/details/120802226"  target="_blank" rel="noopener"
+    >https://blog.csdn.net/weixin_43888304/article/details/120802226</a></p>
+<p><a class="link" href="https://xdebug.org/docs/upgrade_guide#changed-xdebug.remote_autostart"  target="_blank" rel="noopener"
+    >https://xdebug.org/docs/upgrade_guide#changed-xdebug.remote_autostart</a></p>
 
 </section>
 
@@ -553,6 +669,19 @@
     <h2 class="section-title">相关文章</h2>
     <div class="related-content">
         <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/thinkphp%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ThinkPHP漏洞复现</h2>
+        </div>
+    </a>
+</article>
+
             
                 
 <article class="">
