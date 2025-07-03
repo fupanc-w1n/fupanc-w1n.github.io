@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Java学习">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Java反序列化调用链之CC1">
 <title>CC1</title>
 
 <link rel='canonical' href='https://fupanc-w1n.github.io/p/cc1/'>
 
-<link rel="stylesheet" href="/scss/style.min.2a0443e2dd85b60b4c4b3fdad7a6e18dce788a364f1910bde60288bc0fb80184.css"><meta property='og:title' content="CC1">
-<meta property='og:description' content="Java学习">
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="CC1">
+<meta property='og:description' content="Java反序列化调用链之CC1">
 <meta property='og:url' content='https://fupanc-w1n.github.io/p/cc1/'>
 <meta property='og:site_name' content='fupanc'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-22T13:30:53&#43;08:00'/><meta property='article:modified_time' content='2025-01-22T13:30:53&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-07-13T22:53:06&#43;08:00'/><meta property='article:modified_time' content='2024-07-13T22:53:06&#43;08:00'/>
 <meta name="twitter:title" content="CC1">
-<meta name="twitter:description" content="Java学习">
+<meta name="twitter:description" content="Java反序列化调用链之CC1">
     </head>
     <body class="
     article-page
@@ -56,7 +56,7 @@
                     
                     
                         
-                        <img src="/img/123_hu4212831438090465177.jpg" width="300"
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -269,12 +269,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/java%E5%AD%A6%E4%B9%A0/" >
-                Java学习
-            </a>
-        
-            <a href="/categories/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE/" >
-                Java反序列化调用链
+            <a href="/categories/java%E5%AE%89%E5%85%A8/" style="background-color: #2a9d8f; color: #fff;">
+                Java安全
             </a>
         
     </header>
@@ -287,7 +283,7 @@
     
         
         <h3 class="article-subtitle">
-            Java学习
+            Java反序列化调用链之CC1
         </h3>
         
     </div>
@@ -308,7 +304,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Jan 22, 2025</time>
+                <time class="article-time--published">2024-07-13</time>
             </div>
         
 
@@ -404,33 +400,25 @@
 </h5><p>因为JDK自带·的包里面有些文件是反编译的.class文件导致我们没法清楚看懂代码，为了方便调试，我们需要将它们转变为.java文件，这就需要我们安装响应的源码。</p>
 <p>下载地址：https://hg.openjdk.org/jdk8u/jdk8u/jdk/rev/af660750b2f4</p>
 <p>先原本jdk目录下的src.zip解压到当前目录，在链接中点击zip下载后解压，在/src/share/classes中找到sun文件，把其复制到原本jdk中src.zip的解压文件。</p>
-<p><img src="/p/cc1/image-20240721000550724.png"
-	width="565"
-	height="239"
-	srcset="/p/cc1/image-20240721000550724_hu17316632023481846834.png 480w, /p/cc1/image-20240721000550724_hu8435638651555392542.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240721000550724.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240721000550724"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="236"
-		data-flex-basis="567px"
-	
 ></p>
 <p>最后再在idea中把src文件夹添加到原路径下即可：</p>
-<p><img src="/p/cc1/image-20240721000648000.png"
-	width="1144"
-	height="362"
-	srcset="/p/cc1/image-20240721000648000_hu412859268323998516.png 480w, /p/cc1/image-20240721000648000_hu2791816205883402190.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240721000648000.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240721000648000"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="316"
-		data-flex-basis="758px"
 	
 ></p>
 <h4 id="动态代理">动态代理
@@ -447,18 +435,14 @@
 <p>这个类有很多实现类，各个类触发的方式不同，重点关注的是TransformedMap 以及LazyMap。</p>
 <h5 id="transformedmap">TransformedMap
 </h5><p><code>org.apache.commons.collections.map.TransformedMap</code>类可以在一个元素被加入到集合内时，自动对该元素进行特定的修饰变换，具体的变换逻辑由Transformer来定义，Transformer 在 TransformedMap 实例化时作为参数传入。可以简单看看这个类的定义：</p>
-<p><img src="/p/cc1/image-20240722000418925.png"
-	width="1038"
-	height="49"
-	srcset="/p/cc1/image-20240722000418925_hu15274512544975536471.png 480w, /p/cc1/image-20240722000418925_hu4389391947249046937.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722000418925.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722000418925"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="2118"
-		data-flex-basis="5084px"
 	
 ></p>
 <p><em>这个类继承了一个类和实现了一个接口</em>。再看源码其实可以发现很多方法都实现了<code>transform()</code>方法</p>
@@ -571,110 +555,82 @@
 <p><strong>然后开始调试：</strong></p>
 <p>重要看后面的put那部分，第一个就是HashMap类的put方法，就是放入一对键值对，不多说。重点看后面。</p>
 <p>然后调用</p>
-<p><img src="/p/cc1/image-20240716160351313.png"
-	width="821"
-	height="32"
-	srcset="/p/cc1/image-20240716160351313_hu1890807893203420675.png 480w, /p/cc1/image-20240716160351313_hu7696334334942200381.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240716160351313.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240716160351313"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="2565"
-		data-flex-basis="6157px"
-	
 ></p>
 <p>跟进源码：</p>
-<p><img src="/p/cc1/image-20240716160420770.png"
-	width="1024"
-	height="255"
-	srcset="/p/cc1/image-20240716160420770_hu13525777952013783869.png 480w, /p/cc1/image-20240716160420770_hu9468735641298846168.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240716160420770.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240716160420770"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="401"
-		data-flex-basis="963px"
-	
 ></p>
 <p>即返回一个TransformedMap对象，并且此时的keyTransformer和valueTransformer对应自定义的匿名类。</p>
 <p>然后加断点：</p>
-<p><img src="/p/cc1/image-20240716101142675.png"
-	width="1056"
-	height="119"
-	srcset="/p/cc1/image-20240716101142675_hu10569159308187278644.png 480w, /p/cc1/image-20240716101142675_hu8593440384923887814.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240716101142675.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240716101142675"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="887"
-		data-flex-basis="2129px"
-	
 ></p>
 <p>然后现在来看对应的变量的值：</p>
-<p><img src="/p/cc1/image-20240716155510991.png"
-	width="591"
-	height="235"
-	srcset="/p/cc1/image-20240716155510991_hu10119732951809366875.png 480w, /p/cc1/image-20240716155510991_hu18402590860196567233.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240716155510991.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240716155510991"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="251"
-		data-flex-basis="603px"
-	
 ></p>
 <p>重点看值，注意valueTransformer和keyTransformer的值为<code>Test$2..</code>和<code>Test$1..</code>，相互对比到来看，可以很容易看出这种格式就是代表匿名类，而不是一个Test类实例。</p>
 <p>在后续的<code>map.put()</code>中，调用的就是TransformedMap类的put方法：</p>
-<p><img src="/p/cc1/image-20240716160032878.png"
-	width="788"
-	height="152"
-	srcset="/p/cc1/image-20240716160032878_hu9496577734128173482.png 480w, /p/cc1/image-20240716160032878_hu17563393713374614930.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240716160032878.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240716160032878"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="518"
-		data-flex-basis="1244px"
-	
 ></p>
 <p>然后就会调用transformKey方法，源码如下：</p>
-<p><img src="/p/cc1/image-20240716160152729.png"
-	width="921"
-	height="119"
-	srcset="/p/cc1/image-20240716160152729_hu8917732215227742937.png 480w, /p/cc1/image-20240716160152729_hu14537616952497355510.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240716160152729.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240716160152729"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="773"
-		data-flex-basis="1857px"
-	
 ></p>
 <p>此时就会调用keyTransformer的transform方法，此时调用的就是匿名类的transform方法，那么就是</p>
-<p><img src="/p/cc1/image-20240716160643025.png"
-	width="812"
-	height="232"
-	srcset="/p/cc1/image-20240716160643025_hu7026351976331067135.png 480w, /p/cc1/image-20240716160643025_hu9245866363731304414.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240716160643025.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240716160643025"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="350"
-		data-flex-basis="840px"
 	
 ></p>
 <p>valueTransformer.transformer()同理。逻辑是这样，并且在调试过程中也同样这这个过程。</p>
@@ -732,18 +688,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>再看下面：</p>
-<p><img src="/p/cc1/image-20240716170115691.png"
-	width="855"
-	height="54"
-	srcset="/p/cc1/image-20240716170115691_hu5141287052842932664.png 480w, /p/cc1/image-20240716170115691_hu12995540338411411395.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240716170115691.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240716170115691"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="1583"
-		data-flex-basis="3800px"
 	
 ></p>
 <p>可以知道LazyMap类继承于AbstractMapDecorator。</p>
@@ -768,18 +720,14 @@
 </div>
 </div><p>它提供了一个<code>transform()</code>方法，用来定义具体的转换逻辑。</p>
 <p>在Commons Colection 项目中，程序提供了21个Transformer 的实现类，用来实现不同的对TransformedMap 中的 key/value 进行修改的功能</p>
-<p><img src="/p/cc1/image-20240716095330668.png"
-	width="1376"
-	height="609"
-	srcset="/p/cc1/image-20240716095330668_hu14950271854234441396.png 480w, /p/cc1/image-20240716095330668_hu2946226984900469356.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240716095330668.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240716095330668"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="225"
-		data-flex-basis="542px"
 	
 ></p>
 <p>重点关注几个实现类</p>
@@ -896,18 +844,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>成功弹出计算机：
-<img src="/p/cc1/image-20240717101316796.png"
-	width="1161"
-	height="427"
-	srcset="/p/cc1/image-20240717101316796_hu5188139651935283937.png 480w, /p/cc1/image-20240717101316796_hu3414571070308473827.png 1024w"
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240717101316796.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240717101316796"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="271"
-		data-flex-basis="652px"
 	
 ></p>
 <h5 id="chainedtransformer">ChainedTransformer
@@ -1036,48 +980,36 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>这部分代码只要理解到了前面在TransformedMap类部分给的示例代码基本就可以理解了。所以链子起始点就是</p>
-<p><img src="/p/cc1/image-20240720144155815.png"
-	width="973"
-	height="99"
-	srcset="/p/cc1/image-20240720144155815_hu6452416412692743849.png 480w, /p/cc1/image-20240720144155815_hu10291756103348548711.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240720144155815.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240720144155815"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="982"
-		data-flex-basis="2358px"
-	
 ></p>
 <p>现在来看流程，打断点如下：</p>
-<p><img src="/p/cc1/image-20240720144236280.png"
-	width="979"
-	height="92"
-	srcset="/p/cc1/image-20240720144236280_hu17190731847262359541.png 480w, /p/cc1/image-20240720144236280_hu14610213967137982077.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240720144236280.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240720144236280"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="1064"
-		data-flex-basis="2553px"
-	
 ></p>
 <p>然后就继续跟进，由于我们传入的keyTransformer就是ChainedTransformer类对象，所以这里调用的<code>transform()</code>方法时，调用的就是ChainedTransformer类的transform()方法，如下：</p>
-<p><img src="/p/cc1/image-20240720145035782.png"
-	width="787"
-	height="212"
-	srcset="/p/cc1/image-20240720145035782_hu8389042757565500730.png 480w, /p/cc1/image-20240720145035782_hu10069538954934653039.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240720145035782.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240720145035782"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="371"
-		data-flex-basis="890px"
 	
 ></p>
 <p>现在来看我们给ChainedTransformer类传入的数组：</p>
@@ -1100,18 +1032,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>1.然后现在就是调用的传入的<strong>数组第一个参数</strong>的transform方法，即ConstantTransformer类的transform()方法（此时的object为10）：</p>
-<p><img src="/p/cc1/image-20240720145529718.png"
-	width="685"
-	height="218"
-	srcset="/p/cc1/image-20240720145529718_hu5600282536447071353.png 480w, /p/cc1/image-20240720145529718_hu7617806201816583204.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240720145529718.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240720145529718"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="314"
-		data-flex-basis="754px"
 	
 ></p>
 <p>这里的transform方法会直接返回我们实例化时定义的<code>Runtime.class</code>，所以这里的10最终是没用的，这步过后object的值变为了Runtime对象，即<code>class java.lang.Runtime</code>。</p>
@@ -1125,18 +1053,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>继续跟进</p>
-<p><img src="/p/cc1/image-20240720150016864.png"
-	width="1081"
-	height="280"
-	srcset="/p/cc1/image-20240720150016864_hu17287342989173862456.png 480w, /p/cc1/image-20240720150016864_hu3891569669940695062.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240720150016864.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240720150016864"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="386"
-		data-flex-basis="926px"
 	
 ></p>
 <p>注意看<code>input.getClass()</code>这一步过后的cls的值，居然变成了Class对象，这也是最开始没想通的（这里的Input不是一个类的实例化对象），也就是对任何<strong>类的class对象</strong>使用getClass()方法时都会返回<code>class java.lang.Class</code>。</p>
@@ -1152,18 +1076,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>还是进入InvokerTransformer类的transform方法</p>
-<p><img src="/p/cc1/image-20240720155956708.png"
-	width="1140"
-	height="235"
-	srcset="/p/cc1/image-20240720155956708_hu15317066475415178102.png 480w, /p/cc1/image-20240720155956708_hu5513332473397766001.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240720155956708.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240720155956708"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="485"
-		data-flex-basis="1164px"
 	
 ></p>
 <p>这里需要注意的同样的是getClass()那里，由于我传入的是一个getRuntime()<strong>方法的class对象</strong>，所以这里返回的是<code>class java.lang,reflect.Method</code>，然后使用反射获取Method类中的invoke方法，最后再在return部分调用invoke方法来利用反射获取的invoke()方法，形如：</p>
@@ -1247,18 +1167,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>同样成功弹出计算机</p>
-<p><img src="/p/cc1/image-20240720165342215.png"
-	width="1270"
-	height="360"
-	srcset="/p/cc1/image-20240720165342215_hu17294061629506351066.png 480w, /p/cc1/image-20240720165342215_hu16164270435977294384.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240720165342215.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240720165342215"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="352"
-		data-flex-basis="846px"
 	
 ></p>
 <p>综上第二种的简化代码更简洁，第一种偏技巧性，都要理解学习利用。</p>
@@ -1341,18 +1257,14 @@
 </div>
 </div><p>重点关注foreach语句。在这里<code>Map.Entry&lt;String, Object&gt; memberValue : memberValues.entrySet()</code>用于遍历Map，可以参考这个<a class="link" href="https://blog.csdn.net/zuzhiang/article/details/118444885"  target="_blank" rel="noopener"
     >文章</a>，而<code>String name = memberValue.getKey();</code>语句和<code>Object value = memberValue.getValue();</code>语句用于获取键值对。</p>
-<p><img src="/p/cc1/image-20240721143009475.png"
-	width="732"
-	height="127"
-	srcset="/p/cc1/image-20240721143009475_hu12979677060316737425.png 480w, /p/cc1/image-20240721143009475_hu2726474429560339948.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240721143009475.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240721143009475"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="576"
-		data-flex-basis="1383px"
 	
 ></p>
 <p>这里的重点就是这个<code>setValue()</code>方法了，这里简单给出这个调用链：</p>
@@ -1365,18 +1277,14 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>在TransformedMap这里就可以启动前面构造的调用链</p>
-<p><img src="/p/cc1/image-20240722141710098.png"
-	width="523"
-	height="81"
-	srcset="/p/cc1/image-20240722141710098_hu3935446923511046551.png 480w, /p/cc1/image-20240722141710098_hu6750748251140161319.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722141710098.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722141710098"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="645"
-		data-flex-basis="1549px"
 	
 ></p>
 <p>同时在这里可以看出是利用的valueTransformer，所以在调用decorate()方法初始化时要不同于前面的基本代码，需要改位置，如下：</p>
@@ -1390,18 +1298,14 @@
 </div>
 </div><p>这样才能保证成功调用。现在就围绕这条链子来进行阐述。</p>
 <p>1.<strong>现在来看memberValues的赋值点：</strong></p>
-<p><img src="/p/cc1/image-20240721143312438.png"
-	width="1134"
-	height="417"
-	srcset="/p/cc1/image-20240721143312438_hu1055547210312144062.png 480w, /p/cc1/image-20240721143312438_hu650226980123656349.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240721143312438.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240721143312438"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="271"
-		data-flex-basis="652px"
 	
 ></p>
 <p>这里由于AnnotationInvacationHandler属jdk内部类，无法直接引用且被实例化，所以只能<strong>利用反射</strong>获取构造方法，将修饰过的Map添加进去。</p>
@@ -1414,18 +1318,14 @@
 <p>同时看这个构造方法里面的 if 语句代码，这里只要满足任何一个条件就会进入到if语句，导致不能正常赋值。这里重点关注<code>!type.isAnnotation()</code>代码，这里的isAnnotation()函数就是用来判断<code>Class</code>对象是否是表示一个注解类型。所以这里需要一个传入一个注解类型的Annotation。也就是下图中有@的类：</p>
 </li>
 </ul>
-<p><img src="/p/cc1/image-20240721163908857.png"
-	width="499"
-	height="439"
-	srcset="/p/cc1/image-20240721163908857_hu3319692493563158487.png 480w, /p/cc1/image-20240721163908857_hu17717093795011831387.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240721163908857.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240721163908857"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="113"
-		data-flex-basis="272px"
 	
 ></p>
 <p>选择上面的任意一个注解类型的类应该都是可以的</p>
@@ -1552,18 +1452,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>再打断点调试发现是在readObject()地方出现问题，现在来跟一下readObject()的源码，打断点如下：</p>
-<p><img src="/p/cc1/image-20240722153629967.png"
-	width="897"
-	height="97"
-	srcset="/p/cc1/image-20240722153629967_hu10011241273364891343.png 480w, /p/cc1/image-20240722153629967_hu6919966077226789323.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722153629967.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722153629967"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="924"
-		data-flex-basis="2219px"
 	
 ></p>
 <p>先来看这两串代码：</p>
@@ -1580,49 +1476,37 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>简单看看结果：</p>
-<p><img src="/p/cc1/image-20240722155024311.png"
-	width="738"
-	height="193"
-	srcset="/p/cc1/image-20240722155024311_hu4162205107105386321.png 480w, /p/cc1/image-20240722155024311_hu14353888352824899431.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722155024311.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722155024311"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="382"
-		data-flex-basis="917px"
-	
 ></p>
 <p>第一行代码将annotationType被赋值为了AnnotationType实例，所以第二行代码就会调用AnnotationType类的memberTypes()方法:</p>
-<p><img src="/p/cc1/image-20240722155410345.png"
-	width="499"
-	height="95"
-	srcset="/p/cc1/image-20240722155410345_hu13160448035252353238.png 480w, /p/cc1/image-20240722155410345_hu7091834830220686760.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722155410345.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722155410345"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="525"
-		data-flex-basis="1260px"
-	
 ></p>
 <p>所以最终readObject()方法里面的memberTypes为HashMap类的实例。</p>
 <p><strong>这里还要说明一个点</strong>，关于<code>for (Map.Entry&lt;String, Object&gt; memberValue : memberValues.entrySet())</code>这个循环遍历的代码问题，在打断点过程中，我发现如下打断点会直接结束：</p>
-<p><img src="/p/cc1/image-20240722155836575.png"
-	width="673"
-	height="53"
-	srcset="/p/cc1/image-20240722155836575_hu3293052599258755410.png 480w, /p/cc1/image-20240722155836575_hu6168086040143855831.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722155836575.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722155836575"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="1269"
-		data-flex-basis="3047px"
 	
 ></p>
 <p>那就说明在我上面拼接的代码在反序的时候并没有成功进入到这个for语句中，我猜测是这个循环遍历的问题，去查看前面给的文章的举例代码，直接看测试代码：</p>
@@ -1677,18 +1561,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>成功输出</p>
-<p><img src="/p/cc1/image-20240722160534907.png"
-	width="338"
-	height="467"
-	srcset="/p/cc1/image-20240722160534907_hu17731732726328238509.png 480w, /p/cc1/image-20240722160534907_hu14615898695940670433.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722160534907.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722160534907"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="72"
-		data-flex-basis="173px"
 	
 ></p>
 <p>但是当我使用如下代码测试：</p>
@@ -1735,18 +1615,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>却什么都没有，这个结果那就确实说明了*我们需要向Map中键入至少一对键值对才能成功进入到这个for循环。*后续有个问题，直接讲了：</p>
-<p><img src="/p/cc1/image-20240722161806463.png"
-	width="650"
-	height="82"
-	srcset="/p/cc1/image-20240722161806463_hu18302454093083286655.png 480w, /p/cc1/image-20240722161806463_hu7420053946365932049.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722161806463.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722161806463"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="792"
-		data-flex-basis="1902px"
 	
 ></p>
 <p>这里看readObject()源码，可以知道需要将这个值设置为String那么测试代码就可以改成如下：</p>
@@ -1855,48 +1731,36 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>再调试成功进入for循环，但是并没有成功弹出计算机，那么继续打断点，如下打断点时会直接退出</p>
-<p><img src="/p/cc1/image-20240722162106738.png"
-	width="749"
-	height="73"
-	srcset="/p/cc1/image-20240722162106738_hu13690766191035211726.png 480w, /p/cc1/image-20240722162106738_hu8488415182653778124.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722162106738.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722162106738"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="1026"
-		data-flex-basis="2462px"
-	
 ></p>
 <p>说明并没有进入这个if条件，那么现在重点关注memberType的赋值语句：</p>
-<p><img src="/p/cc1/image-20240722162221416.png"
-	width="713"
-	height="153"
-	srcset="/p/cc1/image-20240722162221416_hu899189085486053304.png 480w, /p/cc1/image-20240722162221416_hu12674869813299877200.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722162221416.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722162221416"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="466"
-		data-flex-basis="1118px"
-	
 ></p>
 <p>再在if语句打一个断点，此时值的情况为：</p>
-<p><img src="/p/cc1/image-20240722162417339.png"
-	width="591"
-	height="223"
-	srcset="/p/cc1/image-20240722162417339_hu2862525158202971449.png 480w, /p/cc1/image-20240722162417339_hu13984790990053326827.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722162417339.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722162417339"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="265"
-		data-flex-basis="636px"
 	
 ></p>
 <p>那么现在看一下这个调用的get方法，前面已经说过了memberTypes为HashMap类实例，那现在就看HashMap类的get方法，源码如下：</p>
@@ -1915,18 +1779,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>那现在再如下打断点：</p>
-<p><img src="/p/cc1/image-20240722162852352.png"
-	width="761"
-	height="66"
-	srcset="/p/cc1/image-20240722162852352_hu8400245750590523326.png 480w, /p/cc1/image-20240722162852352_hu1996567701053990746.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722162852352.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722162852352"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="1153"
-		data-flex-basis="2767px"
 	
 ></p>
 <p>调试跟进，发现最终其作用的点就是getNode()方法，这个方法会在哈希表中查找对应的节点，如果相匹配就会返回对应的节点，比如如果匹配到我设置的ceshi键和值value1，那么就会返回对应节点，否则就会返回null。</p>
@@ -1936,18 +1796,14 @@
 <li>那么被<code>TransformedMap.decorate</code>修饰的Map中必须有一个键名为X的元素</li>
 </ul>
 <p>所以在这里我们需要将键设置为value，因为注解类有名为value的方法：
-<img src="/p/cc1/image-20240722164951400.png"
-	width="440"
-	height="235"
-	srcset="/p/cc1/image-20240722164951400_hu13661630288569341316.png 480w, /p/cc1/image-20240722164951400_hu2447221550768149616.png 1024w"
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722164951400.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722164951400"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="187"
-		data-flex-basis="449px"
 	
 ></p>
 <p>所以最终的可利用的POC：</p>
@@ -2057,33 +1913,25 @@
 </div>
 </div><p>成弹出一个计算机。</p>
 <p>现在来看一下setValue()方法后续调用的方法的源码：</p>
-<p><img src="/p/cc1/image-20240722232359289.png"
-	width="974"
-	height="454"
-	srcset="/p/cc1/image-20240722232359289_hu434558545662462368.png 480w, /p/cc1/image-20240722232359289_hu7576648270650537520.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722232359289.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722232359289"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="214"
-		data-flex-basis="514px"
-	
 ></p>
 <p>然后就是TransformedMap类的checkSetValue()方法：
-<img src="/p/cc1/image-20240722232448120.png"
-	width="719"
-	height="112"
-	srcset="/p/cc1/image-20240722232448120_hu7448600962675162022.png 480w, /p/cc1/image-20240722232448120_hu2423688364011238960.png 1024w"
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722232448120.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722232448120"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="641"
-		data-flex-basis="1540px"
 	
 ></p>
 <p>由于我们前面就将valueTransformer设置为了chain链，所以后续都会往预估方向发展，具体过程可以参考前面的基础代码部分。</p>
@@ -2174,48 +2022,36 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>打断点如下：</p>
-<p><img src="/p/cc1/image-20240722231513859.png"
-	width="718"
-	height="98"
-	srcset="/p/cc1/image-20240722231513859_hu4676829334290692879.png 480w, /p/cc1/image-20240722231513859_hu10898993569478655176.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722231513859.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722231513859"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="732"
-		data-flex-basis="1758px"
-	
 ></p>
 <p>看此时的值：
-<img src="/p/cc1/image-20240722231605379.png"
-	width="879"
-	height="251"
-	srcset="/p/cc1/image-20240722231605379_hu16567103400419486762.png 480w, /p/cc1/image-20240722231605379_hu2810360828796474358.png 1024w"
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722231605379.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722231605379"
 	
 	
-		class="gallery-image" 
-		data-flex-grow="350"
-		data-flex-basis="840px"
-	
 ></p>
 <p>然后再看上面的实例代码给出的结果：</p>
-<p><img src="/p/cc1/image-20240722231653896.png"
-	width="363"
-	height="119"
-	srcset="/p/cc1/image-20240722231653896_hu9420724259092267538.png 480w, /p/cc1/image-20240722231653896_hu2132722139242220991.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240722231653896.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240722231653896"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="305"
-		data-flex-basis="732px"
 	
 ></p>
 <p>暂时就通过实例来稍微理解一下，看这个entry的值，前面所属就是<code>AbstractInputCheckedMapDecorator$MapEntry</code>（主要就是这里所属为什么是这个还有点不清楚），这样也就能够说明为什么readObject()方法中在调用setValue()方法时会到这个<code>MapEntry</code>类（就算直接在readObject方法打断点所属还是这个），从而导致整条链子的执行。</p>
@@ -2601,18 +2437,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>报错</p>
-<p><img src="/p/cc1/image-20240727002214764.png"
-	width="1436"
-	height="130"
-	srcset="/p/cc1/image-20240727002214764_hu18086111980640610215.png 480w, /p/cc1/image-20240727002214764_hu10649971985040228503.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240727002214764.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240727002214764"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="1104"
-		data-flex-basis="2651px"
 	
 ></p>
 <p>这是因为在设置代理对象时的第二个参数<code>Map.class.getInterfaces()</code>的Map.class并没有实现Map接口，动态代理没掌握好，照猫画虎了属于是，所以这里完全是多此一举了，我们就可以直接使用Map.class即可，而且本身Map就是一个接口类。</p>
@@ -2718,18 +2550,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>成功弹出计算机：</p>
-<p><img src="/p/cc1/image-20240727012113328.png"
-	width="1493"
-	height="253"
-	srcset="/p/cc1/image-20240727012113328_hu9007631861713936205.png 480w, /p/cc1/image-20240727012113328_hu8725103701307384568.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240727012113328.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240727012113328"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="590"
-		data-flex-basis="1416px"
 	
 ></p>
 <p>——————</p>
@@ -2927,18 +2755,14 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>也成功弹出计算机：</p>
-<p><img src="/p/cc1/image-20240727012024028.png"
-	width="1673"
-	height="267"
-	srcset="/p/cc1/image-20240727012024028_hu9386675741106695574.png 480w, /p/cc1/image-20240727012024028_hu5606643248461075634.png 1024w"
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240727012024028.png"
+	
+	
+	
 	loading="lazy"
 	
 		alt="image-20240727012024028"
 	
-	
-		class="gallery-image" 
-		data-flex-grow="626"
-		data-flex-basis="1503px"
 	
 ></p>
 <h5 id="cc1的局限">CC1的局限
@@ -2986,12 +2810,12 @@
             
                 
 <article class="">
-    <a href="/p/jdk7u21%E5%8E%9F%E7%94%9F%E9%93%BE/">
+    <a href="/p/java%E4%BA%8C%E6%AC%A1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">JDK7u21原生链</h2>
+            <h2 class="article-title">Java二次反序列化</h2>
         </div>
     </a>
 </article>
@@ -2999,12 +2823,12 @@
             
                 
 <article class="">
-    <a href="/p/rome%E9%93%BE/">
+    <a href="/p/c3p0/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Rome链</h2>
+            <h2 class="article-title">C3P0</h2>
         </div>
     </a>
 </article>
@@ -3012,12 +2836,12 @@
             
                 
 <article class="">
-    <a href="/p/cb%E9%93%BE/">
+    <a href="/p/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE%E5%88%86%E6%9E%90/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">CB链</h2>
+            <h2 class="article-title">fastjson反序列化调用链分析</h2>
         </div>
     </a>
 </article>
@@ -3025,12 +2849,12 @@
             
                 
 <article class="">
-    <a href="/p/cc7/">
+    <a href="/p/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">CC7</h2>
+            <h2 class="article-title">fastjson反序列化</h2>
         </div>
     </a>
 </article>
@@ -3038,12 +2862,12 @@
             
                 
 <article class="">
-    <a href="/p/cc6/">
+    <a href="/p/jackson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%9A%E6%9D%80%E9%93%BE/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">CC6</h2>
+            <h2 class="article-title">jackson反序列化通杀链</h2>
         </div>
     </a>
 </article>

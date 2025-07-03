@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Java学习">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Java基础之类加载机制">
 <title>Java类加载机制</title>
 
 <link rel='canonical' href='https://fupanc-w1n.github.io/p/java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/'>
 
-<link rel="stylesheet" href="/scss/style.min.2a0443e2dd85b60b4c4b3fdad7a6e18dce788a364f1910bde60288bc0fb80184.css"><meta property='og:title' content="Java类加载机制">
-<meta property='og:description' content="Java学习">
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="Java类加载机制">
+<meta property='og:description' content="Java基础之类加载机制">
 <meta property='og:url' content='https://fupanc-w1n.github.io/p/java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/'>
 <meta property='og:site_name' content='fupanc'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-22T12:54:28&#43;08:00'/><meta property='article:modified_time' content='2025-01-22T12:54:28&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-06-19T22:54:06&#43;08:00'/><meta property='article:modified_time' content='2024-06-19T22:54:06&#43;08:00'/>
 <meta name="twitter:title" content="Java类加载机制">
-<meta name="twitter:description" content="Java学习">
+<meta name="twitter:description" content="Java基础之类加载机制">
     </head>
     <body class="
     article-page
@@ -56,7 +56,7 @@
                     
                     
                         
-                        <img src="/img/123_hu4212831438090465177.jpg" width="300"
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -242,7 +242,7 @@
     </li>
     <li><a href="#classloader类加载器分类">ClassLoader类加载器分类</a></li>
     <li><a href="#双亲委派模型">双亲委派模型</a></li>
-    <li><a href="#类加载器核心方法">//类加载器核心方法</a></li>
+    <li><a href="#类加载器核心方法">类加载器核心方法</a></li>
     <li><a href="#类加载的方式">类加载的方式</a></li>
     <li><a href="#调试类加载过程">调试类加载过程</a></li>
     <li><a href="#urlclassloader">URLClassLoader</a></li>
@@ -264,12 +264,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/java%E5%AD%A6%E4%B9%A0/" >
-                Java学习
-            </a>
-        
-            <a href="/categories/java%E5%9F%BA%E7%A1%80/" >
-                Java基础
+            <a href="/categories/java%E5%AE%89%E5%85%A8/" style="background-color: #2a9d8f; color: #fff;">
+                Java安全
             </a>
         
     </header>
@@ -282,7 +278,7 @@
     
         
         <h3 class="article-subtitle">
-            Java学习
+            Java基础之类加载机制
         </h3>
         
     </div>
@@ -303,7 +299,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Jan 22, 2025</time>
+                <time class="article-time--published">2024-06-19</time>
             </div>
         
 
@@ -543,7 +539,7 @@
 ></p>
 <p>这段代码的逻辑就是先检查请求加载的类型是否被加载过，如果没有就调用父加载器的loadClass() 方法，若父加载器为空则默认使用启动类加载器为父加载器。假如父加载器加载失败，才调用自己的findClass()方法加载。</p>
 <p>最后通过上述步骤我们找到了对应的类，并且接收到的resolve参数的值为true,那么就会调用resolveClass(Class)方法来处理类。</p>
-<h2 id="类加载器核心方法">//类加载器核心方法
+<h2 id="类加载器核心方法">类加载器核心方法
 </h2><ul>
 <li>
 <p><code>loadClass</code>：加载指定的Java类</p>
@@ -567,7 +563,7 @@
 <li>通过<code>Class.forName()</code>方法动态加载</li>
 <li>通过<code>ClassLoader.loadClass()</code>方法动态加载。</li>
 </ul>
-<p>通过Class.forName方法动态加载会执行类中的static块，而ClassLoader.loadClass()方法动态加载不会执行</p>
+<p><strong>通过Class.forName方法动态加载会执行类中的static块，而ClassLoader.loadClass()方法动态加载不会执行</strong></p>
 <p>在前面反射的学习中也是说明了可以利用classloader来加载类，在这里<strong>利用加载器获取Class对象的代码如下</strong>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -656,7 +652,7 @@
 	
 	
 ></p>
-<p>简单注意一下这个参数传递，看看后面有没有用。继续跟进这个loadClass()方法,但是由于jdk自带的包中有些文件是反编译的.class文件，反编译的代码有一些不是很纯却，所以这里需要将其转换为.java文件，具体就看参考文章，这里不多说。</p>
+<p>简单注意一下这个参数传递，看看后面有没有用。继续跟进这个loadClass()方法,但是由于jdk自带的包中有些文件是反编译的.class文件，反编译的代码有一些不是很准确，所以这里需要将其转换为.java文件，具体就看参考文章，这里不多说。</p>
 <p>然后继续调试，步入后发现到达了Launcher类的loadClass()方法：</p>
 <p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202412241953624.png"
 	
@@ -1250,12 +1246,12 @@
             
                 
 <article class="">
-    <a href="/p/javassist/">
+    <a href="/p/java%E4%BA%8C%E6%AC%A1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Javassist</h2>
+            <h2 class="article-title">Java二次反序列化</h2>
         </div>
     </a>
 </article>
@@ -1263,12 +1259,12 @@
             
                 
 <article class="">
-    <a href="/p/%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%AD%97%E8%8A%82%E7%A0%81/">
+    <a href="/p/c3p0/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">动态加载字节码</h2>
+            <h2 class="article-title">C3P0</h2>
         </div>
     </a>
 </article>
@@ -1276,12 +1272,12 @@
             
                 
 <article class="">
-    <a href="/p/java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">
+    <a href="/p/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE%E5%88%86%E6%9E%90/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Java动态代理</h2>
+            <h2 class="article-title">fastjson反序列化调用链分析</h2>
         </div>
     </a>
 </article>
@@ -1289,12 +1285,12 @@
             
                 
 <article class="">
-    <a href="/p/java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6/">
+    <a href="/p/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Java反射机制</h2>
+            <h2 class="article-title">fastjson反序列化</h2>
         </div>
     </a>
 </article>
@@ -1302,12 +1298,12 @@
             
                 
 <article class="">
-    <a href="/p/jdk7u21%E5%8E%9F%E7%94%9F%E9%93%BE/">
+    <a href="/p/jackson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%9A%E6%9D%80%E9%93%BE/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">JDK7u21原生链</h2>
+            <h2 class="article-title">jackson反序列化通杀链</h2>
         </div>
     </a>
 </article>

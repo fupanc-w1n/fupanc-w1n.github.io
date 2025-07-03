@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Java反序列化调用链 on fupanc</title>
-        <link>https://fupanc-w1n.github.io/categories/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE/</link>
+        <link>http://localhost:1313/categories/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE/</link>
         <description>Recent content in Java反序列化调用链 on fupanc</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Wed, 22 Jan 2025 14:14:01 +0800</lastBuildDate><atom:link href="https://fupanc-w1n.github.io/categories/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 22 Jan 2025 14:14:01 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>JDK7u21原生链</title>
-        <link>https://fupanc-w1n.github.io/p/jdk7u21%E5%8E%9F%E7%94%9F%E9%93%BE/</link>
+        <link>http://localhost:1313/p/jdk7u21%E5%8E%9F%E7%94%9F%E9%93%BE/</link>
         <pubDate>Wed, 22 Jan 2025 14:14:01 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/jdk7u21%E5%8E%9F%E7%94%9F%E9%93%BE/</guid>
+        <guid>http://localhost:1313/p/jdk7u21%E5%8E%9F%E7%94%9F%E9%93%BE/</guid>
         <description>&lt;h1 id=&#34;jdk-7u21&#34;&gt;JDK 7u21
 &lt;/h1&gt;&lt;p&gt;7u21这条链不需要任何依赖，完全是靠 java 原生类来进行利用。&lt;/p&gt;
 &lt;p&gt;影响版本：JDK &amp;lt;= 7u21&lt;/p&gt;
@@ -1201,10 +1201,10 @@
         </item>
         <item>
         <title>Rome链</title>
-        <link>https://fupanc-w1n.github.io/p/rome%E9%93%BE/</link>
+        <link>http://localhost:1313/p/rome%E9%93%BE/</link>
         <pubDate>Wed, 22 Jan 2025 14:11:49 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/rome%E9%93%BE/</guid>
+        <guid>http://localhost:1313/p/rome%E9%93%BE/</guid>
         <description>&lt;h1 id=&#34;rome链&#34;&gt;Rome链
 &lt;/h1&gt;&lt;p&gt;RMOE 是一个用于RSS 和 Atom 订阅的Java框架。它是开源的。&lt;/p&gt;
 &lt;p&gt;它是一个可以兼容多种格式的 feeds 解析器，可以从一种格式转换成另一种格式，也可返回指定格式或Java对象。&lt;/p&gt;
@@ -3295,10 +3295,10 @@ Test.java:&lt;/p&gt;
         </item>
         <item>
         <title>CB链</title>
-        <link>https://fupanc-w1n.github.io/p/cb%E9%93%BE/</link>
+        <link>http://localhost:1313/p/cb%E9%93%BE/</link>
         <pubDate>Wed, 22 Jan 2025 14:02:39 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/cb%E9%93%BE/</guid>
+        <guid>http://localhost:1313/p/cb%E9%93%BE/</guid>
         <description>&lt;h1 id=&#34;cb链&#34;&gt;CB链
 &lt;/h1&gt;&lt;h2 id=&#34;环境配置&#34;&gt;环境配置
 &lt;/h2&gt;&lt;h5 id=&#34;环境配置-1&#34;&gt;环境配置
@@ -4083,10 +4083,10 @@ Test.java:&lt;/p&gt;
         </item>
         <item>
         <title>CC7</title>
-        <link>https://fupanc-w1n.github.io/p/cc7/</link>
+        <link>http://localhost:1313/p/cc7/</link>
         <pubDate>Wed, 22 Jan 2025 14:00:24 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/cc7/</guid>
+        <guid>http://localhost:1313/p/cc7/</guid>
         <description>&lt;h1 id=&#34;cc7&#34;&gt;CC7
 &lt;/h1&gt;&lt;p&gt;CC7的思路同样是找另一条调用链来触发lazy.get()方法，&lt;strong&gt;这次用到的是Hashtable类&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;测试环境：&lt;/strong&gt;&lt;/p&gt;
@@ -5582,10 +5582,10 @@ Test.java:&lt;/p&gt;
         </item>
         <item>
         <title>CC6</title>
-        <link>https://fupanc-w1n.github.io/p/cc6/</link>
+        <link>http://localhost:1313/p/cc6/</link>
         <pubDate>Wed, 22 Jan 2025 13:58:13 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/cc6/</guid>
+        <guid>http://localhost:1313/p/cc6/</guid>
         <description>&lt;h1 id=&#34;cc6&#34;&gt;CC6
 &lt;/h1&gt;&lt;p&gt;在CC1已经说过了，在JDK 8u71以后，官方修改了&lt;code&gt;AnnotationInvocationHandler&lt;/code&gt;的readObject()方法，导致CC1不能再利用。&lt;/p&gt;
 &lt;p&gt;所以现在需要找寻新的利用链用于解决高版本Java的问题，现在先来看这个利用链。&lt;/p&gt;
@@ -6866,10 +6866,10 @@ Test.java:&lt;/p&gt;
         </item>
         <item>
         <title>CC5</title>
-        <link>https://fupanc-w1n.github.io/p/cc5/</link>
+        <link>http://localhost:1313/p/cc5/</link>
         <pubDate>Wed, 22 Jan 2025 13:56:03 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/cc5/</guid>
+        <guid>http://localhost:1313/p/cc5/</guid>
         <description>&lt;h1 id=&#34;cc5&#34;&gt;CC5
 &lt;/h1&gt;&lt;p&gt;在前面CC6的学习中，我们在找LazyMap.get()的其他调用链时，找到了&lt;code&gt;org.apache.commons.collections.keyvalue.TiedMapEntry&lt;/code&gt;类，在CC6中，我们着重于调用TiedMapEntry类hashCode()方法从而可以调用到getValue()方法：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202501221354613.png&#34;
@@ -7419,10 +7419,10 @@ Test.java:&lt;/p&gt;
         </item>
         <item>
         <title>CC4</title>
-        <link>https://fupanc-w1n.github.io/p/cc4/</link>
+        <link>http://localhost:1313/p/cc4/</link>
         <pubDate>Wed, 22 Jan 2025 13:52:14 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/cc4/</guid>
+        <guid>http://localhost:1313/p/cc4/</guid>
         <description>&lt;h1 id=&#34;cc4&#34;&gt;CC4
 &lt;/h1&gt;&lt;p&gt;ysoserial链中的CC4就只是将CC2使用的InvokerTransformer替换为InstantiateTransformer来加载字节码，具体使用CC3那里已经说过了。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;测试环境：&lt;/strong&gt;&lt;/p&gt;
@@ -8296,10 +8296,10 @@ writeObject()：
         </item>
         <item>
         <title>CC3</title>
-        <link>https://fupanc-w1n.github.io/p/cc3/</link>
+        <link>http://localhost:1313/p/cc3/</link>
         <pubDate>Wed, 22 Jan 2025 13:50:34 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/cc3/</guid>
+        <guid>http://localhost:1313/p/cc3/</guid>
         <description>&lt;h1 id=&#34;cc3&#34;&gt;CC3
 &lt;/h1&gt;&lt;p&gt;CC3就是将CC1和CC6调用链和动态加载字节码加在一起，所以需要有动态加载字节码的知识。&lt;/p&gt;
 &lt;h2 id=&#34;利用templatesimpl构造cc3&#34;&gt;利用TemplatesImpl构造CC3
@@ -9684,10 +9684,10 @@ writeObject()：
         </item>
         <item>
         <title>CC2</title>
-        <link>https://fupanc-w1n.github.io/p/cc2/</link>
+        <link>http://localhost:1313/p/cc2/</link>
         <pubDate>Wed, 22 Jan 2025 13:37:04 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/cc2/</guid>
+        <guid>http://localhost:1313/p/cc2/</guid>
         <description>&lt;h1 id=&#34;cc2&#34;&gt;CC2
 &lt;/h1&gt;&lt;h2 id=&#34;common-collection4&#34;&gt;common-collection4
 &lt;/h2&gt;&lt;p&gt;官方认为旧的旧的common-collection有一些结构和API设计上的问题，但修复这些问题会产生大量不能向前兼容的改动。于是推出的common-collection4不再认为是一个用来替换common-collection的新版本，而是一个新的包。&lt;/p&gt;
@@ -9759,10 +9759,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这里将数据反序列化到&lt;code&gt;queue&lt;/code&gt;中后，会调用&lt;code&gt;heapify()&lt;/code&gt;方法来对数据进行排序。跟进一下&lt;code&gt;heapify()&lt;/code&gt;方法：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802205957639.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240802205957639.png&#34;
 	width=&#34;558&#34;
 	height=&#34;140&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802205957639_hu1895798665581098958.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240802205957639_hu476795696358852987.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240802205957639_hu_2e6dd31184d8ee81.png 480w, http://localhost:1313/p/cc2/image-20240802205957639_hu_d5cb62a5226832de.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240802205957639&#34;
@@ -9774,10 +9774,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;heapify()&lt;/code&gt;方法会调用&lt;code&gt;siftDown()&lt;/code&gt;，继续跟进：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802210116518.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240802210116518.png&#34;
 	width=&#34;460&#34;
 	height=&#34;197&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802210116518_hu138899460555032167.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240802210116518_hu16444755357439743451.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240802210116518_hu_796c5d110259cbd6.png 480w, http://localhost:1313/p/cc2/image-20240802210116518_hu_35d5f8c0ed5064fe.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240802210116518&#34;
@@ -9789,10 +9789,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;当&lt;code&gt;comparator&lt;/code&gt;不为 null 的时候，就会调用&lt;code&gt;siftDownUsingComparator()&lt;/code&gt;方法：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802210453983.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240802210453983.png&#34;
 	width=&#34;841&#34;
 	height=&#34;472&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802210453983_hu7760458203304186473.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240802210453983_hu5313447620847574242.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240802210453983_hu_f1935cf584487970.png 480w, http://localhost:1313/p/cc2/image-20240802210453983_hu_1e0a02f252eb1bf6.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240802210453983&#34;
@@ -9807,10 +9807,10 @@ writeObject()：
 &lt;h4 id=&#34;transformingcomparator&#34;&gt;TransformingComparator
 &lt;/h4&gt;&lt;p&gt;TransformingComparator 是触发漏洞的关键，他将 Transformer 执行点和 PriorityQueue 触发点联系了起来。&lt;strong&gt;这个类位于&lt;/strong&gt;&lt;code&gt;org.apache.commons.collections4.comparators.TransformingComparator&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;既然这里都说到了联系了起来，在PriorityQueue 类的最后说到了 compare() 方法，那么我们来看一下TransformingComparator 的compare()方法：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802211302460.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240802211302460.png&#34;
 	width=&#34;633&#34;
 	height=&#34;171&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802211302460_hu16568552091571564737.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240802211302460_hu1930501522653064274.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240802211302460_hu_41f94913b4118a27.png 480w, http://localhost:1313/p/cc2/image-20240802211302460_hu_90fc9bcd33f2bf48.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240802211302460&#34;
@@ -9822,10 +9822,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;这里就调用到了transform 方法，通过的是&lt;code&gt;this.transformer&lt;/code&gt;对象，来看一下TransformingComparator的构造方法：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802211515343.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240802211515343.png&#34;
 	width=&#34;1201&#34;
 	height=&#34;385&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802211515343_hu18112472665573563394.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240802211515343_hu10264455315210241881.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240802211515343_hu_cb285486ea8cfd4.png 480w, http://localhost:1313/p/cc2/image-20240802211515343_hu_da0dcd3e36f36895.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240802211515343&#34;
@@ -9841,10 +9841,10 @@ writeObject()：
 &lt;p&gt;链子大概出来了，现在就是来构造。&lt;/p&gt;
 &lt;h2 id=&#34;攻击构造&#34;&gt;攻击构造
 &lt;/h2&gt;&lt;p&gt;还是给个代码来调试，结合前面的大概链子的说明，这里需要给出PriorityQueue实例和TransformingComparator实例，还是简单给出一个代码来调试。来看一下我们要利用到的PriorityQueue类的构造方法：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802221841596.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240802221841596.png&#34;
 	width=&#34;819&#34;
 	height=&#34;278&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240802221841596_hu12752649697200027916.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240802221841596_hu6011925455392546047.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240802221841596_hu_7bfcd1f02d13ee8.png 480w, http://localhost:1313/p/cc2/image-20240802221841596_hu_8dbbe399dacff270.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240802221841596&#34;
@@ -9926,10 +9926,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;在调试过程中，直接在heapify()就结束了，并没有进入for循环：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803002101939.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803002101939.png&#34;
 	width=&#34;633&#34;
 	height=&#34;172&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803002101939_hu15475385081953413022.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803002101939_hu14405093933701909233.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803002101939_hu_2d94fc1811679f4f.png 480w, http://localhost:1313/p/cc2/image-20240803002101939_hu_776c082efffb2750.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803002101939&#34;
@@ -9943,10 +9943,10 @@ writeObject()：
 &lt;p&gt;个人想法：这是因为&lt;code&gt;PriorityQueue&lt;/code&gt;被初始化的时候只有一个元素空间，但是没有实际添加任何元素，所以我们需要调用&lt;code&gt;PriorityQueue&lt;/code&gt;的add方法来向对象添加元素&lt;/p&gt;
 &lt;h3 id=&#34;疑问一&#34;&gt;疑问一
 &lt;/h3&gt;&lt;p&gt;这里就有个小疑问了，初始化了一个元素空间，这是什么，我们看之前给出的利用到的&lt;code&gt;PriorityQueue&lt;/code&gt;类的构造方法：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803003120535.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803003120535.png&#34;
 	width=&#34;735&#34;
 	height=&#34;267&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803003120535_hu14256562970250293001.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803003120535_hu1099975278006483470.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803003120535_hu_3f4cd9a173b37093.png 480w, http://localhost:1313/p/cc2/image-20240803003120535_hu_8c6d0162178fc6f4.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803003120535&#34;
@@ -9958,10 +9958,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;并且我们在初始化的时候确实是只传了一个1进去。现在来&lt;strong&gt;分析一下这个构造方法&lt;/strong&gt;，我们看这一块：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803003217885.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803003217885.png&#34;
 	width=&#34;486&#34;
 	height=&#34;45&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803003217885_hu2467103186546296983.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803003217885_hu9792484210625612877.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803003217885_hu_1a6c499fe645164a.png 480w, http://localhost:1313/p/cc2/image-20240803003217885_hu_5e54474bff543d35.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803003217885&#34;
@@ -9974,10 +9974,10 @@ writeObject()：
 &gt;&lt;/p&gt;
 &lt;p&gt;这里是创建了一个下标为&lt;code&gt;initialCapacity&lt;/code&gt;的Object数组并赋值给了&lt;code&gt;this.queue&lt;/code&gt;，所以在这里&lt;code&gt;initialCapacity&lt;/code&gt;的值代表了这个数组能容纳多少个值。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;那么现在来看一下add方法：&lt;/strong&gt;
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803003547015.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803003547015.png&#34;
 	width=&#34;631&#34;
 	height=&#34;675&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803003547015_hu12217950205032475913.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803003547015_hu11496415993055546742.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803003547015_hu_e694b11eff2aa12d.png 480w, http://localhost:1313/p/cc2/image-20240803003547015_hu_59a19b1bf44c9bec.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803003547015&#34;
@@ -9990,10 +9990,10 @@ writeObject()：
 &gt;&lt;/p&gt;
 &lt;p&gt;这个add方法实际调用的是&lt;code&gt;offer()&lt;/code&gt;方法，&lt;strong&gt;来分析一下offer()方法的源码：&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;这里用到了size变量，定义如下：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803005043238.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803005043238.png&#34;
 	width=&#34;292&#34;
 	height=&#34;95&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803005043238_hu16980589326752828967.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803005043238_hu1583931607298233502.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803005043238_hu_a6aacaed217c74d2.png 480w, http://localhost:1313/p/cc2/image-20240803005043238_hu_6210f7af3e60b901.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803005043238&#34;
@@ -10029,10 +10029,10 @@ writeObject()：
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;第二个if条件不会进入，&lt;strong&gt;会调用siftUp方法&lt;/strong&gt;，那么此时的i为1，x为10，看一下源码：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803005932255.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803005932255.png&#34;
 	width=&#34;412&#34;
 	height=&#34;206&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803005932255_hu13898587946843601610.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803005932255_hu2676746625564349839.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803005932255_hu_572f81d099938554.png 480w, http://localhost:1313/p/cc2/image-20240803005932255_hu_8994671041c4b21a.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803005932255&#34;
@@ -10044,10 +10044,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;类初始化的时候我们定义了comparator变量，继续跟进siftUpUsingComparator方法：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803010624340.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803010624340.png&#34;
 	width=&#34;672&#34;
 	height=&#34;349&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803010624340_hu17005272604935991530.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803010624340_hu18400296713646215627.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803010624340_hu_bb963491b4f829d2.png 480w, http://localhost:1313/p/cc2/image-20240803010624340_hu_43f8d9bda49cc112.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803010624340&#34;
@@ -10116,10 +10116,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;成功按照预期弹出两个计算机，这是因为TransformingComparator的compare用了两次transformer方法：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803013121534.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803013121534.png&#34;
 	width=&#34;549&#34;
 	height=&#34;143&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803013121534_hu13675014573419793292.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803013121534_hu5572287783314510245.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803013121534_hu_a5893e187415daf.png 480w, http://localhost:1313/p/cc2/image-20240803013121534_hu_8c437d03b14a5f30.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803013121534&#34;
@@ -10134,10 +10134,10 @@ writeObject()：
 &lt;p&gt;想法结束，可行&lt;/p&gt;
 &lt;p&gt;————&lt;/p&gt;
 &lt;p&gt;继续分析siftUpUsingComparator代码，现在就跟进一下那个if条件，在我们进入到TransformingComparator的compare后，如上图源码。就算在上面传入真的利用链，最后返回的都是1，所以无论我们add进什么值，最后这里比较的value1和value2都是1，然后调用decorate.compare()方法，可以直接用上面的代码调试，然后到ComparableComparator类的compare()：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803013918165.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803013918165.png&#34;
 	width=&#34;493&#34;
 	height=&#34;126&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803013918165_hu10654949780317796634.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803013918165_hu7066057955284812051.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803013918165_hu_b974e36a6e24c022.png 480w, http://localhost:1313/p/cc2/image-20240803013918165_hu_d237f1a6153e04d9.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803013918165&#34;
@@ -10149,10 +10149,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后就直接返回到TransformingComparator的compare()方法==》直接退回到add()了，不知道这个compareTo的结果是什么，但是可以加断点看结果：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803014303288.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803014303288.png&#34;
 	width=&#34;1055&#34;
 	height=&#34;344&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803014303288_hu10516688409139584010.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803014303288_hu10345138812221453056.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803014303288_hu_a8fdabcd7a640b9c.png 480w, http://localhost:1313/p/cc2/image-20240803014303288_hu_498cca8cc2cd5b97.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803014303288&#34;
@@ -10168,10 +10168,10 @@ writeObject()：
 &lt;/ul&gt;
 &lt;p&gt;——————&lt;/p&gt;
 &lt;p&gt;offer()方法分析结束，但是我此时想到了PriorityQueue的readObject()方法：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803014846277.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803014846277.png&#34;
 	width=&#34;808&#34;
 	height=&#34;405&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803014846277_hu1115231641567051950.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803014846277_hu8897441502467261520.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803014846277_hu_f763fc55f2dc1712.png 480w, http://localhost:1313/p/cc2/image-20240803014846277_hu_14f10d0da82d1acc.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803014846277&#34;
@@ -10185,10 +10185,10 @@ writeObject()：
 &lt;p&gt;前面给过size变量的定义了，可以看出size的值是可以被序列化的，并且从上面的过程可以看出&lt;strong&gt;size的值是和我们add进的值个数是相同的&lt;/strong&gt;。这样基本就可以看懂这里的readObject()方法是在干嘛了。&lt;/p&gt;
 &lt;h4 id=&#34;疑问解决&#34;&gt;疑问解决
 &lt;/h4&gt;&lt;p&gt;现在继续分析heapify()方法：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803015410963.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803015410963.png&#34;
 	width=&#34;551&#34;
 	height=&#34;141&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803015410963_hu3682857906243765512.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803015410963_hu15696447984537033880.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803015410963_hu_56f128dd4c03bf40.png 480w, http://localhost:1313/p/cc2/image-20240803015410963_hu_980294f184c5f1a6.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803015410963&#34;
@@ -10285,10 +10285,10 @@ writeObject()：
 &lt;p&gt;&lt;strong&gt;还是继续跟一下：&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;所以此时siftDown的参数分别为0和queue[0]的值，也就是1。&lt;/p&gt;
 &lt;p&gt;然后有效点到了siftDownUsingComparator方法&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803021405137.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803021405137.png&#34;
 	width=&#34;952&#34;
 	height=&#34;478&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803021405137_hu16094294730365142607.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803021405137_hu9722761890936294200.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803021405137_hu_47aa9bb4cdfbd84b.png 480w, http://localhost:1313/p/cc2/image-20240803021405137_hu_5c2fcdca0028c282.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803021405137&#34;
@@ -10421,10 +10421,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;运行后成功在output目录下生成cat.class文件：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803143524351.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803143524351.png&#34;
 	width=&#34;684&#34;
 	height=&#34;386&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803143524351_hu13359488354555309976.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803143524351_hu445166358859113438.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803143524351_hu_81364b19d28886f0.png 480w, http://localhost:1313/p/cc2/image-20240803143524351_hu_ab2c5513fb78bc82.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803143524351&#34;
@@ -10436,10 +10436,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;并且成功输出static创建成功：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803143539153.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803143539153.png&#34;
 	width=&#34;455&#34;
 	height=&#34;107&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803143539153_hu16782173119544300366.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803143539153_hu16734365565450517767.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803143539153_hu_e42d3e44e8909228.png 480w, http://localhost:1313/p/cc2/image-20240803143539153_hu_74d5163631494c37.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803143539153&#34;
@@ -10724,10 +10724,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;分别看代码：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803151124936.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803151124936.png&#34;
 	width=&#34;813&#34;
 	height=&#34;355&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803151124936_hu17583055687649330960.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803151124936_hu1041869432228445398.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803151124936_hu_2ad99eb7ed906ee5.png 480w, http://localhost:1313/p/cc2/image-20240803151124936_hu_9121c32a2fd9f85e.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803151124936&#34;
@@ -10740,10 +10740,10 @@ writeObject()：
 &gt;&lt;/p&gt;
 &lt;p&gt;这一部分就是获取InvokerTransformer的构造方法，然后将一般在加载字节码时需要用到的&lt;code&gt;newTransformer&lt;/code&gt;传进去，这里分别在实例化时用到的方法为：
 &lt;strong&gt;InvokerTransformer&lt;/strong&gt;：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803151256197.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803151256197.png&#34;
 	width=&#34;570&#34;
 	height=&#34;151&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803151256197_hu6890349513105197874.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803151256197_hu11725431837051573272.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803151256197_hu_d35d4e443a26ce21.png 480w, http://localhost:1313/p/cc2/image-20240803151256197_hu_d26ef53c77699444.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803151256197&#34;
@@ -10756,10 +10756,10 @@ writeObject()：
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;TransformingComparator&lt;/strong&gt;就是前面讲过的那个。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;PriorityQueue&lt;/strong&gt;则是：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803151539067.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803151539067.png&#34;
 	width=&#34;503&#34;
 	height=&#34;117&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803151539067_hu14346707368649628437.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803151539067_hu208056398172737876.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803151539067_hu_7e3a7a6f3fa490ff.png 480w, http://localhost:1313/p/cc2/image-20240803151539067_hu_3f6ea71584c2dd3c.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803151539067&#34;
@@ -10771,10 +10771,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后继续看：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803151718563.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803151718563.png&#34;
 	width=&#34;760&#34;
 	height=&#34;191&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803151718563_hu2924080786796434971.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803151718563_hu10802477806899406685.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803151718563_hu_85767271e8e15b5d.png 480w, http://localhost:1313/p/cc2/image-20240803151718563_hu_6a5c51cebc238eec.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803151718563&#34;
@@ -10791,10 +10791,10 @@ writeObject()：
 &lt;p&gt;再后来又是反射修改PriorityQueue的comparator的值为我们的利用链。&lt;/p&gt;
 &lt;p&gt;思考一下其实到transform()方法的路线都是一样的，差别就在于这里是直接调用的InvokerTransformer的transform()方法，我们来看一下有些啥特殊之处：&lt;/p&gt;
 &lt;p&gt;这里就需要注意这个obj1了，因为InvokerTransformer需要注意传入的值。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803152547911.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803152547911.png&#34;
 	width=&#34;603&#34;
 	height=&#34;156&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803152547911_hu11059192995526620395.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803152547911_hu16195800500360270028.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803152547911_hu_542ba9eae14c8507.png 480w, http://localhost:1313/p/cc2/image-20240803152547911_hu_7b58d32c2bddeb40.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803152547911&#34;
@@ -10806,10 +10806,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;在前面的第一条链子的调试过程中我们很容易可以知道这里的obj1就代表queue[0]里面的templates对象，也就是前面那条链子反序列化时的：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803015410963.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803015410963.png&#34;
 	width=&#34;551&#34;
 	height=&#34;141&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803015410963_hu3682857906243765512.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803015410963_hu15696447984537033880.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803015410963_hu_56f128dd4c03bf40.png 480w, http://localhost:1313/p/cc2/image-20240803015410963_hu_980294f184c5f1a6.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803015410963&#34;
@@ -10821,10 +10821,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;和&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803021405137.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803021405137.png&#34;
 	width=&#34;952&#34;
 	height=&#34;478&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803021405137_hu16094294730365142607.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803021405137_hu9722761890936294200.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803021405137_hu_47aa9bb4cdfbd84b.png 480w, http://localhost:1313/p/cc2/image-20240803021405137_hu_5c2fcdca0028c282.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803021405137&#34;
@@ -10850,10 +10850,10 @@ writeObject()：
 &lt;p&gt;这样就不能达到既定的目的。&lt;/p&gt;
 &lt;p&gt;但是如果我们将TemplatesImpl类实例放在前面，那么就会先传入TemplatesImpl，成功完成一次method.invoke()，也就会成功及逆行一次命令执行。虽然同样会报错退出，但是已经达到了既定目的。这也就是需要将TemplatesImpl类实例放在前面的原因。&lt;/p&gt;
 &lt;p&gt;那么对于后续的调用的InvokerTransformer类的transform()方法也清楚了：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803153502905.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803153502905.png&#34;
 	width=&#34;827&#34;
 	height=&#34;131&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803153502905_hu10945924592298080941.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803153502905_hu2034639733233189989.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803153502905_hu_7d6a48192bc8a159.png 480w, http://localhost:1313/p/cc2/image-20240803153502905_hu_794a3bc7e19b4f2c.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803153502905&#34;
@@ -11029,10 +11029,10 @@ writeObject()：
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;成功按照预期弹出一个计算机。&lt;/p&gt;
 &lt;p&gt;稍微改一点javassist代码就可以得到构造出来的类为：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803155725440.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803155725440.png&#34;
 	width=&#34;864&#34;
 	height=&#34;302&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803155725440_hu1209564951339991078.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803155725440_hu11595082577641408295.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803155725440_hu_98e37d82ffa7a5ae.png 480w, http://localhost:1313/p/cc2/image-20240803155725440_hu_ab6b7d8a733af746.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803155725440&#34;
@@ -11044,10 +11044,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;还有一个点&lt;/strong&gt;就是为什么在动态加载字节码那里会少一行，这是因为TemplatesImpl类的readObject()方法有定义：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803160301177.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc2/image-20240803160301177.png&#34;
 	width=&#34;602&#34;
 	height=&#34;97&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc2/image-20240803160301177_hu5021785315658021764.png 480w, https://fupanc-w1n.github.io/p/cc2/image-20240803160301177_hu13671022972662862515.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc2/image-20240803160301177_hu_14302d9b94b85189.png 480w, http://localhost:1313/p/cc2/image-20240803160301177_hu_ad14e08ed0773d4d.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240803160301177&#34;
@@ -11064,10 +11064,10 @@ writeObject()：
         </item>
         <item>
         <title>CC1</title>
-        <link>https://fupanc-w1n.github.io/p/cc1/</link>
+        <link>http://localhost:1313/p/cc1/</link>
         <pubDate>Wed, 22 Jan 2025 13:30:53 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/cc1/</guid>
+        <guid>http://localhost:1313/p/cc1/</guid>
         <description>&lt;h1 id=&#34;cc1&#34;&gt;CC1
 &lt;/h1&gt;&lt;p&gt;前面说过了URLDNS这条链，现在我们就可以开始学习Common-Collections利用链，这是反序列化学习中不可逃过的一关。&lt;/p&gt;
 &lt;h6 id=&#34;小的知识点&#34;&gt;小的知识点
@@ -11134,10 +11134,10 @@ writeObject()：
 &lt;/h5&gt;&lt;p&gt;因为JDK自带·的包里面有些文件是反编译的.class文件导致我们没法清楚看懂代码，为了方便调试，我们需要将它们转变为.java文件，这就需要我们安装响应的源码。&lt;/p&gt;
 &lt;p&gt;下载地址：https://hg.openjdk.org/jdk8u/jdk8u/jdk/rev/af660750b2f4&lt;/p&gt;
 &lt;p&gt;先原本jdk目录下的src.zip解压到当前目录，在链接中点击zip下载后解压，在/src/share/classes中找到sun文件，把其复制到原本jdk中src.zip的解压文件。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721000550724.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240721000550724.png&#34;
 	width=&#34;565&#34;
 	height=&#34;239&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721000550724_hu17316632023481846834.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240721000550724_hu8435638651555392542.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240721000550724_hu_259efc397ed4cfcf.png 480w, http://localhost:1313/p/cc1/image-20240721000550724_hu_d413fd46ba77b140.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240721000550724&#34;
@@ -11149,10 +11149,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;最后再在idea中把src文件夹添加到原路径下即可：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721000648000.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240721000648000.png&#34;
 	width=&#34;1144&#34;
 	height=&#34;362&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721000648000_hu412859268323998516.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240721000648000_hu2791816205883402190.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240721000648000_hu_f847d1f685351d32.png 480w, http://localhost:1313/p/cc1/image-20240721000648000_hu_845aad87b57557ca.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240721000648000&#34;
@@ -11177,10 +11177,10 @@ writeObject()：
 &lt;p&gt;这个类有很多实现类，各个类触发的方式不同，重点关注的是TransformedMap 以及LazyMap。&lt;/p&gt;
 &lt;h5 id=&#34;transformedmap&#34;&gt;TransformedMap
 &lt;/h5&gt;&lt;p&gt;&lt;code&gt;org.apache.commons.collections.map.TransformedMap&lt;/code&gt;类可以在一个元素被加入到集合内时，自动对该元素进行特定的修饰变换，具体的变换逻辑由Transformer来定义，Transformer 在 TransformedMap 实例化时作为参数传入。可以简单看看这个类的定义：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722000418925.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722000418925.png&#34;
 	width=&#34;1038&#34;
 	height=&#34;49&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722000418925_hu15274512544975536471.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722000418925_hu4389391947249046937.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722000418925_hu_33a5145ffa1978bd.png 480w, http://localhost:1313/p/cc1/image-20240722000418925_hu_bb4b9e3c15b6ab24.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722000418925&#34;
@@ -11301,10 +11301,10 @@ writeObject()：
 &lt;p&gt;&lt;strong&gt;然后开始调试：&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;重要看后面的put那部分，第一个就是HashMap类的put方法，就是放入一对键值对，不多说。重点看后面。&lt;/p&gt;
 &lt;p&gt;然后调用&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160351313.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240716160351313.png&#34;
 	width=&#34;821&#34;
 	height=&#34;32&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160351313_hu1890807893203420675.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240716160351313_hu7696334334942200381.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240716160351313_hu_8872e438fa37f92d.png 480w, http://localhost:1313/p/cc1/image-20240716160351313_hu_24a877157b1ce5df.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240716160351313&#34;
@@ -11316,10 +11316,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;跟进源码：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160420770.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240716160420770.png&#34;
 	width=&#34;1024&#34;
 	height=&#34;255&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160420770_hu13525777952013783869.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240716160420770_hu9468735641298846168.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240716160420770_hu_c87c1252c51053d9.png 480w, http://localhost:1313/p/cc1/image-20240716160420770_hu_d2215e2c4aaeae5e.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240716160420770&#34;
@@ -11332,10 +11332,10 @@ writeObject()：
 &gt;&lt;/p&gt;
 &lt;p&gt;即返回一个TransformedMap对象，并且此时的keyTransformer和valueTransformer对应自定义的匿名类。&lt;/p&gt;
 &lt;p&gt;然后加断点：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716101142675.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240716101142675.png&#34;
 	width=&#34;1056&#34;
 	height=&#34;119&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716101142675_hu10569159308187278644.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240716101142675_hu8593440384923887814.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240716101142675_hu_34863390517014db.png 480w, http://localhost:1313/p/cc1/image-20240716101142675_hu_198ad872062d01ee.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240716101142675&#34;
@@ -11347,10 +11347,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后现在来看对应的变量的值：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716155510991.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240716155510991.png&#34;
 	width=&#34;591&#34;
 	height=&#34;235&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716155510991_hu10119732951809366875.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240716155510991_hu18402590860196567233.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240716155510991_hu_c6e2d2f32b9b6d00.png 480w, http://localhost:1313/p/cc1/image-20240716155510991_hu_175b4b1f0915acc0.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240716155510991&#34;
@@ -11363,10 +11363,10 @@ writeObject()：
 &gt;&lt;/p&gt;
 &lt;p&gt;重点看值，注意valueTransformer和keyTransformer的值为&lt;code&gt;Test$2..&lt;/code&gt;和&lt;code&gt;Test$1..&lt;/code&gt;，相互对比到来看，可以很容易看出这种格式就是代表匿名类，而不是一个Test类实例。&lt;/p&gt;
 &lt;p&gt;在后续的&lt;code&gt;map.put()&lt;/code&gt;中，调用的就是TransformedMap类的put方法：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160032878.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240716160032878.png&#34;
 	width=&#34;788&#34;
 	height=&#34;152&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160032878_hu9496577734128173482.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240716160032878_hu17563393713374614930.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240716160032878_hu_31c1250c9c866d10.png 480w, http://localhost:1313/p/cc1/image-20240716160032878_hu_1dc29a7c9e99d00a.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240716160032878&#34;
@@ -11378,10 +11378,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后就会调用transformKey方法，源码如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160152729.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240716160152729.png&#34;
 	width=&#34;921&#34;
 	height=&#34;119&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160152729_hu8917732215227742937.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240716160152729_hu14537616952497355510.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240716160152729_hu_46dbc577871277ae.png 480w, http://localhost:1313/p/cc1/image-20240716160152729_hu_3e3a3cb4825445d0.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240716160152729&#34;
@@ -11393,10 +11393,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;此时就会调用keyTransformer的transform方法，此时调用的就是匿名类的transform方法，那么就是&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160643025.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240716160643025.png&#34;
 	width=&#34;812&#34;
 	height=&#34;232&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716160643025_hu7026351976331067135.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240716160643025_hu9245866363731304414.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240716160643025_hu_b25cc5aa4996c847.png 480w, http://localhost:1313/p/cc1/image-20240716160643025_hu_368af636cae9c4df.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240716160643025&#34;
@@ -11462,10 +11462,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;再看下面：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716170115691.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240716170115691.png&#34;
 	width=&#34;855&#34;
 	height=&#34;54&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716170115691_hu5141287052842932664.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240716170115691_hu12995540338411411395.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240716170115691_hu_1b085b495fdd8a3c.png 480w, http://localhost:1313/p/cc1/image-20240716170115691_hu_d1aec02198ccd604.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240716170115691&#34;
@@ -11498,10 +11498,10 @@ writeObject()：
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;它提供了一个&lt;code&gt;transform()&lt;/code&gt;方法，用来定义具体的转换逻辑。&lt;/p&gt;
 &lt;p&gt;在Commons Colection 项目中，程序提供了21个Transformer 的实现类，用来实现不同的对TransformedMap 中的 key/value 进行修改的功能&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716095330668.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240716095330668.png&#34;
 	width=&#34;1376&#34;
 	height=&#34;609&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240716095330668_hu14950271854234441396.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240716095330668_hu2946226984900469356.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240716095330668_hu_ebbe5d0a5a848d89.png 480w, http://localhost:1313/p/cc1/image-20240716095330668_hu_7f9f87da5e45209d.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240716095330668&#34;
@@ -11626,10 +11626,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;成功弹出计算机：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240717101316796.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240717101316796.png&#34;
 	width=&#34;1161&#34;
 	height=&#34;427&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240717101316796_hu5188139651935283937.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240717101316796_hu3414571070308473827.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240717101316796_hu_6a5e293484b39fd3.png 480w, http://localhost:1313/p/cc1/image-20240717101316796_hu_6275024233f0414f.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240717101316796&#34;
@@ -11766,10 +11766,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这部分代码只要理解到了前面在TransformedMap类部分给的示例代码基本就可以理解了。所以链子起始点就是&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720144155815.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240720144155815.png&#34;
 	width=&#34;973&#34;
 	height=&#34;99&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720144155815_hu6452416412692743849.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240720144155815_hu10291756103348548711.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240720144155815_hu_58e67ba45af09cd5.png 480w, http://localhost:1313/p/cc1/image-20240720144155815_hu_db4802dc1a04c90d.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240720144155815&#34;
@@ -11781,10 +11781,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;现在来看流程，打断点如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720144236280.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240720144236280.png&#34;
 	width=&#34;979&#34;
 	height=&#34;92&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720144236280_hu17190731847262359541.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240720144236280_hu14610213967137982077.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240720144236280_hu_b7eb813a5da57b3d.png 480w, http://localhost:1313/p/cc1/image-20240720144236280_hu_3b3d04aeabb170d3.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240720144236280&#34;
@@ -11796,10 +11796,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后就继续跟进，由于我们传入的keyTransformer就是ChainedTransformer类对象，所以这里调用的&lt;code&gt;transform()&lt;/code&gt;方法时，调用的就是ChainedTransformer类的transform()方法，如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720145035782.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240720145035782.png&#34;
 	width=&#34;787&#34;
 	height=&#34;212&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720145035782_hu8389042757565500730.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240720145035782_hu10069538954934653039.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240720145035782_hu_ca9464109de56b6f.png 480w, http://localhost:1313/p/cc1/image-20240720145035782_hu_81f1fabd25ea6f29.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240720145035782&#34;
@@ -11830,10 +11830,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;1.然后现在就是调用的传入的&lt;strong&gt;数组第一个参数&lt;/strong&gt;的transform方法，即ConstantTransformer类的transform()方法（此时的object为10）：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720145529718.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240720145529718.png&#34;
 	width=&#34;685&#34;
 	height=&#34;218&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720145529718_hu5600282536447071353.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240720145529718_hu7617806201816583204.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240720145529718_hu_b007852c1f735946.png 480w, http://localhost:1313/p/cc1/image-20240720145529718_hu_5a8c1e7d139e87bd.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240720145529718&#34;
@@ -11855,10 +11855,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;继续跟进&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720150016864.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240720150016864.png&#34;
 	width=&#34;1081&#34;
 	height=&#34;280&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720150016864_hu17287342989173862456.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240720150016864_hu3891569669940695062.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240720150016864_hu_ea69744c58ecca07.png 480w, http://localhost:1313/p/cc1/image-20240720150016864_hu_4e9aba6f6373c2bb.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240720150016864&#34;
@@ -11882,10 +11882,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;还是进入InvokerTransformer类的transform方法&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720155956708.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240720155956708.png&#34;
 	width=&#34;1140&#34;
 	height=&#34;235&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720155956708_hu15317066475415178102.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240720155956708_hu5513332473397766001.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240720155956708_hu_466a35d00cfb52a9.png 480w, http://localhost:1313/p/cc1/image-20240720155956708_hu_cbcbc4aeef47018d.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240720155956708&#34;
@@ -11977,10 +11977,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;同样成功弹出计算机&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720165342215.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240720165342215.png&#34;
 	width=&#34;1270&#34;
 	height=&#34;360&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240720165342215_hu17294061629506351066.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240720165342215_hu16164270435977294384.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240720165342215_hu_a0d206255b10498d.png 480w, http://localhost:1313/p/cc1/image-20240720165342215_hu_7e976c515149e9dc.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240720165342215&#34;
@@ -12071,10 +12071,10 @@ writeObject()：
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;重点关注foreach语句。在这里&lt;code&gt;Map.Entry&amp;lt;String, Object&amp;gt; memberValue : memberValues.entrySet()&lt;/code&gt;用于遍历Map，可以参考这个&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/zuzhiang/article/details/118444885&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;文章&lt;/a&gt;，而&lt;code&gt;String name = memberValue.getKey();&lt;/code&gt;语句和&lt;code&gt;Object value = memberValue.getValue();&lt;/code&gt;语句用于获取键值对。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721143009475.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240721143009475.png&#34;
 	width=&#34;732&#34;
 	height=&#34;127&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721143009475_hu12979677060316737425.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240721143009475_hu2726474429560339948.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240721143009475_hu_39ea0c3db52d0fdc.png 480w, http://localhost:1313/p/cc1/image-20240721143009475_hu_c55d63fe7d28126a.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240721143009475&#34;
@@ -12095,10 +12095,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;在TransformedMap这里就可以启动前面构造的调用链&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722141710098.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722141710098.png&#34;
 	width=&#34;523&#34;
 	height=&#34;81&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722141710098_hu3935446923511046551.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722141710098_hu6750748251140161319.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722141710098_hu_9ab1a87546262020.png 480w, http://localhost:1313/p/cc1/image-20240722141710098_hu_4763a3e4149167d3.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722141710098&#34;
@@ -12120,10 +12120,10 @@ writeObject()：
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这样才能保证成功调用。现在就围绕这条链子来进行阐述。&lt;/p&gt;
 &lt;p&gt;1.&lt;strong&gt;现在来看memberValues的赋值点：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721143312438.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240721143312438.png&#34;
 	width=&#34;1134&#34;
 	height=&#34;417&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721143312438_hu1055547210312144062.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240721143312438_hu650226980123656349.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240721143312438_hu_fb8c148da9fe3a86.png 480w, http://localhost:1313/p/cc1/image-20240721143312438_hu_5c6b276a92cfe712.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240721143312438&#34;
@@ -12144,10 +12144,10 @@ writeObject()：
 &lt;p&gt;同时看这个构造方法里面的 if 语句代码，这里只要满足任何一个条件就会进入到if语句，导致不能正常赋值。这里重点关注&lt;code&gt;!type.isAnnotation()&lt;/code&gt;代码，这里的isAnnotation()函数就是用来判断&lt;code&gt;Class&lt;/code&gt;对象是否是表示一个注解类型。所以这里需要一个传入一个注解类型的Annotation。也就是下图中有@的类：&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721163908857.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240721163908857.png&#34;
 	width=&#34;499&#34;
 	height=&#34;439&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240721163908857_hu3319692493563158487.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240721163908857_hu17717093795011831387.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240721163908857_hu_5159333736e926dc.png 480w, http://localhost:1313/p/cc1/image-20240721163908857_hu_5238a262c764aca7.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240721163908857&#34;
@@ -12282,10 +12282,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;再打断点调试发现是在readObject()地方出现问题，现在来跟一下readObject()的源码，打断点如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722153629967.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722153629967.png&#34;
 	width=&#34;897&#34;
 	height=&#34;97&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722153629967_hu10011241273364891343.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722153629967_hu6919966077226789323.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722153629967_hu_653b0aee2c87cec2.png 480w, http://localhost:1313/p/cc1/image-20240722153629967_hu_f49a8fa46760a651.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722153629967&#34;
@@ -12310,10 +12310,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;简单看看结果：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722155024311.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722155024311.png&#34;
 	width=&#34;738&#34;
 	height=&#34;193&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722155024311_hu4162205107105386321.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722155024311_hu14353888352824899431.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722155024311_hu_820bbd8b9b4102cf.png 480w, http://localhost:1313/p/cc1/image-20240722155024311_hu_17e591e6a290c513.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722155024311&#34;
@@ -12325,10 +12325,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;第一行代码将annotationType被赋值为了AnnotationType实例，所以第二行代码就会调用AnnotationType类的memberTypes()方法:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722155410345.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722155410345.png&#34;
 	width=&#34;499&#34;
 	height=&#34;95&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722155410345_hu13160448035252353238.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722155410345_hu7091834830220686760.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722155410345_hu_a3f47b58a40cba06.png 480w, http://localhost:1313/p/cc1/image-20240722155410345_hu_822028745160853.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722155410345&#34;
@@ -12341,10 +12341,10 @@ writeObject()：
 &gt;&lt;/p&gt;
 &lt;p&gt;所以最终readObject()方法里面的memberTypes为HashMap类的实例。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;这里还要说明一个点&lt;/strong&gt;，关于&lt;code&gt;for (Map.Entry&amp;lt;String, Object&amp;gt; memberValue : memberValues.entrySet())&lt;/code&gt;这个循环遍历的代码问题，在打断点过程中，我发现如下打断点会直接结束：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722155836575.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722155836575.png&#34;
 	width=&#34;673&#34;
 	height=&#34;53&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722155836575_hu3293052599258755410.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722155836575_hu6168086040143855831.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722155836575_hu_3feb462cf7a7b077.png 480w, http://localhost:1313/p/cc1/image-20240722155836575_hu_b82844fbf2d101e4.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722155836575&#34;
@@ -12407,10 +12407,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;成功输出&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722160534907.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722160534907.png&#34;
 	width=&#34;338&#34;
 	height=&#34;467&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722160534907_hu17731732726328238509.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722160534907_hu14615898695940670433.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722160534907_hu_740f62aecbbaf8bc.png 480w, http://localhost:1313/p/cc1/image-20240722160534907_hu_12e36f1a8d7148b4.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722160534907&#34;
@@ -12465,10 +12465,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;却什么都没有，这个结果那就确实说明了*我们需要向Map中键入至少一对键值对才能成功进入到这个for循环。*后续有个问题，直接讲了：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722161806463.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722161806463.png&#34;
 	width=&#34;650&#34;
 	height=&#34;82&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722161806463_hu18302454093083286655.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722161806463_hu7420053946365932049.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722161806463_hu_f515439386ebf940.png 480w, http://localhost:1313/p/cc1/image-20240722161806463_hu_4a38d2640f55f161.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722161806463&#34;
@@ -12585,10 +12585,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;再调试成功进入for循环，但是并没有成功弹出计算机，那么继续打断点，如下打断点时会直接退出&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722162106738.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722162106738.png&#34;
 	width=&#34;749&#34;
 	height=&#34;73&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722162106738_hu13690766191035211726.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722162106738_hu8488415182653778124.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722162106738_hu_6c8610b81841655b.png 480w, http://localhost:1313/p/cc1/image-20240722162106738_hu_5939ec71a11dd570.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722162106738&#34;
@@ -12600,10 +12600,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;说明并没有进入这个if条件，那么现在重点关注memberType的赋值语句：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722162221416.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722162221416.png&#34;
 	width=&#34;713&#34;
 	height=&#34;153&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722162221416_hu899189085486053304.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722162221416_hu12674869813299877200.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722162221416_hu_ab490335891d631d.png 480w, http://localhost:1313/p/cc1/image-20240722162221416_hu_49bfe16dc337b6f7.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722162221416&#34;
@@ -12615,10 +12615,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;再在if语句打一个断点，此时值的情况为：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722162417339.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722162417339.png&#34;
 	width=&#34;591&#34;
 	height=&#34;223&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722162417339_hu2862525158202971449.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722162417339_hu13984790990053326827.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722162417339_hu_52ae7567da3f314f.png 480w, http://localhost:1313/p/cc1/image-20240722162417339_hu_17a9b45492c8c8af.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722162417339&#34;
@@ -12645,10 +12645,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;那现在再如下打断点：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722162852352.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722162852352.png&#34;
 	width=&#34;761&#34;
 	height=&#34;66&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722162852352_hu8400245750590523326.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722162852352_hu1996567701053990746.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722162852352_hu_7a8c175a9e4d8648.png 480w, http://localhost:1313/p/cc1/image-20240722162852352_hu_2269fa5cfe7f2cb6.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722162852352&#34;
@@ -12666,10 +12666,10 @@ writeObject()：
 &lt;li&gt;那么被&lt;code&gt;TransformedMap.decorate&lt;/code&gt;修饰的Map中必须有一个键名为X的元素&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;所以在这里我们需要将键设置为value，因为注解类有名为value的方法：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722164951400.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722164951400.png&#34;
 	width=&#34;440&#34;
 	height=&#34;235&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722164951400_hu13661630288569341316.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722164951400_hu2447221550768149616.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722164951400_hu_5f50ba57cbfccaf7.png 480w, http://localhost:1313/p/cc1/image-20240722164951400_hu_2838f5f664b843e8.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722164951400&#34;
@@ -12787,10 +12787,10 @@ writeObject()：
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;成弹出一个计算机。&lt;/p&gt;
 &lt;p&gt;现在来看一下setValue()方法后续调用的方法的源码：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722232359289.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722232359289.png&#34;
 	width=&#34;974&#34;
 	height=&#34;454&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722232359289_hu434558545662462368.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722232359289_hu7576648270650537520.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722232359289_hu_677a5d6951b761a9.png 480w, http://localhost:1313/p/cc1/image-20240722232359289_hu_2a6bbc6b96bb9b2.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722232359289&#34;
@@ -12802,10 +12802,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后就是TransformedMap类的checkSetValue()方法：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722232448120.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722232448120.png&#34;
 	width=&#34;719&#34;
 	height=&#34;112&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722232448120_hu7448600962675162022.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722232448120_hu2423688364011238960.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722232448120_hu_1cb9ad2dc5a556fb.png 480w, http://localhost:1313/p/cc1/image-20240722232448120_hu_7becf1d52bfa1428.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722232448120&#34;
@@ -12904,10 +12904,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;打断点如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722231513859.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722231513859.png&#34;
 	width=&#34;718&#34;
 	height=&#34;98&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722231513859_hu4676829334290692879.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722231513859_hu10898993569478655176.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722231513859_hu_6fd4956a1964c185.png 480w, http://localhost:1313/p/cc1/image-20240722231513859_hu_42218640bc267243.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722231513859&#34;
@@ -12919,10 +12919,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;看此时的值：
-&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722231605379.png&#34;
+&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722231605379.png&#34;
 	width=&#34;879&#34;
 	height=&#34;251&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722231605379_hu16567103400419486762.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722231605379_hu2810360828796474358.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722231605379_hu_ec5efa962ecb8cc6.png 480w, http://localhost:1313/p/cc1/image-20240722231605379_hu_9ce468d82da5625c.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722231605379&#34;
@@ -12934,10 +12934,10 @@ writeObject()：
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;然后再看上面的实例代码给出的结果：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722231653896.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240722231653896.png&#34;
 	width=&#34;363&#34;
 	height=&#34;119&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240722231653896_hu9420724259092267538.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240722231653896_hu2132722139242220991.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240722231653896_hu_47b5925dcce0dfbf.png 480w, http://localhost:1313/p/cc1/image-20240722231653896_hu_b2ff81c5ca76e006.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240722231653896&#34;
@@ -13331,10 +13331,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;报错&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240727002214764.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240727002214764.png&#34;
 	width=&#34;1436&#34;
 	height=&#34;130&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240727002214764_hu18086111980640610215.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240727002214764_hu10649971985040228503.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240727002214764_hu_133e2eeb64099b03.png 480w, http://localhost:1313/p/cc1/image-20240727002214764_hu_c95d6b679d319802.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240727002214764&#34;
@@ -13448,10 +13448,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;成功弹出计算机：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240727012113328.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240727012113328.png&#34;
 	width=&#34;1493&#34;
 	height=&#34;253&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240727012113328_hu9007631861713936205.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240727012113328_hu8725103701307384568.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240727012113328_hu_e024c0dfb85c9e66.png 480w, http://localhost:1313/p/cc1/image-20240727012113328_hu_7a00c16d045187d4.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240727012113328&#34;
@@ -13657,10 +13657,10 @@ writeObject()：
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;也成功弹出计算机：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240727012024028.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/cc1/image-20240727012024028.png&#34;
 	width=&#34;1673&#34;
 	height=&#34;267&#34;
-	srcset=&#34;https://fupanc-w1n.github.io/p/cc1/image-20240727012024028_hu9386675741106695574.png 480w, https://fupanc-w1n.github.io/p/cc1/image-20240727012024028_hu5606643248461075634.png 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/cc1/image-20240727012024028_hu_c7db6f4b3322a10d.png 480w, http://localhost:1313/p/cc1/image-20240727012024028_hu_4ed3faa86da7590.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20240727012024028&#34;
@@ -13684,10 +13684,10 @@ writeObject()：
         </item>
         <item>
         <title>URLDNS</title>
-        <link>https://fupanc-w1n.github.io/p/urldns/</link>
+        <link>http://localhost:1313/p/urldns/</link>
         <pubDate>Wed, 22 Jan 2025 13:25:53 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/urldns/</guid>
+        <guid>http://localhost:1313/p/urldns/</guid>
         <description>&lt;h1 id=&#34;urldns&#34;&gt;URLDNS
 &lt;/h1&gt;&lt;p&gt;&lt;code&gt;URLDNS&lt;/code&gt;是ysoserial中利用链的一个名字，通常用于检测是否存在Java反序列化漏洞，该利用链有如下特点：&lt;/p&gt;
 &lt;ul&gt;
@@ -14663,10 +14663,10 @@ writeObject()：
         </item>
         <item>
         <title>Java反序列化</title>
-        <link>https://fupanc-w1n.github.io/p/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</link>
+        <link>http://localhost:1313/p/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</link>
         <pubDate>Wed, 22 Jan 2025 13:20:36 +0800</pubDate>
         
-        <guid>https://fupanc-w1n.github.io/p/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</guid>
+        <guid>http://localhost:1313/p/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</guid>
         <description>&lt;h1 id=&#34;java反序列化&#34;&gt;Java反序列化
 &lt;/h1&gt;&lt;p&gt;在Java中，序列化过程分为两大部分：序列化和反序列化。&lt;/p&gt;
 &lt;ul&gt;

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Java学习">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Java基础之动态加载字节码">
 <title>动态加载字节码</title>
 
 <link rel='canonical' href='https://fupanc-w1n.github.io/p/%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%AD%97%E8%8A%82%E7%A0%81/'>
 
-<link rel="stylesheet" href="/scss/style.min.2a0443e2dd85b60b4c4b3fdad7a6e18dce788a364f1910bde60288bc0fb80184.css"><meta property='og:title' content="动态加载字节码">
-<meta property='og:description' content="Java学习">
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="动态加载字节码">
+<meta property='og:description' content="Java基础之动态加载字节码">
 <meta property='og:url' content='https://fupanc-w1n.github.io/p/%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%AD%97%E8%8A%82%E7%A0%81/'>
 <meta property='og:site_name' content='fupanc'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-01-22T13:00:13&#43;08:00'/><meta property='article:modified_time' content='2025-01-22T13:00:13&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-06-23T21:54:06&#43;08:00'/><meta property='article:modified_time' content='2024-06-23T21:54:06&#43;08:00'/>
 <meta name="twitter:title" content="动态加载字节码">
-<meta name="twitter:description" content="Java学习">
+<meta name="twitter:description" content="Java基础之动态加载字节码">
     </head>
     <body class="
     article-page
@@ -56,7 +56,7 @@
                     
                     
                         
-                        <img src="/img/123_hu4212831438090465177.jpg" width="300"
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -249,12 +249,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/java%E5%AD%A6%E4%B9%A0/" >
-                Java学习
-            </a>
-        
-            <a href="/categories/java%E5%9F%BA%E7%A1%80/" >
-                Java基础
+            <a href="/categories/java%E5%AE%89%E5%85%A8/" style="background-color: #2a9d8f; color: #fff;">
+                Java安全
             </a>
         
     </header>
@@ -267,7 +263,7 @@
     
         
         <h3 class="article-subtitle">
-            Java学习
+            Java基础之动态加载字节码
         </h3>
         
     </div>
@@ -288,7 +284,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Jan 22, 2025</time>
+                <time class="article-time--published">2024-06-23</time>
             </div>
         
 
@@ -323,7 +319,7 @@
 </h2><p>Java字节码指的是JVM执行使用的一类指令，通常被存储在<code>.class</code>文件中。</p>
 <h2 id="加载远程本地文件">加载远程/本地文件
 </h2><p>在前面类加载机制的学习中，正常情况下URLClassLoader是AppClassLoader的父类。</p>
-<p>通常情况下,Java会根据配置项sun.boot.class.path和java.class.path中列举的基础路径（这些路径是经过处理后的java.net.URL类）来寻找<code>.class</code>文件来加载，这个基础路径有分三种情况：</p>
+<p>通常情况下,Java会根据配置项sun.boot.class.path和java.class.path中列举的基础路径（这些路径是经过处理后的java.net.URL类）来寻找<code>.class</code>文件来加载，这个基础路径又分三种情况：</p>
 <ul>
 <li>URL未以斜杠<code>/</code>结尾，则认为是一个Jar文件，使用JarLoader来寻找类，即在Jar包上寻找类。</li>
 <li>URL以<code>/</code>结尾，且协议名为file，则使用FileLoader来寻找类，即在本地系统中寻找<code>.class</code>文件</li>
@@ -352,7 +348,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>Main.java内容;</p>
+</div><p>Main.java内容：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -412,7 +408,7 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">//这个Reflection类是由包名的</span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">//这个Reflection类是有包名的</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">package</span><span class="w"> </span><span class="nn">java_foundation</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.URLClassLoader</span><span class="p">;</span><span class="w">
@@ -429,7 +425,7 @@
 </div>
 </div><p><strong>以此类推吧，对于class文件也不一定是必须没有包名，加载时加上软件包即可，后面就不补充了。</strong></p>
 <p><strong>远程加载 .class 文件</strong></p>
-<p>其实都是差不多的，这里试一下远程加载自己vps上的class文件，但感觉应该不行，应该是有什么安全策略的。自己编写一下</p>
+<p>其实都是差不多的，这里试一下远程加载自己vps上的class文件，但感觉应该不行，应该是有什么安全策略的。自己尝试编写一下</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -2161,12 +2157,12 @@
             
                 
 <article class="">
-    <a href="/p/javassist/">
+    <a href="/p/java%E4%BA%8C%E6%AC%A1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Javassist</h2>
+            <h2 class="article-title">Java二次反序列化</h2>
         </div>
     </a>
 </article>
@@ -2174,12 +2170,12 @@
             
                 
 <article class="">
-    <a href="/p/java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">
+    <a href="/p/c3p0/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Java动态代理</h2>
+            <h2 class="article-title">C3P0</h2>
         </div>
     </a>
 </article>
@@ -2187,12 +2183,12 @@
             
                 
 <article class="">
-    <a href="/p/java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">
+    <a href="/p/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE%E5%88%86%E6%9E%90/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Java类加载机制</h2>
+            <h2 class="article-title">fastjson反序列化调用链分析</h2>
         </div>
     </a>
 </article>
@@ -2200,12 +2196,12 @@
             
                 
 <article class="">
-    <a href="/p/java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6/">
+    <a href="/p/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Java反射机制</h2>
+            <h2 class="article-title">fastjson反序列化</h2>
         </div>
     </a>
 </article>
@@ -2213,12 +2209,12 @@
             
                 
 <article class="">
-    <a href="/p/jdk7u21%E5%8E%9F%E7%94%9F%E9%93%BE/">
+    <a href="/p/jackson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%9A%E6%9D%80%E9%93%BE/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">JDK7u21原生链</h2>
+            <h2 class="article-title">jackson反序列化通杀链</h2>
         </div>
     </a>
 </article>
