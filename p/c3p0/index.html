@@ -1087,7 +1087,6 @@
 	
 ></p>
 <p>最后成功在反序列化调用链中实现jndi注入，后面看了一下，rome链应该也可以触发这个getter方法从而来打jndi注入，链子就不搓了，都差不多的。</p>
-<p>感觉网上对于这个点反序列化链没怎么分析，后续可以考虑用来出题试试。</p>
 <p>综上，有三个利用点。</p>
 <h3 id="hex序列化">Hex序列化
 </h3><p>这里利用到的类是WrapperConnectionPoolDataSource，这个类位于<code>com.mchange.v2.c3p0.WrapperConnectionPoolDataSource</code>，其实前面打jndi那里都是说过的。在这里可以用来打二次反序列化。</p>

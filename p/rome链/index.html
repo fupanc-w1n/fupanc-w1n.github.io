@@ -2676,7 +2676,7 @@ Test.java:</p>
 	
 	
 ></p>
-<p>其实具体过程都是和Hashtable那里相同的，在这里的话，虽然hash相同，但是两个实例话对象是肯定不同的，对于后面的equals()方法调用，参考到Hashtable类的equals()调用，应该是需要这里的值不相同，然后key又被判定为不同，这样就可以放入两个值，</p>
+<p>其实具体过程都是和Hashtable那里相同的，在这里的话，虽然hash相同，但是两个实例化对象是肯定不同的，对于后面的equals()方法调用，参考到Hashtable类的equals()调用，应该是需要这里的值不相同，然后key又被判定为不同，这样就可以放入两个值，</p>
 <p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250327151104914.png"
 	
 	
@@ -3283,7 +3283,7 @@ Test.java:</p>
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>我这里是选用的Hashtable类作为入口里，这个类的关于键值对的处理比较清晰。这里也不用再分析了，过程太熟悉了，唯一的问题就是看Hashtable中是否可以第二次正常放入键值对，并且达到只在反序列化时弹出计算机，而序列化时不弹出计算机。</p>
+</div><p>我这里是选用的Hashtable类作为入口类，这个类的关于键值对的处理比较清晰。这里也不用再分析了，过程太熟悉了，唯一的问题就是看Hashtable中是否可以第二次正常放入键值对，并且达到只在反序列化时弹出计算机，而序列化时不弹出计算机。</p>
 <p>但是这里其实也是和前面的HotSwappableTargetSource有点像，对于是否可以存储进两个值，当Hashtabel类put进第二个值时，会调用到HashMap的父类AbstractMap的equals()方法：</p>
 <p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250416163214791.png"
 	
@@ -3329,7 +3329,7 @@ Test.java:</p>
 	
 ></p>
 <p>最后返回false，从而可以成功放入两个键值对。</p>
-<p>其实都是说过了的，其他不多说了，pox如下：</p>
+<p>其实都是说过了的，其他不多说了，poc如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1

