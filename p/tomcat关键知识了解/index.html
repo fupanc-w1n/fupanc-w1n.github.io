@@ -1256,7 +1256,7 @@
 	
 	
 ></p>
-<p>这里的逻辑就是循环清理<code>/./</code>，知道在uriBC中找不到<code>/./</code>，过程就是<code>/a/./b</code>替换为<code>/a/b</code>，故长度需要<code>-2</code>。</p>
+<p>这里的逻辑就是循环清理<code>/./</code>，直到在uriBC中找不到<code>/./</code>，过程就是<code>/a/./b</code>替换为<code>/a/b</code>，故长度需要<code>-2</code>。</p>
 <p>后续的比较关键的代码就是如下：</p>
 <p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925152440879.png"
 	
@@ -1855,12 +1855,12 @@
             
                 
 <article class="">
-    <a href="/p/apache-tomcat-session-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
+    <a href="/p/tomcat-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8Csession-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">Apache Tomcat Session 反序列化代码执行漏洞</h2>
+            <h2 class="article-title">Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析</h2>
         </div>
     </a>
 </article>
