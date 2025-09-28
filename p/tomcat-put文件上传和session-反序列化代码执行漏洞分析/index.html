@@ -337,7 +337,7 @@
 <ul>
 <li>readonly设置为false，允许使用put文件上传。</li>
 </ul>
-<p>来调试分析一喜爱这个漏洞的利用点。</p>
+<p>来调试分析一下这个漏洞的利用点。</p>
 <h3 id="环境搭建及复现">环境搭建及复现
 </h3><p>下载tomcat7.0.79并在idea上搭建好环境，jdk版本为8u71。</p>
 <p><strong>先来看一个基本知识</strong>，在tomcat源码目录的/conf/web.xml中，定义了对http请求的处理类：</p>
@@ -941,7 +941,7 @@ org.apache.catalina.session.StandardManager和org.apache.catalina.session.Persis
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/Users/fanpengcheng/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/1e112f7e-49f1-4f6d-8404-dc4563d75f0c/work/Catalina/localhost/tomcat9_0_20_Web_exploded/./sessions/../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser.session
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/Users/xxxxxxxx/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/1e112f7e-49f1-4f6d-8404-dc4563d75f0c/work/Catalina/localhost/tomcat9_0_20_Web_exploded/./sessions/../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser.session
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>这也是为什么我将ser.session放在/tmp下的原因，没搞懂idea运行tomcat后怎么将ser.session文件放在其他如<code>$CATALINA_HOME/temp</code>目录下，多穿点即可，并且这里其实直接设置directory为sessions即可，再回退出file()方法：</p>
@@ -975,7 +975,7 @@ org.apache.catalina.session.StandardManager和org.apache.catalina.session.Persis
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">26-Sep-2025 20:52:44.376 警告 [http-nio-8083-exec-2] org.apache.catalina.session.FileStore.file Invalid persistence file [/Users/fanpengcheng/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/c95d0ef3-f2a9-4529-9363-81226b1de81c/work/Catalina/localhost/tomcat9_0_35_Web_exploded/sessions/../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser.session] for session ID [../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser]
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">26-Sep-2025 20:52:44.376 警告 [http-nio-8083-exec-2] org.apache.catalina.session.FileStore.file Invalid persistence file [/Users/xxxxxxxx/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/c95d0ef3-f2a9-4529-9363-81226b1de81c/work/Catalina/localhost/tomcat9_0_35_Web_exploded/sessions/../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser.session] for session ID [../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser]
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>无效的持久化文件，对我们JSESSIONID传的参数进行了限制。调试分析一波，同样跟进FileStore类的load()方法，其调用的file()方法发生了变化：</p>
@@ -995,7 +995,7 @@ org.apache.catalina.session.StandardManager和org.apache.catalina.session.Persis
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/Users/fanpengcheng/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/c95d0ef3-f2a9-4529-9363-81226b1de81c/work/Catalina/localhost/tomcat9_0_35_Web_exploded/sessions
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/Users/xxxxxxxx/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/c95d0ef3-f2a9-4529-9363-81226b1de81c/work/Catalina/localhost/tomcat9_0_35_Web_exploded/sessions
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>而file.getCanonicalPath()的回显为：</p>
