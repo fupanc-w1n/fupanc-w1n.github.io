@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Categories on fupanc</title>
+        <link>https://fupanc-w1n.github.io/categories/</link>
+        <description>Recent content in Categories on fupanc</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sun, 28 Sep 2025 18:26:31 +0800</lastBuildDate><atom:link href="https://fupanc-w1n.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Java安全</title>
+        <link>https://fupanc-w1n.github.io/categories/java%E5%AE%89%E5%85%A8/</link>
+        <pubDate>Sun, 28 Sep 2025 18:26:31 +0800</pubDate>
+        
+        <guid>https://fupanc-w1n.github.io/categories/java%E5%AE%89%E5%85%A8/</guid>
+        <description>&lt;img src="https://fupanc-w1n.github.io/categories/java%E5%AE%89%E5%85%A8/RiJavaFill.png" alt="Featured image of post Java安全" /&gt;</description>
+        </item>
+        <item>
+        <title>CTF</title>
+        <link>https://fupanc-w1n.github.io/categories/ctf/</link>
+        <pubDate>Sun, 14 Sep 2025 17:05:27 +0800</pubDate>
+        
+        <guid>https://fupanc-w1n.github.io/categories/ctf/</guid>
+        <description>&lt;img src="https://fupanc-w1n.github.io/categories/ctf/%E6%8A%A2%E5%8D%A0%E5%B1%B1%E5%A4%B4.png" alt="Featured image of post CTF" /&gt;</description>
+        </item>
+        <item>
+        <title>漏洞学习</title>
+        <link>https://fupanc-w1n.github.io/categories/%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/</link>
+        <pubDate>Fri, 07 Mar 2025 22:09:04 +0800</pubDate>
+        
+        <guid>https://fupanc-w1n.github.io/categories/%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/</guid>
+        <description>&lt;img src="https://fupanc-w1n.github.io/categories/%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/12233.jpg" alt="Featured image of post 漏洞学习" /&gt;</description>
+        </item>
+        <item>
+        <title>渗透学习</title>
+        <link>https://fupanc-w1n.github.io/categories/%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/</link>
+        <pubDate>Sat, 08 Feb 2025 15:40:19 +0800</pubDate>
+        
+        <guid>https://fupanc-w1n.github.io/categories/%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/</guid>
+        <description>&lt;img src="https://fupanc-w1n.github.io/categories/%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/shentou.png" alt="Featured image of post 渗透学习" /&gt;</description>
+        </item>
+        <item>
+        <title>云安全</title>
+        <link>https://fupanc-w1n.github.io/categories/%E4%BA%91%E5%AE%89%E5%85%A8/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://fupanc-w1n.github.io/categories/%E4%BA%91%E5%AE%89%E5%85%A8/</guid>
+        <description>&lt;img src="https://fupanc-w1n.github.io/categories/%E4%BA%91%E5%AE%89%E5%85%A8/123.png" alt="Featured image of post 云安全" /&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

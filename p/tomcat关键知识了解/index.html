@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一文清楚tomcat基本架构以及权限绕过">
+<title>Tomcat关键知识了解</title>
+
+<link rel='canonical' href='https://fupanc-w1n.github.io/p/tomcat%E5%85%B3%E9%94%AE%E7%9F%A5%E8%AF%86%E4%BA%86%E8%A7%A3/'>
+
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="Tomcat关键知识了解">
+<meta property='og:description' content="一文清楚tomcat基本架构以及权限绕过">
+<meta property='og:url' content='https://fupanc-w1n.github.io/p/tomcat%E5%85%B3%E9%94%AE%E7%9F%A5%E8%AF%86%E4%BA%86%E8%A7%A3/'>
+<meta property='og:site_name' content='fupanc'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-25T21:45:12&#43;08:00'/><meta property='article:modified_time' content='2025-09-25T21:45:12&#43;08:00'/>
+<meta name="twitter:title" content="Tomcat关键知识了解">
+<meta name="twitter:description" content="一文清楚tomcat基本架构以及权限绕过">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🔋</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">fupanc</a></h1>
+            <h2 class="site-description">我与我周旋久，宁做我</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/fupanc-w1n'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#关键文件及目录说明">关键文件及目录说明</a>
+      <ol>
+        <li><a href="#tomcat源码目录说明">tomcat源码目录说明</a></li>
+        <li><a href="#web应用程序目录说明">web应用程序目录说明</a></li>
+      </ol>
+    </li>
+    <li><a href="#tomcat架构学习">tomcat架构学习</a></li>
+    <li><a href="#权限设置">权限设置</a>
+      <ol>
+        <li><a href="#账密webxmljsp">账密+web.xml+jsp</a></li>
+        <li><a href="#filter过滤器的利用">filter过滤器的利用</a></li>
+        <li><a href="#经典权限绕过分析">经典权限绕过分析</a>
+          <ol>
+            <li><a href="#绕过">../绕过</a></li>
+            <li><a href="#绕过-1">;绕过</a></li>
+            <li><a href="#url编码绕过">url编码绕过</a></li>
+            <li><a href="#最后">最后</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/java%E5%AE%89%E5%85%A8/" style="background-color: #2a9d8f; color: #fff;">
+                Java安全
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/tomcat%E5%85%B3%E9%94%AE%E7%9F%A5%E8%AF%86%E4%BA%86%E8%A7%A3/">Tomcat关键知识了解</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            一文清楚tomcat基本架构以及权限绕过
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-09-25</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="tomcat关键知识了解">Tomcat关键知识了解
+</h1><p>Tomcat 是由 Apache 软件基金会 开发的一个开源的 Java Web 应用服务器，属于 Jakarta 项目的核心部分。它支持最新的 Servlet 和 JSP 规范，能够运行基于 Java 的动态 Web 应用程序。</p>
+<h2 id="关键文件及目录说明">关键文件及目录说明
+</h2><h3 id="tomcat源码目录说明">tomcat源码目录说明
+</h3><p>在apache的tomcat官网下载的tomcat9源码中，可以看到如下的目录：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250923165718310.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250923165718310"
+	
+	
+></p>
+<p>有几个关键的目录需要说明：</p>
+<ul>
+<li><code>/bin</code>：启动、关闭和其他脚本，在linux中就是使用<code>startup.sh</code>文件来启动tomcat，windows则是<code>startup.bat</code>功能副本。</li>
+<li><code>/conf</code>：配置文件和相关的DTD。里面有两个重要的文件，server.xml和web.xml，两个配置文件定义了非常多的运行策略，比如server.xml就定义了tomcat对外暴露的端口，而web.xml就定义了将<code>*.jsp</code>的交给jsp引擎解析等策略。</li>
+<li><code>/logs</code>：默认情况下，日志文件位于此处。</li>
+<li><code>/webapps</code>：这是Web应用程序所在的位置。</li>
+<li><code>/lib</code>：存放一些需要的jar包依赖资源。</li>
+</ul>
+<p>由此基本了解了一个tomcat的基本目录结构。</p>
+<h3 id="web应用程序目录说明">web应用程序目录说明
+</h3><p>我们可以先在idea上搭建一个tomcat用来编辑一个web程序的源码，可以参考我之前的文章：</p>
+<p><a class="link" href="https://fupanc-w1n.github.io/p/tomcat%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/"  target="_blank" rel="noopener"
+    >https://fupanc-w1n.github.io/p/tomcat%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/</a></p>
+<p>现在来看web应用程序下的目录布局，需要知道如下的一些信息：</p>
+<ul>
+<li><code>*.html</code>、<code>*.jsp</code>等：HTML和JSP页面，以及应用程序中客户端浏览器必须可见的其他文件（例如 JavaScript、样式表文件和图像）。在较大的应用程序中，你可以选择将这些文件划分为子目录层次结构，但对于较小的应用程序，通常只需为这些文件维护一个目录即可。</li>
+<li><code>/WEB-INF/web.xml</code>：应用程序的<em>Web 应用程序部署描述符</em>，<strong>这是一个非常重要的配置文件</strong>，描述构成应用程序的 servlet 和其他组件，以及你希望服务器为你强制执行的任何初始化参数和容器管理的安全约束。</li>
+<li><code>/WEB-INF/classes/</code>：应用程序所需的Java类文件，也就是我们后端实现的包括路由等的一些功能实现的java文件。</li>
+<li><code>/WEB-INF/lib/</code>：此目录包含JAR文件，也就是当前应用程序所需第三方类库。</li>
+</ul>
+<p>基本信息如上，其下还有两个点需要说明：</p>
+<ol>
+<li><strong>idea中的tomcat的实现逻辑</strong>：其实就是相当于直接在tomcat的webapps目录下编写文件，然后经过一些调用从而成功启动tomcat容器。</li>
+<li><strong>/WEB-INF/web.xml文件说明</strong>：在前面我们了解到了tomcat的<code>/conf</code>目录下也会存在一个web.xml文件。这两个文件有什么区别和联系呢，根据我的理解，<code>/conf</code>目录下的web.xml配置文件对全局的环境设置起作用，而一个tomcat可以有多个应用程序，不可能每一个web应用程序的filter、servlet配置那些都是一样的，故需要在各自的WEB-INF目录下存放一个web.xml配置文件来定义各自需要的配置，并且只会在自己的应用程序中生效。</li>
+</ol>
+<h2 id="tomcat架构学习">tomcat架构学习
+</h2><p>关于tomcat架构的知识点以及简单的jsp技术可以参考我之前的tomcat内存马文章的基础知识板块的知识点：</p>
+<p><a class="link" href="https://fupanc-w1n.github.io/p/tomcat%E5%86%85%E5%AD%98%E9%A9%AC/"  target="_blank" rel="noopener"
+    >https://fupanc-w1n.github.io/p/tomcat%E5%86%85%E5%AD%98%E9%A9%AC/</a></p>
+<h2 id="权限设置">权限设置
+</h2><p>来看看tomcat的一些权限设置方法。</p>
+<h3 id="账密webxmljsp">账密+web.xml+jsp
+</h3><p>最常见的就是用户名登陆，在简单了解下，我们可以通过配置tomcat的user配置文件来进行用户设置，比如如下过程设置：</p>
+<p>先在tomcat源码的conf目录下往tomcat-users.xml文件中添加如下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&#34;admin&#34;</span> <span class="na">password=</span><span class="s">&#34;123456&#34;</span> <span class="na">roles=</span><span class="s">&#34;manager-gui&#34;</span><span class="nt">/&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>设置了一个用户名和密码，需要配合web.xml来进行规则匹配，内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;web-app</span> <span class="na">xmlns=</span><span class="s">&#34;http://xmlns.jcp.org/xml/ns/javaee&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">xmlns:xsi=</span><span class="s">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">xsi:schemaLocation=</span><span class="s">&#34;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">version=</span><span class="s">&#34;4.0&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;security-constraint&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;web-resource-collection&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;web-resource-name&gt;</span>Admin Pages<span class="nt">&lt;/web-resource-name&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="c">&lt;!-- 限制 admin/ 目录下所有 JSP --&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;url-pattern&gt;</span>/admin/*<span class="nt">&lt;/url-pattern&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/web-resource-collection&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;auth-constraint&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="c">&lt;!-- 只有 manager-gui 用户才能访问 --&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;role-name&gt;</span>manager-gui<span class="nt">&lt;/role-name&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/auth-constraint&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/security-constraint&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;login-config&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;auth-method&gt;</span>FORM<span class="nt">&lt;/auth-method&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;form-login-config&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;form-login-page&gt;</span>/login.jsp<span class="nt">&lt;/form-login-page&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;form-error-page&gt;</span>/login_error.jsp<span class="nt">&lt;/form-error-page&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/form-login-config&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/login-config&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;security-role&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;role-name&gt;</span>manager-gui<span class="nt">&lt;/role-name&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/security-role&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/web-app&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在这里设置了对admin目录的访问限制，也就是限制了index.jsp文件的访问，然后就是设置文件，目录结构为：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924153230640.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924153230640"
+	
+	
+></p>
+<p>Login.jsp文件内容为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ page contentType=&#34;text/html;charset=UTF-8&#34; language=&#34;java&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;html&gt;
+</span></span><span class="line"><span class="cl">&lt;head&gt;
+</span></span><span class="line"><span class="cl">    &lt;title&gt;登录&lt;/title&gt;
+</span></span><span class="line"><span class="cl">&lt;/head&gt;
+</span></span><span class="line"><span class="cl">&lt;body&gt;
+</span></span><span class="line"><span class="cl">&lt;h2&gt;管理员登录&lt;/h2&gt;
+</span></span><span class="line"><span class="cl">&lt;form method=&#34;post&#34; action=&#34;j_security_check&#34;&gt;
+</span></span><span class="line"><span class="cl">    用户名: &lt;input type=&#34;text&#34; name=&#34;j_username&#34; /&gt;&lt;br/&gt;
+</span></span><span class="line"><span class="cl">    密码: &lt;input type=&#34;password&#34; name=&#34;j_password&#34; /&gt;&lt;br/&gt;
+</span></span><span class="line"><span class="cl">    &lt;input type=&#34;submit&#34; value=&#34;登录&#34;/&gt;
+</span></span><span class="line"><span class="cl">&lt;/form&gt;
+</span></span><span class="line"><span class="cl">&lt;/body&gt;
+</span></span><span class="line"><span class="cl">&lt;/html&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里的j_security_check是tomcat内置的登陆校验机制，对应的账号密码就是前面的配置文件中设置的账号密码。</p>
+<p>admin目录下的index.jsp内容为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%--
+</span></span><span class="line"><span class="cl">  Created by IntelliJ IDEA.
+</span></span><span class="line"><span class="cl">  User: ASUS
+</span></span><span class="line"><span class="cl">  Date: 2024/8/30
+</span></span><span class="line"><span class="cl">  Time: 13:00
+</span></span><span class="line"><span class="cl">  To change this template use File | Settings | File Templates.
+</span></span><span class="line"><span class="cl">--%&gt;
+</span></span><span class="line"><span class="cl">&lt;%@ page contentType=&#34;text/html;charset=UTF-8&#34; language=&#34;java&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;html&gt;
+</span></span><span class="line"><span class="cl">&lt;head&gt;
+</span></span><span class="line"><span class="cl">    &lt;title&gt;Title&lt;/title&gt;
+</span></span><span class="line"><span class="cl">&lt;/head&gt;
+</span></span><span class="line"><span class="cl">&lt;body&gt;
+</span></span><span class="line"><span class="cl">&lt;h1&gt;Hello admin&lt;/h1&gt;
+</span></span><span class="line"><span class="cl">&lt;/body&gt;
+</span></span><span class="line"><span class="cl">&lt;/html&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Login_error.jsp文件内容为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ page contentType=&#34;text/html;charset=UTF-8&#34; language=&#34;java&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;html&gt;
+</span></span><span class="line"><span class="cl">&lt;head&gt;
+</span></span><span class="line"><span class="cl">  &lt;title&gt;登录失败&lt;/title&gt;
+</span></span><span class="line"><span class="cl">&lt;/head&gt;
+</span></span><span class="line"><span class="cl">&lt;body&gt;
+</span></span><span class="line"><span class="cl">&lt;h2&gt;用户名或密码错误！&lt;/h2&gt;
+</span></span><span class="line"><span class="cl">&lt;a href=&#34;login.jsp&#34;&gt;返回重新登录&lt;/a&gt;
+</span></span><span class="line"><span class="cl">&lt;/body&gt;
+</span></span><span class="line"><span class="cl">&lt;/html&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后开启tomcat即可，然后访问admin受限目录下的index.jsp，会跳转到login.jsp要求登陆：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924155519319.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924155519319"
+	
+	
+></p>
+<p>然后输入admin:123456就可以成功访问了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924155751879.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924155751879"
+	
+	
+></p>
+<p>tomcat设置cookie的情况如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924155947361.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924155947361"
+	
+	
+></p>
+<p>由此实现了一次<strong>简单</strong>的用户账号登陆的实现，并且实现了访问jsp资源时对身份的限制。当然也可以直接使用数据库来进行身份识别与限制，但主要是由java代码实现。</p>
+<p>当然还可以限制ip等操作，但都是需要结合到xml配置文件来利用。</p>
+<p>————————————</p>
+<h3 id="filter过滤器的利用">filter过滤器的利用
+</h3><p>在tomcat架构中，我们就了解到了可以使用filter来过滤请求，只让符合条件的才能继续调用filterChain.doFilter()，否则就会被拦截。这就是一个天然可以被设计用来进行权限验证的过滤器（当然也可以做其他处理）。</p>
+<p>在这里我们就可以仅使用java文件来进行一次登陆验证模拟。</p>
+<p>在idea中指定的源根编辑java文件即可：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924172159459.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924172159459"
+	
+	
+></p>
+<p>这里的目的还是访问到admin下的index.jsp文件，LoginServlet文件内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.ServletException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.annotation.WebServlet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServlet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpSession</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@WebServlet</span><span class="p">(</span><span class="s">&#34;/login&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">LoginServlet</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">HttpServlet</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doPost</span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">response</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="p">,</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getParameter</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getParameter</span><span class="p">(</span><span class="s">&#34;password&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="s">&#34;admin&#34;</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">username</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="s">&#34;123&#34;</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">password</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">HttpSession</span><span class="w"> </span><span class="n">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getSession</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">session</span><span class="p">.</span><span class="na">setAttribute</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">response</span><span class="p">.</span><span class="na">sendRedirect</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getContextPath</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;/admin/index.jsp&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">response</span><span class="p">.</span><span class="na">sendRedirect</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getContextPath</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;/login.jsp&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>硬编码了一个账号密码，当然可以结合到数据库来使用。然后Testfilter.java文件内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.*</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.annotation.WebFilter</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpSession</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@WebFilter</span><span class="p">(</span><span class="s">&#34;/admin/*&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Testfilter</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Filter</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">FilterConfig</span><span class="w"> </span><span class="n">filterConfig</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;Testfilter init&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doFilter</span><span class="p">(</span><span class="n">ServletRequest</span><span class="w"> </span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">ServletResponse</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">,</span><span class="w"> </span><span class="n">FilterChain</span><span class="w"> </span><span class="n">filterChain</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="p">)</span><span class="w"> </span><span class="n">servletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">resp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HttpServletResponse</span><span class="p">)</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpSession</span><span class="w"> </span><span class="n">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getSession</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">session</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">resp</span><span class="p">.</span><span class="na">sendRedirect</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getContextPath</span><span class="p">()</span><span class="o">+</span><span class="s">&#34;/login.jsp&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">session</span><span class="p">.</span><span class="na">getAttribute</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">).</span><span class="na">toString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="s">&#34;admin&#34;</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">username</span><span class="p">)){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">filterChain</span><span class="p">.</span><span class="na">doFilter</span><span class="p">(</span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">resp</span><span class="p">.</span><span class="na">sendRedirect</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getContextPath</span><span class="p">()</span><span class="o">+</span><span class="s">&#34;/login.jsp&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">destroy</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到对admin路由下的内容进行了限制，然后对cookie的获取进行了一些条件判断。修改login.jsp文件内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;%@ page contentType=&#34;text/html;charset=UTF-8&#34; language=&#34;java&#34; %&gt;
+</span></span><span class="line"><span class="cl">&lt;html&gt;
+</span></span><span class="line"><span class="cl">&lt;head&gt;
+</span></span><span class="line"><span class="cl">    &lt;title&gt;登录&lt;/title&gt;
+</span></span><span class="line"><span class="cl">&lt;/head&gt;
+</span></span><span class="line"><span class="cl">&lt;body&gt;
+</span></span><span class="line"><span class="cl">&lt;h2&gt;管理员登录&lt;/h2&gt;
+</span></span><span class="line"><span class="cl">&lt;form method=&#34;post&#34; action=&#34;login&#34;&gt;
+</span></span><span class="line"><span class="cl">    用户名: &lt;input type=&#34;text&#34; name=&#34;username&#34; /&gt;&lt;br/&gt;
+</span></span><span class="line"><span class="cl">    密码: &lt;input type=&#34;password&#34; name=&#34;password&#34; /&gt;&lt;br/&gt;
+</span></span><span class="line"><span class="cl">    &lt;input type=&#34;submit&#34; value=&#34;登录&#34;/&gt;
+</span></span><span class="line"><span class="cl">&lt;/form&gt;
+</span></span><span class="line"><span class="cl">&lt;/body&gt;
+</span></span><span class="line"><span class="cl">&lt;/html&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将post发送的action改为了后端处理的login路由。可以清空一下web.xml设置的配置，保留最基本的即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;web-app</span> <span class="na">xmlns=</span><span class="s">&#34;http://xmlns.jcp.org/xml/ns/javaee&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">xmlns:xsi=</span><span class="s">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">xsi:schemaLocation=</span><span class="s">&#34;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">version=</span><span class="s">&#34;4.0&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/web-app&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后启动tomcat即可，访问admin/index.jsp，会直接跳转到登陆页面：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924184903841.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924184903841"
+	
+	
+></p>
+<p>然后尝试登陆，错误账号密码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924185032868.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924185032868"
+	
+	
+></p>
+<p>正确账号密码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924185116618.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924185116618"
+	
+	
+></p>
+<p>会跳转到指定的admin/index.jsp，在前端拿到cookie再访问：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924185256146.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924185256146"
+	
+	
+></p>
+<p>删去cookie：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924185405244.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924185405244"
+	
+	
+></p>
+<p>两相对比，成功通过filter设置的权限验证。</p>
+<p>以上实现了一个简单的java层面的利用filter过滤器来对路由设置身份验证，重点就在于这里使用的<code>@WebFilter</code>注解，想当于web.xml中的<code>&lt;filter&gt;</code> 和<code>&lt;filter-mapping&gt;</code>，故也是可以用web.xml来标注filter作用的路由的。</p>
+<p>需要注意的一点就是使用<code>@WebFilter</code>注解无法对filter进行排序，而web.xml可以。</p>
+<h3 id="经典权限绕过分析">经典权限绕过分析
+</h3><p>前文我们简单了解了一下两种权限设置的方法，当然还可能存在更多、更复杂的权限设置，这里来分析一下早已有所耳闻的分号等方式的绕过。</p>
+<p>这里主要利用的是URL解析的差异性，当后端使用getRequestURI()或getRequestURL()函数来解析用户请求的URL时，若URl上包含有一些特殊符号，则可能造成访问限制绕过的风险。</p>
+<p>在tomcat中，至少存在如下几个函数可以用来获取url上的请求路由：</p>
+<ul>
+<li>req.getRequestURL()：返回全路径</li>
+<li>req.getRequestURI()：返回除host的路径</li>
+<li>req.getContextPath()：返回工程名部分的路径</li>
+<li>req.getServletPath()：返回除去Host和工程名部分的路径</li>
+</ul>
+<p>由于<u>tomcat在解析请求路径时，会自行修正路径</u>，然后再去访问servlet，故一般存在权限绕过漏洞，都是因为后端开发对路径的限制没有做好。</p>
+<p>简单在doFilter()方法中添加如下代码来看回显是什么：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">resp</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;getRequestURL()的回显&#34;</span><span class="o">+</span><span class="n">req</span><span class="p">.</span><span class="na">getRequestURL</span><span class="p">().</span><span class="na">toString</span><span class="p">()</span><span class="o">+</span><span class="s">&#34;&lt;br&gt;&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">resp</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;getRequestURI()的回显&#34;</span><span class="o">+</span><span class="n">req</span><span class="p">.</span><span class="na">getRequestURI</span><span class="p">()</span><span class="o">+</span><span class="s">&#34;&lt;br&gt;&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">resp</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;getContextPath()的回显&#34;</span><span class="o">+</span><span class="n">req</span><span class="p">.</span><span class="na">getContextPath</span><span class="p">()</span><span class="o">+</span><span class="s">&#34;&lt;br&gt;&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">resp</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;getServletPath()的回显&#34;</span><span class="o">+</span><span class="n">req</span><span class="p">.</span><span class="na">getServletPath</span><span class="p">()</span><span class="o">+</span><span class="s">&#34;&lt;br&gt;&#34;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>从web端的回显来看，是如下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">getRequestURL()的回显http://localhost:8081/tomcat002_Web_exploded/admin/index.jsp
+</span></span><span class="line"><span class="cl">getRequestURI()的回显/tomcat002_Web_exploded/admin/index.jsp
+</span></span><span class="line"><span class="cl">getContextPath()的回显/tomcat002_Web_exploded
+</span></span><span class="line"><span class="cl">getServletPath()的回显/admin/index.jsp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>非常符合函数本身的定义。</p>
+<p>前面我们也说了，存在权限绕过的原因就是因为使用了getRequestURL()或者getRequestURI()来获取路径，然后再对目录进行判断。</p>
+<p>简单写一个demo来对一些绕过点进行分析。</p>
+<p>目录结构没有太大变化，文件内容改变如下：</p>
+<p>LoginServlet.java：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.ServletException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServlet</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpSession</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">LoginServlet</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">HttpServlet</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doGet</span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">response</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="p">,</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpSession</span><span class="w"> </span><span class="n">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getSession</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getParameter</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">username</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">response</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;You are not logged in&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="s">&#34;admin&#34;</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">username</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">session</span><span class="p">.</span><span class="na">setAttribute</span><span class="p">(</span><span class="s">&#34;user&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">response</span><span class="p">.</span><span class="na">sendRedirect</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getContextPath</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;/admin/index.jsp&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">response</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;Invalid username&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Testfilter.java文件内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.*</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.annotation.WebFilter</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@WebFilter</span><span class="p">(</span><span class="s">&#34;/admin/*&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Testfilter</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Filter</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">FilterConfig</span><span class="w"> </span><span class="n">filterConfig</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;Testfilter init&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doFilter</span><span class="p">(</span><span class="n">ServletRequest</span><span class="w"> </span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">ServletResponse</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">,</span><span class="w"> </span><span class="n">FilterChain</span><span class="w"> </span><span class="n">filterChain</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="p">)</span><span class="w"> </span><span class="n">servletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">resp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HttpServletResponse</span><span class="p">)</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//漏洞点</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">requestURL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">getRequestURI</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">requestURL</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&#34;/tomcat002_Web_exploded/admin/login&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//对登录页面设置白名单</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">filterChain</span><span class="p">.</span><span class="na">doFilter</span><span class="p">(</span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">requestURL</span><span class="p">.</span><span class="na">endsWith</span><span class="p">(</span><span class="s">&#34;.jsp&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//对admin页面进行限制</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Object</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">getSession</span><span class="p">().</span><span class="na">getAttribute</span><span class="p">(</span><span class="s">&#34;user&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">user</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">user</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&#34;admin&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">resp</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;please login&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">filterChain</span><span class="p">.</span><span class="na">doFilter</span><span class="p">(</span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">destroy</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后改了一下WEB-INF/web.xml文件内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;web-app</span> <span class="na">xmlns=</span><span class="s">&#34;http://xmlns.jcp.org/xml/ns/javaee&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">xmlns:xsi=</span><span class="s">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">xsi:schemaLocation=</span><span class="s">&#34;http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">version=</span><span class="s">&#34;4.0&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;servlet-mapping&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-name&gt;</span>admin<span class="nt">&lt;/servlet-name&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;url-pattern&gt;</span>/admin/login<span class="nt">&lt;/url-pattern&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/servlet-mapping&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;servlet&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-name&gt;</span>admin<span class="nt">&lt;/servlet-name&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;servlet-class&gt;</span>org.example.LoginServlet<span class="nt">&lt;/servlet-class&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/servlet&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/web-app&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>整个代码实现的功能就是对<code>/admin</code>路由下的资源设置了filter过滤器，然后用过配置web.xml文件从而使url上访问admin/login会转交给本地实现的servlet进行逻辑实现（这样就可以让login在filter过滤下，正常实现filter的过滤功能），然后设置的获取admin/index.jsp文件需要session为admin。</p>
+<p>注意这里强制设置了如果想正常访问.jsp文件，必须包含有这个后缀，否则是回显为空的。</p>
+<p>在自定义的filter中，从逻辑看似乎是无懈可击，但其实存在非常严重的权限绕过漏洞，关键就是tomcat会自行修正路径，这与tomcat的源码实现相关。现在先来看正常的逻辑：</p>
+<p>直接访问admin界面：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924233914128.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924233914128"
+	
+	
+></p>
+<p>在filter过滤器就被拦住。尝试登陆：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924234039744.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924234039744"
+	
+	
+></p>
+<p>在servlet的doGet()方法做出的判断。正常登陆后：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924234206183.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924234206183"
+	
+	
+></p>
+<p>获取到了session然后会跳转。拿到cookie后就可以访问了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250924234316641.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250924234316641"
+	
+	
+></p>
+<p>由此成功实现鉴权，可以访问到对应的admin的内容。</p>
+<p>从上述过程中，在代码层面可以说这个鉴权方式没有任何问题，但是结合到tomcat就不一样了，下面来了解一些绕过方式。</p>
+<h4 id="绕过">../绕过
+</h4><p>直接来看绕过方式，如下图使用两个<code>../</code>：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925132144176.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925132144176"
+	
+	
+></p>
+<p>一个<code>../</code>也可以：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925132239546.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925132239546"
+	
+	
+></p>
+<p>简单从现象来看，似乎非常像我们经常遇到的目录穿越漏洞，从代码设置的filter来看：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925132359274.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925132359274"
+	
+	
+></p>
+<p>成功进入第一个admin/login，就正常调用filterChain.doFilter()，但是经过<strong>tomcat的路径修正</strong>，故其本质会调用到<code>.jsp</code>指定的servlet容器，从而实现了权限绕过。</p>
+<p>tomcat对路径修正的代码存在于CoyoteAdapter类的postParseRequest()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925142402706.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925142402706"
+	
+	
+></p>
+<p>这里调用了req.requestURI()获取uri，继续往后走，到调用convert()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925143325396.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925143325396"
+	
+	
+></p>
+<p>这里的convert是一个url解码的操作，我们后续再详细谈。继续往后看，会调用normalize()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925144136030.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925144136030"
+	
+	
+></p>
+<p>可以看出参数传递的还是获取到的uri，跟进normalize()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925150122648.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925150122648"
+	
+	
+></p>
+<p>获取具体的uri，然后获取其起始以及最后的位置（就是获取其长度），后续比较关键的就是如下代码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925151510507.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925151510507"
+	
+	
+></p>
+<p>这里的逻辑就是循环清理<code>/./</code>，直到在uriBC中找不到<code>/./</code>，过程就是<code>/a/./b</code>替换为<code>/a/b</code>，故长度需要<code>-2</code>。</p>
+<p>后续的比较关键的代码就是如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925152440879.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925152440879"
+	
+	
+></p>
+<p>这里继续清理<code>/../</code>，也是这一部分的../绕过的原理所在，从代码逻辑看来，这就是一个用来实现另一类的“目录穿越”的路径清理，代码逻辑就是：</p>
+<ul>
+<li>如果匹配到<code>/../</code>在开头，那么就会跳到context根目录之外，就直接返回false。</li>
+<li>如果匹配到后续位置，比如<code>admin/login/../index.jsp</code>，那么就会寻找<code>/../</code>前的一个<code>/</code>，然后将前一个目录名+<code>/../</code>一起删掉，在这里体现出来就是把login/../一起删掉，从而变成了<code>admin/index.jsp</code>，如下图：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925153430162.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925153430162"
+	
+	
+></p>
+<p>这样后续指定的url就变成了admin/index.jsp。当调用完了normalize()方法，还会调用checkNormalize()再次检查，但是这次是匹配到存在<code>/./</code>或者<code>/../</code>是直接返回400：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925153749557.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925153749557"
+	
+	
+></p>
+<p>————————</p>
+<p>此时的调用栈：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">postParseRequest:688, CoyoteAdapter (org.apache.catalina.connector)
+</span></span><span class="line"><span class="cl">service:341, CoyoteAdapter (org.apache.catalina.connector)
+</span></span><span class="line"><span class="cl">service:397, Http11Processor (org.apache.coyote.http11)
+</span></span><span class="line"><span class="cl">process:63, AbstractProcessorLight (org.apache.coyote)
+</span></span><span class="line"><span class="cl">process:935, AbstractProtocol$ConnectionHandler (org.apache.coyote)
+</span></span><span class="line"><span class="cl">doRun:1792, NioEndpoint$SocketProcessor (org.apache.tomcat.util.net)
+</span></span><span class="line"><span class="cl">run:52, SocketProcessorBase (org.apache.tomcat.util.net)
+</span></span><span class="line"><span class="cl">runWorker:1189, ThreadPoolExecutor (org.apache.tomcat.util.threads)
+</span></span><span class="line"><span class="cl">run:658, ThreadPoolExecutor$Worker (org.apache.tomcat.util.threads)
+</span></span><span class="line"><span class="cl">run:63, TaskThread$WrappingRunnable (org.apache.tomcat.util.threads)
+</span></span><span class="line"><span class="cl">run:745, Thread (java.lang)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>再看我们调用到filter的调用栈：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">doFilter:26, Testfilter (org.example)
+</span></span><span class="line"><span class="cl">internalDoFilter:168, ApplicationFilterChain (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">doFilter:144, ApplicationFilterChain (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">invoke:168, StandardWrapperValve (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">invoke:90, StandardContextValve (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">invoke:482, AuthenticatorBase (org.apache.catalina.authenticator)
+</span></span><span class="line"><span class="cl">invoke:130, StandardHostValve (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">invoke:93, ErrorReportValve (org.apache.catalina.valves)
+</span></span><span class="line"><span class="cl">invoke:656, AbstractAccessLogValve (org.apache.catalina.valves)
+</span></span><span class="line"><span class="cl">invoke:74, StandardEngineValve (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">service:346, CoyoteAdapter (org.apache.catalina.connector)
+</span></span><span class="line"><span class="cl">service:397, Http11Processor (org.apache.coyote.http11)
+</span></span><span class="line"><span class="cl">process:63, AbstractProcessorLight (org.apache.coyote)
+</span></span><span class="line"><span class="cl">process:935, AbstractProtocol$ConnectionHandler (org.apache.coyote)
+</span></span><span class="line"><span class="cl">doRun:1792, NioEndpoint$SocketProcessor (org.apache.tomcat.util.net)
+</span></span><span class="line"><span class="cl">run:52, SocketProcessorBase (org.apache.tomcat.util.net)
+</span></span><span class="line"><span class="cl">runWorker:1189, ThreadPoolExecutor (org.apache.tomcat.util.threads)
+</span></span><span class="line"><span class="cl">run:658, ThreadPoolExecutor$Worker (org.apache.tomcat.util.threads)
+</span></span><span class="line"><span class="cl">run:63, TaskThread$WrappingRunnable (org.apache.tomcat.util.threads)
+</span></span><span class="line"><span class="cl">run:745, Thread (java.lang)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>两相对比就可以知道这个绕过的原理了。</p>
+<p>由于tomcat的路径修正，让我们请求的<code>/tomcat002_Web_exploded/admin/login/../index.jsp</code>变成了<code>/tomcat002_Web_exploded/admin/index.jsp</code>，直接指向了需要鉴权的页面，但是在后续的调用中，到我们设置的filter时：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925154423226.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925154423226"
+	
+	
+></p>
+<p>还是使用的getRequestURI()来获取全ip，导致进入了白名单，放行了当前的url请求，但是经过路径修正，实际指向的是<code>admin/index.jsp</code>，故成功绕过鉴权拿到admin页面的信息。</p>
+<h4 id="绕过-1">;绕过
+</h4><p>前面忘记分析了一个点，先给出对前面绕过方式进行限制的代码，来看看是否还可以绕过，修改Testfilter.java文件代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.*</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.annotation.WebFilter</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@WebFilter</span><span class="p">(</span><span class="s">&#34;/admin/*&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Testfilter</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Filter</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">FilterConfig</span><span class="w"> </span><span class="n">filterConfig</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;Testfilter init&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doFilter</span><span class="p">(</span><span class="n">ServletRequest</span><span class="w"> </span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">ServletResponse</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">,</span><span class="w"> </span><span class="n">FilterChain</span><span class="w"> </span><span class="n">filterChain</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="p">)</span><span class="w"> </span><span class="n">servletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">resp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HttpServletResponse</span><span class="p">)</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//漏洞点</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">requestURL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">getRequestURI</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">waf</span><span class="o">=</span><span class="n">0</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">waf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requestURL</span><span class="p">.</span><span class="na">indexOf</span><span class="p">(</span><span class="s">&#34;../&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">waf</span><span class="o">&gt;</span><span class="n">0</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">resp</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;url error ，do not attack&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">requestURL</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&#34;/tomcat002_Web_exploded/admin/login&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//对登录页面设置白名单</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">filterChain</span><span class="p">.</span><span class="na">doFilter</span><span class="p">(</span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">requestURL</span><span class="p">.</span><span class="na">endsWith</span><span class="p">(</span><span class="s">&#34;.jsp&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//对admin页面进行限制</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Object</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">getSession</span><span class="p">().</span><span class="na">getAttribute</span><span class="p">(</span><span class="s">&#34;user&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">user</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">user</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&#34;admin&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">resp</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;please login&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">filterChain</span><span class="p">.</span><span class="na">doFilter</span><span class="p">(</span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">destroy</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>加了一个对<code>../</code>的限制：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925161900092.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925161900092"
+	
+	
+></p>
+<p>如何绕过，如下图：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925162657121.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925162657121"
+	
+	
+></p>
+<p>是的，使用的分号。那么这里为什么呢。打断点调试如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925162828625.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925162828625"
+	
+	
+></p>
+<p>进入这里调用的parsePathParameters()方法，如图可看出后续进行了url解码，也就是前面分析的。跟进parsePathParameters()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925163121155.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925163121155"
+	
+	
+></p>
+<p>需要有分号，然后寻找其中的参数：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925163204015.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925163204015"
+	
+	
+></p>
+<p>这里匹配逻辑就是从第一个分号到下一个分号，或者到下一个<code>/</code>，比如<code>;a=b;c=d/</code>，那么就会匹配到a=b和c=d两个键值对（也是循环进行匹配的，每次只取一个键值对），当匹配到后，会将<code>;a=b</code>一起删掉，故最后剩下的uri为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">tomcat002_Web_exploded/admin/login/../index.jsp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由此就是又可以达到一次权限绕过。</p>
+<p>那么为什么会存在这种逻辑呢，主要还是为了在获取到参数后对request对象进行”填充“，为对象添加一些必要的属性：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925163952440.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925163952440"
+	
+	
+></p>
+<p>过程很好理解，在filter中通过getRequestURI()获取完整目录，然后会进入到登陆口白名单，再然后会访问经过路径修正的servlet，从而成功实现权限绕过。</p>
+<p>——————————————</p>
+<p>由此可以知道整体的逻辑就是 先url解码=&gt;去除分号及其匹配的键值对 =&gt; 去掉<code>./</code> =》去掉<code>../</code>以及前一个目录。</p>
+<h4 id="url编码绕过">url编码绕过
+</h4><p>那么我将代码改成如下还是否能绕过呢：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.*</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.annotation.WebFilter</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.servlet.http.HttpServletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@WebFilter</span><span class="p">(</span><span class="s">&#34;/admin/*&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Testfilter</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Filter</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="n">FilterConfig</span><span class="w"> </span><span class="n">filterConfig</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;Testfilter init&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doFilter</span><span class="p">(</span><span class="n">ServletRequest</span><span class="w"> </span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">ServletResponse</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">,</span><span class="w"> </span><span class="n">FilterChain</span><span class="w"> </span><span class="n">filterChain</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">ServletException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="p">)</span><span class="w"> </span><span class="n">servletRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">resp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HttpServletResponse</span><span class="p">)</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//漏洞点</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">requestURL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">getRequestURI</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">waf</span><span class="o">=</span><span class="n">0</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">waf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requestURL</span><span class="p">.</span><span class="na">indexOf</span><span class="p">(</span><span class="s">&#34;..&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">waf</span><span class="o">&gt;</span><span class="n">0</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">resp</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;url error ，do not attack&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">requestURL</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&#34;/tomcat002_Web_exploded/admin/login&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//对登录页面设置白名单</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">filterChain</span><span class="p">.</span><span class="na">doFilter</span><span class="p">(</span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">requestURL</span><span class="p">.</span><span class="na">endsWith</span><span class="p">(</span><span class="s">&#34;.jsp&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">//对admin页面进行限制</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Object</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">getSession</span><span class="p">().</span><span class="na">getAttribute</span><span class="p">(</span><span class="s">&#34;user&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">user</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">user</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="s">&#34;admin&#34;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">resp</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;please login&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">filterChain</span><span class="p">.</span><span class="na">doFilter</span><span class="p">(</span><span class="n">servletRequest</span><span class="p">,</span><span class="w"> </span><span class="n">servletResponse</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">destroy</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>直接釜底抽薪，过滤掉关键的<code>..</code>符号（本来想设置过滤<code>.</code>，后面发现文件名有一个<code>.</code>）：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925164559199.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925164559199"
+	
+	
+></p>
+<p>无法利用，如下绕过方式：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925165309685.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925165309685"
+	
+	
+></p>
+<p>成功实现权限绕过。前面就提到了tomcat修正路径时会url解码，直接跟进对应的convert()函数，这就是一个url解码的函数，其中有两个需要注意的点：</p>
+<p>循环解码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925165750733.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925165750733"
+	
+	
+></p>
+<p>其次是对解码出来的内容有匹配：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925165823206.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925165823206"
+	
+	
+></p>
+<p>如图所示有<code>/</code>和<code>\</code>，还有<code>%</code>，这里关注<code>/</code>，可以将url上的<code>/</code>编码，会是如下情况：：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925170121512.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925170121512"
+	
+	
+></p>
+<p>关键在于这里的encodedSolidusHandling，三个模式分别对应如下说明：</p>
+<ul>
+<li><code>DECODE</code>：解码成<code>/</code>。</li>
+<li><code>REJECT</code>：拒绝请求，抛出异常。</li>
+<li><code>PASS_THROUGH</code>：保持原样。</li>
+</ul>
+<p>在默认配置下，如图所示模式就是REJECT，故这里会直接抛出异常：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250925170445802.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250925170445802"
+	
+	
+></p>
+<p>故只用编码<code>.</code>即可。需要注意的是：<strong>编码分号也是有问题的</strong>，主要原因就是解析顺序的问题，在前面就提到了顺序为：</p>
+<p>由此可以知道整体的逻辑就是 先url解码=&gt;去除分号及其匹配的键值对 =&gt; 去掉<code>./</code> =》去掉<code>../</code>以及前一个目录。</p>
+<p>如果编码了分号，那么在第一步就会因为没有匹配到分号而不能正常删去uri上的键值对，导致后续的所有操作的不能生效。</p>
+<p>——————————</p>
+<h4 id="最后">最后
+</h4><p><strong>那么如何修复呢</strong>，其实直接使用getServletPath()方法来进行判断即可，后端简单改一下代码来对比：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">String</span><span class="w"> </span><span class="n">requestURL0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">getRequestURI</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">requestURL0</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">String</span><span class="w"> </span><span class="n">requestURL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">req</span><span class="p">.</span><span class="na">getServletPath</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">requestURL</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后再打前面的绕过payload，效果如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">1./tomcat002_Web_exploded/admin/login/../index.jsp未绕过，获取内容为：
+</span></span><span class="line"><span class="cl">/tomcat002_Web_exploded/admin/login/../index.jsp
+</span></span><span class="line"><span class="cl">/admin/index.jsp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">2.
+</span></span><span class="line"><span class="cl">/tomcat002_Web_exploded/admin/login/..;a=b/index.jsp未绕过，获取内容为：
+</span></span><span class="line"><span class="cl">/tomcat002_Web_exploded/admin/login/..;a=b/index.jsp
+</span></span><span class="line"><span class="cl">/admin/index.jsp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">3./tomcat002_Web_exploded/admin/login/%2e%2e/index.jsp未绕过，获取内容为：
+</span></span><span class="line"><span class="cl">/tomcat002_Web_exploded/admin/login/%2e%2e/index.jsp
+</span></span><span class="line"><span class="cl">/admin/index.jsp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到获取到的内容都是对应的servlet路径，成功实现限制，如有问题，敬请指正。</p>
+<p>————</p>
+<p>这一部分的绕过方式还是很多的，关键在于后端代码是如何实现的，还有的就是对代码层面的理解以及对url的处理逻辑。如何可以挖掘出这样一个框架下的权限绕过漏洞，个人认为需要如下几点：</p>
+<ul>
+<li>清楚框架的整体对http请求的处理结果</li>
+<li>对关键信息的敏感性</li>
+<li>后端代码实现的逻辑错误</li>
+</ul>
+<p>整体缺一不可，需要一定的技术深度，这个权限绕过漏洞确实经典。</p>
+<p>参考文章：</p>
+<p><a class="link" href="https://tomcat.net.cn/tomcat-11.0-doc/index.html"  target="_blank" rel="noopener"
+    >https://tomcat.net.cn/tomcat-11.0-doc/index.html</a></p>
+<p><a class="link" href="https://xz.aliyun.com/news/7139"  target="_blank" rel="noopener"
+    >https://xz.aliyun.com/news/7139</a></p>
+<p><a class="link" href="https://www.cnblogs.com/zpchcbd/p/14815501.html"  target="_blank" rel="noopener"
+    >https://www.cnblogs.com/zpchcbd/p/14815501.html</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/apache-tomcat-partial-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Apache Tomcat partial PUT文件上传反序列化漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tomcat-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8Csession-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/hibernate%E7%BB%84%E4%BB%B6%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">hibernate组件的反序列化漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/jdk17%E4%B8%8B%E7%9A%84%E5%8F%8D%E5%B0%84%E7%BB%95%E8%BF%87/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JDK17下的反射绕过</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/fastjson2%E4%B8%8B%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE%E5%88%86%E6%9E%90/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">fastjson2下的反序列化调用链分析</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

